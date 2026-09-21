@@ -1,23 +1,19 @@
-# Le Panier Frais Bio — V46
+# Le Panier Frais Bio — Version finale V50
 
-Cette version ajoute :
-- authentification réelle par mot de passe haché
-- JWT de session
-- rôles et permissions
-- support PostgreSQL via `DATABASE_URL`
-- fallback SQLite pour test local
-- audit des connexions
-- interface de connexion
+Application web consolidée pour le pilotage de l'activité : B2C, PRO, stock/lots/FEFO, découpes, commandes, production, Click & Collect, livraisons, facturation, fournisseurs, équipements, paramètres, audit et sauvegarde JSON.
 
-## Compte de test
-Email : `admin@lpfb.test`
-Mot de passe : `LPFB-Test-2026!`
+## Déploiement Render
+1. Envoyer tous les fichiers de ce dossier sur le dépôt GitHub relié à Render.
+2. Créer une base PostgreSQL sur Render.
+3. Définir `DATABASE_URL` et un `SECRET_KEY` long et aléatoire dans les variables d'environnement.
+4. Déployer le service Docker.
+5. Vérifier `/health`.
 
-À changer avant toute utilisation réelle.
+## Compte initial de démonstration
+- Email : `admin@lpfb.test`
+- Mot de passe : `LPFB-Test-2026!`
 
-## Render
-Ajoutez deux variables d'environnement :
-- `DATABASE_URL` : URL PostgreSQL fournie par votre base Render
-- `SECRET_KEY` : chaîne longue et aléatoire
+**À changer avant exploitation réelle.**
 
-Puis redéployez le service.
+## Important avant ouverture commerciale
+Le logiciel fournit une base opérationnelle complète, mais les éléments réglementaires et contractuels restent à valider avant exploitation réelle : règles HACCP/DLC, mentions d'étiquetage, TVA par produit, facturation définitive, modalités de paiement, sauvegardes externes, droits utilisateurs, conformité RGPD et procédures internes.

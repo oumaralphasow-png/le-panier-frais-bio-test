@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: le-panier-frais-bio
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
