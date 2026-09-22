@@ -1,70 +1,1232 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Le Panier Frais Bio — V50</title>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Le Panier Frais Bio — 1.0.0</title>
 <style>
-:root{--g:#174b35;--g2:#275e45;--cream:#f7f1e4;--ink:#1e2d26;--muted:#6d7b73;--line:#dfe7e1;--red:#b42318;--amber:#9a6700;--bg:#f4f7f3}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial;background:var(--bg);color:var(--ink)}header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);padding:14px 22px;display:flex;justify-content:space-between;align-items:center}.brand{display:flex;gap:12px;align-items:center}.mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,var(--g),#3b805e);color:#fff;display:grid;place-items:center;font-weight:800}.brand b{color:var(--g);font-size:18px}.small{font-size:12px;color:var(--muted)}main{max-width:1480px;margin:auto;padding:18px}.hidden{display:none!important}.login{max-width:450px;margin:8vh auto;background:#fff;border:1px solid var(--line);border-radius:24px;padding:26px;box-shadow:0 18px 50px #153b2920}.hero{background:linear-gradient(125deg,var(--g),var(--g2));color:#fff;padding:24px;border-radius:22px;margin-bottom:14px}.hero h2{font-size:28px;margin:0 0 6px}.hero p{margin:0;opacity:.85}.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}.kpi,.card{background:#fff;border:1px solid var(--line);border-radius:18px}.kpi{padding:15px}.kpi span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em}.kpi b{display:block;font-size:24px;color:var(--g);margin-top:5px}.nav{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}.nav button{width:auto;background:#fff;color:var(--g);border:1px solid #bcd0c4}.nav button.active{background:var(--g);color:#fff}.section{display:none}.section.active{display:block}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{padding:16px}.card h3{margin:0 0 12px;color:var(--g)}.row{padding:10px 0;border-bottom:1px solid #edf1ee}.row:last-child{border:0}.pill{display:inline-block;padding:3px 8px;border-radius:999px;background:#eaf3ed;color:var(--g);font-size:11px;font-weight:700}.pill.red{background:#fee4e2;color:var(--red)}.pill.amber{background:#fff4d6;color:var(--amber)}input,select,textarea,button{width:100%;padding:11px 12px;border-radius:11px;border:1px solid #cfdad3;background:#fff;font:inherit}label{display:block;margin:9px 0 5px;font-size:12px;font-weight:700;color:#53645a}textarea{min-height:76px}button{background:var(--g);color:#fff;border:0;font-weight:700;cursor:pointer}button.secondary{background:#eef4f0;color:var(--g)}button.danger{background:#fff0ee;color:var(--red)}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar>*{width:auto}.ok{color:#157347}.bad{color:var(--red)}.log{height:240px;overflow:auto;background:#10281d;color:#eaf3ed;padding:12px;border-radius:12px;font:11px ui-monospace,monospace}.budget{font-size:28px;font-weight:800;color:var(--g)}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px;border-bottom:1px solid #edf1ee;font-size:13px}th{color:#627169;font-size:11px;text-transform:uppercase}.note{background:var(--cream);padding:12px;border-radius:12px;font-size:12px}.cutbox{display:flex;gap:6px;flex-wrap:wrap}.cut{padding:4px 8px;border-radius:999px;background:#f1f6f2;font-size:11px;color:var(--g)}
-@media(max-width:1100px){.grid{grid-template-columns:repeat(4,1fr)}.two,.three{grid-template-columns:1fr}}@media(max-width:650px){main{padding:10px}.grid{grid-template-columns:1fr 1fr}.hero h2{font-size:22px}.brand b{font-size:15px}}
-</style></head><body>
-<header><div class="brand"><div class="mark">LP</div><div><b>LE PANIER FRAIS BIO</b><div class="small">Application finale consolidée — V50</div></div></div><div id="headerUser" class="small"></div></header>
-<main>
-<div id="loginBox" class="login"><h1>Connexion</h1><p class="small">Espace de gestion centralisé.</p><label>Email</label><input id="email" value="admin@lpfb.test"><label>Mot de passe</label><input id="password" type="password" value="LPFB-Test-2026!"><button onclick="login()">Se connecter</button><p id="loginMsg"></p></div>
-<div id="appBox" class="hidden">
-<div class="hero"><h2>Pilotage central</h2><p>B2C • PRO • stock • lots • découpes • production • Click & Collect • livraisons • facturation • fournisseurs • équipements.</p></div>
-<div class="grid">
-<div class="kpi"><span>Base</span><b id="dbtype">—</b></div><div class="kpi"><span>Produits</span><b id="kProducts">0</b></div><div class="kpi"><span>Clients</span><b id="kClients">0</b></div><div class="kpi"><span>Commandes</span><b id="kOrders">0</b></div><div class="kpi"><span>Stock dispo</span><b id="kStock">0</b></div><div class="kpi"><span>Production</span><b id="kProd">0</b></div><div class="kpi"><span>DLC ≤ 3 j</span><b id="kExp">0</b></div><div class="kpi"><span>Lots bloqués</span><b id="kBlocked">0</b></div>
+:root{--green:#143f2e;--green2:#1f6045;--mint:#dceadf;--cream:#fbf6ea;--ink:#18251f;--muted:#728078;--line:#dfe8e1;--bg:#f4f6f1;--white:#fff;--red:#b42318;--amber:#a15c00;--shadow:0 18px 50px rgba(20,63,46,.10)}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial;background:var(--bg);color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer}.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:13px 24px}.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(145deg,var(--green),#3d8b65);display:grid;place-items:center;color:#fff;font-weight:900}.brand b{color:var(--green);font-size:18px}.muted{color:var(--muted);font-size:12px}.topnav{display:flex;gap:8px;align-items:center}.topnav button,.chipbtn{border:1px solid var(--line);background:#fff;color:var(--green);padding:10px 14px;border-radius:999px;font-weight:800}.topnav button.primary{background:var(--green);color:#fff;border-color:var(--green)}.view{display:none}.view.active{display:block}.wrap{max-width:1480px;margin:auto;padding:20px}.hero{min-height:540px;border-radius:34px;background:radial-gradient(circle at 85% 20%,rgba(255,255,255,.20),transparent 25%),linear-gradient(125deg,#123d2c,#1f6548 70%,#317d5c);color:#fff;display:grid;grid-template-columns:1.1fr .9fr;overflow:hidden;box-shadow:var(--shadow)}.hero-copy{padding:68px 56px}.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:7px 12px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(255,255,255,.08);font-size:12px;font-weight:800}.hero h1{font-size:58px;line-height:.98;margin:22px 0 18px;letter-spacing:-.04em}.hero p{font-size:19px;line-height:1.5;opacity:.9;max-width:700px}.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}.cta button{padding:14px 19px;border-radius:14px;border:0;font-weight:900}.cta .light{background:#fff;color:var(--green)}.cta .ghost{background:rgba(255,255,255,.11);color:#fff;border:1px solid rgba(255,255,255,.25)}.hero-visual{display:flex;align-items:flex-end;justify-content:center;padding:30px}.food-stack{width:100%;max-width:520px;display:grid;grid-template-columns:1fr 1fr;gap:14px}.food{min-height:180px;border-radius:28px;padding:22px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.20);display:flex;flex-direction:column;justify-content:flex-end}.food.big{grid-column:1/-1;min-height:220px;background:linear-gradient(135deg,rgba(251,246,234,.96),rgba(255,255,255,.96));color:var(--green)}.food .emoji{font-size:52px}.food b{font-size:21px}.section-title{display:flex;align-items:end;justify-content:space-between;gap:20px;margin:38px 0 15px}.section-title h2{font-size:34px;margin:0;letter-spacing:-.03em}.section-title p{max-width:660px;color:var(--muted);margin:0}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:0 8px 30px rgba(20,63,46,.05)}.product-card{min-height:280px;display:flex;flex-direction:column}.product-art{height:120px;border-radius:19px;background:linear-gradient(135deg,var(--cream),#e9f1e9);display:grid;place-items:center;font-size:52px;margin-bottom:15px}.price{font-size:23px;font-weight:900;color:var(--green)}.pill{display:inline-block;padding:4px 9px;border-radius:999px;background:#edf5ef;color:var(--green);font-size:11px;font-weight:800}.pill.red{background:#fee7e3;color:var(--red)}.pill.amber{background:#fff3d8;color:var(--amber)}.format-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.format{padding:7px 9px;border-radius:10px;background:#f6f8f5;border:1px solid var(--line);font-size:12px}.pro-hero{display:grid;grid-template-columns:.95fr 1.05fr;gap:14px}.pro-panel{background:#102d22;color:#fff;border-radius:30px;padding:34px}.pro-panel h2{font-size:38px;margin:0 0 12px}.pro-panel p{color:#d3e5d9;line-height:1.55}.pro-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:22px}.pro-kpi{padding:15px;border-radius:18px;background:rgba(255,255,255,.07)}.pro-kpi b{font-size:22px}.calculator{background:#fff;border-radius:30px;padding:28px;border:1px solid var(--line);box-shadow:var(--shadow)}label{display:block;margin:10px 0 5px;font-size:12px;font-weight:800;color:#53645a}input,select,textarea{width:100%;padding:12px;border:1px solid #cfdad3;border-radius:12px;background:#fff}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.action{border:0;background:var(--green);color:#fff;font-weight:900;padding:12px 15px;border-radius:12px}.result{margin-top:14px;padding:15px;border-radius:16px;background:var(--cream);display:none}.result strong{font-size:24px;color:var(--green)}.login{max-width:480px;margin:7vh auto;background:#fff;padding:28px;border-radius:26px;border:1px solid var(--line);box-shadow:var(--shadow)}.app-shell{display:grid;grid-template-columns:255px 1fr;min-height:calc(100vh - 71px)}aside{background:#102d22;color:#fff;padding:24px 14px;position:sticky;top:71px;height:calc(100vh - 71px);overflow:auto}.side-title{padding:10px 12px;color:#a9c6b5;font-size:11px;text-transform:uppercase;letter-spacing:.1em}.side button{display:flex;width:100%;align-items:center;gap:10px;text-align:left;border:0;background:transparent;color:#d8e8de;padding:11px 12px;border-radius:12px;margin:2px 0;font-weight:700}.side button.active,.side button:hover{background:rgba(255,255,255,.09);color:#fff}.admin-main{padding:22px;overflow:auto}.admin-hero{background:linear-gradient(120deg,#fff,var(--cream));border:1px solid var(--line);border-radius:28px;padding:25px;display:flex;justify-content:space-between;align-items:center}.admin-hero h2{font-size:30px;margin:0 0 4px}.grid8{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin:14px 0}.kpi{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}.kpi span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase}.kpi b{display:block;color:var(--green);font-size:24px;margin-top:4px}.admin-section{display:none}.admin-section.active{display:block}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.row{padding:10px 0;border-bottom:1px solid #edf1ee}.row:last-child{border:0}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar>*{width:auto}.danger{background:#fff0ee!important;color:var(--red)!important}.secondary{background:#edf4ef!important;color:var(--green)!important}.log{height:250px;overflow:auto;background:#0d221a;color:#d7e7dd;padding:12px;border-radius:14px;font:11px ui-monospace,monospace}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px;border-bottom:1px solid #edf1ee;font-size:13px}th{color:#66736c;font-size:10px;text-transform:uppercase}.prep-card{display:grid;grid-template-columns:1fr auto;gap:8px}.hide{display:none!important}@media(max-width:1100px){.hero{grid-template-columns:1fr}.hero-visual{display:none}.cards{grid-template-columns:repeat(2,1fr)}.pro-hero,.two,.three{grid-template-columns:1fr}.grid8{grid-template-columns:repeat(4,1fr)}.app-shell{grid-template-columns:1fr}aside{position:relative;top:0;height:auto}.side{display:flex;overflow:auto}.side-title{display:none}.side button{min-width:max-content}.admin-main{padding:12px}}@media(max-width:650px){.top{padding:10px 12px}.topnav button:not(.primary){display:none}.brand b{font-size:15px}.wrap{padding:10px}.hero-copy{padding:42px 24px}.hero h1{font-size:42px}.cards{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.grid8{grid-template-columns:1fr 1fr}.pro-kpis{grid-template-columns:1fr}.section-title h2{font-size:28px}}
+
+.searchbar{display:grid;grid-template-columns:1fr auto;gap:8px;background:#fff;border:1px solid var(--line);padding:8px;border-radius:16px}.searchbar input{border:0;background:transparent;outline:0}.category-chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}.category-chips button{border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:999px;font-weight:800;color:var(--green)}.category-chips button.active{background:var(--green);color:#fff}.benefit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.benefit{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px}.benefit .ico{font-size:30px}.recipe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.recipe-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px}.pro-workspace{display:grid;grid-template-columns:1.55fr .85fr;gap:14px;margin-top:14px}.pro-catalog{background:#fff;border:1px solid var(--line);border-radius:28px;padding:20px}.pro-cart{background:#102d22;color:#fff;border-radius:28px;padding:22px;position:sticky;top:90px;height:max-content}.pro-cart .muted{color:#abc4b6}.pro-cart-row{padding:11px 0;border-bottom:1px solid rgba(255,255,255,.12)}.pro-cart-row:last-child{border:0}.pro-product{display:grid;grid-template-columns:1.3fr .8fr .85fr .65fr auto;gap:8px;align-items:end;padding:13px 0;border-bottom:1px solid #edf1ee}.pro-product strong{display:block;font-size:15px}.pro-product select,.pro-product input{padding:9px}.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}.stat-tile{background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px}.stat-tile b{display:block;font-size:24px;color:var(--green)}.timeline{display:grid;gap:8px}.timeline .task{display:grid;grid-template-columns:90px 1fr auto;gap:10px;align-items:center;padding:12px;border-radius:15px;background:#fff;border:1px solid var(--line)}.alertlist .row{display:flex;gap:10px;align-items:flex-start}.dot{width:9px;height:9px;border-radius:50%;margin-top:5px;background:#e0a21a}.dot.critique{background:var(--red)}.dot.info{background:#2f78c4}.mini-note{font-size:11px;color:var(--muted);line-height:1.4}.loginhint{padding:10px 12px;border-radius:12px;background:var(--cream);font-size:12px;margin-top:10px}.pro-login-box{background:linear-gradient(135deg,#f7f1e4,#fff);border:1px solid var(--line);border-radius:20px;padding:16px;margin-top:14px}.cart-total{font-size:30px;font-weight:900;margin-top:12px}.save-box{margin-top:12px;padding:14px;border-radius:17px;background:rgba(255,255,255,.08)}
+@media(max-width:1100px){.pro-workspace{grid-template-columns:1fr}.pro-cart{position:relative;top:0}.benefit-grid{grid-template-columns:repeat(2,1fr)}.recipe-grid{grid-template-columns:1fr 1fr}.pro-product{grid-template-columns:1fr 1fr}.stat-strip{grid-template-columns:1fr 1fr}}@media(max-width:650px){.benefit-grid,.recipe-grid{grid-template-columns:1fr}.pro-product{grid-template-columns:1fr}.stat-strip{grid-template-columns:1fr 1fr}}
+
+.chefbar{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin:14px 0}.chef-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:20px}.chef-card.dark{background:#173a2c;color:#fff}.chef-card.dark .muted{color:#b7cec0}.service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.service-grid>div{background:#f7f9f6;border:1px solid var(--line);padding:12px;border-radius:14px}.gainbox{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.gain{padding:12px;border-radius:14px;background:#eef6f1}.gain b{display:block;font-size:20px;color:var(--green)}.today-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.today-line{display:grid;grid-template-columns:70px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.today-line:last-child{border:0}.smart-pack{background:linear-gradient(135deg,#fff8e9,#f3f8f2);border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:10px}.mini-action{border:1px solid var(--line);background:#fff;color:var(--green);padding:8px 10px;border-radius:10px;font-weight:800}@media(max-width:900px){.chefbar,.today-grid{grid-template-columns:1fr}.service-grid,.gainbox{grid-template-columns:1fr 1fr}}
+
+/* V54 — Parcours client, panier intelligent, achats & prévisions */
+.smart-order{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.smart-order .panel{background:#fff;border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:var(--shadow)}.goal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.goal{padding:16px;border:1px solid var(--line);border-radius:18px;background:#fff;cursor:pointer}.goal.active{border-color:var(--green);background:#edf5ef}.goal b{display:block;color:var(--green);margin-bottom:4px}.basketline{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.basketline:last-child{border:0}.basketqty{font-weight:900;color:var(--green)}.checkout-card{background:linear-gradient(145deg,#102d22,#174b35);color:#fff;border-radius:28px;padding:24px}.checkout-card .muted{color:#b8d2c4}.checkout-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.11)}.checkout-total{font-size:32px;font-weight:900;margin:18px 0 5px}.purchase-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.forecast-table td,.forecast-table th{vertical-align:top}.status-good{color:#157347;font-weight:800}.status-watch{color:#9a6700;font-weight:800}.status-risk{color:var(--red);font-weight:900}.progress{height:8px;border-radius:99px;background:#edf1ee;overflow:hidden;margin-top:6px}.progress i{display:block;height:100%;background:var(--green);border-radius:99px}.premium-banner{border-radius:28px;padding:24px;background:linear-gradient(120deg,#f7f1e4,#edf5ef);border:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;align-items:center}.premium-banner h3{margin:0 0 5px;font-size:25px}.smart-tag{display:inline-flex;padding:6px 10px;border-radius:999px;background:#173f2e;color:#fff;font-size:11px;font-weight:900}@media(max-width:900px){.smart-order,.purchase-grid{grid-template-columns:1fr}.goal-grid{grid-template-columns:1fr}.premium-banner{align-items:flex-start;flex-direction:column}}
+
+.customer-shell{max-width:1250px;margin:0 auto;padding:24px}
+.customer-hero{background:linear-gradient(135deg,#123d2c,#2f7454);color:#fff;border-radius:30px;padding:30px;display:flex;justify-content:space-between;gap:20px;align-items:center;box-shadow:var(--shadow)}
+.customer-hero h1{margin:4px 0;font-size:38px}
+.customer-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}
+.customer-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.customer-kpi{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px}
+.customer-kpi b{display:block;font-size:25px;color:var(--green);margin-top:5px}
+.account-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 8px 30px rgba(20,63,46,.05)}
+.account-list{display:grid;gap:9px}.account-row{padding:12px;border:1px solid var(--line);border-radius:14px;background:#fbfcfa}
+.favorite-chip{display:inline-flex;align-items:center;gap:6px;margin:4px;padding:8px 11px;background:#edf5ef;border-radius:999px;color:var(--green);font-weight:800;font-size:12px}
+@media(max-width:900px){.customer-grid,.customer-kpis{grid-template-columns:1fr}.customer-hero{display:block}.customer-hero h1{font-size:30px}}
+
+.cartbar{position:sticky;bottom:14px;z-index:15;margin:18px auto 0;max-width:1100px;background:#102d22;color:#fff;border-radius:22px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 20px 50px rgba(16,45,34,.28)}
+.cartbar b{font-size:18px}.cartbar small{color:#cfe1d6}
+.cart-panel{background:#fff;border:1px solid var(--line);border-radius:28px;padding:22px;margin-top:14px;box-shadow:var(--shadow)}
+.cart-line{display:grid;grid-template-columns:1fr auto auto auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.cart-line:last-child{border-bottom:0}.cart-qty{width:90px}.remove{border:0;background:#fee7e3;color:var(--red);padding:8px 10px;border-radius:10px;font-weight:800}
+.checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.product-actions{margin-top:auto;padding-top:12px;display:grid;gap:8px}.product-actions .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.product-actions select{padding:9px;font-size:12px}
+@media(max-width:800px){.cart-line{grid-template-columns:1fr auto}.checkout-grid{grid-template-columns:1fr}.cartbar{left:10px;right:10px}.product-actions .mini-grid{grid-template-columns:1fr}}
+
+.prod-board{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;margin-top:14px}
+.prod-stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.prod-step{padding:12px;border-radius:14px;background:#f5f8f5;border:1px solid var(--line);font-size:12px;font-weight:800;text-align:center}
+.trace-box{background:#102d22;color:#fff;border-radius:22px;padding:18px}
+.trace-box .muted{color:#c8dacf}
+.label-preview{background:#fffdf5;border:2px dashed #b7c7bb;border-radius:18px;padding:18px;max-width:420px}
+.label-preview h3{margin:0;color:var(--green)}
+.batch-card{border:1px solid var(--line);border-radius:18px;padding:14px;margin:8px 0;background:#fff}
+@media(max-width:950px){.prod-board,.prod-stepper{grid-template-columns:1fr}}
+
+.po-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:14px;margin-top:14px}
+.po-line{display:grid;grid-template-columns:1.4fr .7fr .7fr auto;gap:8px;align-items:end;margin:8px 0}
+.po-card{border:1px solid var(--line);border-radius:18px;padding:14px;margin:9px 0;background:#fff}
+.po-status{display:inline-block;padding:5px 9px;border-radius:999px;background:#edf5ef;color:var(--green);font-weight:800;font-size:11px}
+.receive-line{display:grid;grid-template-columns:1.2fr .65fr 1fr 1fr .9fr;gap:8px;align-items:end;margin:8px 0}
+@media(max-width:950px){.po-grid,.po-line,.receive-line{grid-template-columns:1fr}}
+
+.margin-good{color:#1f6045;font-weight:900}.margin-watch{color:#a15c00;font-weight:900}.margin-risk{color:#b42318;font-weight:900}
+.cost-table{width:100%;border-collapse:collapse}.cost-table th,.cost-table td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}.cost-table th{color:var(--muted);font-size:11px;text-transform:uppercase}
+@media(max-width:800px){#costing .grid8{grid-template-columns:1fr 1fr!important}.cost-table{display:block;overflow:auto}}
+
+.billing-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}
+.fiscal-card{border:1px solid var(--line);border-radius:18px;padding:14px;margin:8px 0;background:#fff}
+.tax-row{display:grid;grid-template-columns:1.5fr .65fr 1fr auto;gap:8px;align-items:end;padding:9px 0;border-bottom:1px solid var(--line)}
+.invoice-detail{background:#fffdf5;border:1px solid #eadfc5;border-radius:20px;padding:18px}
+.invoice-lines{width:100%;border-collapse:collapse}.invoice-lines th,.invoice-lines td{padding:9px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}
+.billing-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+@media(max-width:950px){.billing-grid,.tax-row{grid-template-columns:1fr}}
+
+.security-ok{padding:10px 12px;border-radius:14px;background:#edf5ef;color:var(--green);font-weight:800;margin:6px 0}
+.security-warn{padding:10px 12px;border-radius:14px;background:#fff3d8;color:var(--amber);font-weight:800;margin:6px 0}
+.user-card{border:1px solid var(--line);border-radius:18px;padding:14px;margin:8px 0;background:#fff}
+.user-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.user-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+
+.preprod-pass,.preprod-warn,.preprod-block{padding:12px 14px;border-radius:15px;margin:8px 0;border:1px solid var(--line)}
+.preprod-pass{background:#edf5ef;color:var(--green)}.preprod-warn{background:#fff3d8;color:var(--amber)}.preprod-block{background:#fee7e3;color:var(--red)}
+.preprod-title{display:flex;justify-content:space-between;gap:10px;align-items:center;font-weight:900}.preprod-detail{margin-top:4px;font-size:12px;opacity:.9}
+@media(max-width:800px){#preprod .grid8{grid-template-columns:1fr!important}}
+
+.visual-showcase{margin:18px 0 8px;display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
+.visual-card{position:relative;overflow:hidden;border-radius:28px;min-height:360px;background:#102d22;box-shadow:var(--shadow)}
+.visual-card img{width:100%;height:100%;object-fit:cover;display:block}
+.visual-card .visual-overlay{position:absolute;inset:auto 0 0 0;padding:22px;background:linear-gradient(transparent,rgba(9,35,25,.92));color:white}
+.visual-card .visual-overlay h3{margin:0 0 5px;font-size:25px}.visual-card .visual-overlay p{margin:0;color:#e8f1eb}
+.visual-side{display:grid;gap:14px}.visual-side .visual-card{min-height:173px}
+.media-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0}
+.media-strip img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:20px;box-shadow:var(--shadow)}
+.pro-creative{margin:16px 0;border-radius:26px;overflow:hidden;box-shadow:var(--shadow);background:white}
+.pro-creative img{display:block;width:100%;height:auto}
+@media(max-width:900px){.visual-showcase{grid-template-columns:1fr}.visual-side{grid-template-columns:1fr 1fr}.media-strip{grid-template-columns:1fr}.visual-card{min-height:300px}}
+@media(max-width:620px){.visual-side{grid-template-columns:1fr}.visual-side .visual-card{min-height:220px}}
+
+.product-media{height:170px;border-radius:20px;overflow:hidden;background:#eef4ef;display:flex;align-items:center;justify-content:center;margin-bottom:12px;position:relative}
+.product-media img{width:100%;height:100%;object-fit:cover;display:block}
+.product-media .fallback-emoji{font-size:74px}
+.media-badge{position:absolute;left:10px;top:10px;background:rgba(255,255,255,.92);padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;color:var(--green)}
+.product-card.has-photo{padding-top:12px}
+.product-card .product-media + div{margin-top:2px}
+.product-detail-modal{position:fixed;inset:0;background:rgba(4,22,15,.72);z-index:80;display:none;align-items:center;justify-content:center;padding:18px}
+.product-detail-modal.open{display:flex}
+.product-detail-shell{background:#fff;border-radius:30px;max-width:980px;width:100%;max-height:92vh;overflow:auto;display:grid;grid-template-columns:1fr 1fr;box-shadow:0 30px 90px rgba(0,0,0,.35)}
+.product-detail-image{min-height:520px;background:#eef4ef;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:30px 0 0 30px}
+.product-detail-image img{width:100%;height:100%;object-fit:cover}.product-detail-image .fallback-emoji{font-size:120px}
+.product-detail-copy{padding:28px}.detail-close{float:right;border:0;background:#eef3ef;border-radius:999px;width:38px;height:38px;font-size:18px;font-weight:900}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.detail-chip{background:#f4f7f4;border-radius:15px;padding:11px}
+.inspiration-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.inspiration-card{position:relative;overflow:hidden;border-radius:24px;min-height:260px;box-shadow:var(--shadow);background:#183f2e}
+.inspiration-card img{width:100%;height:100%;object-fit:cover;display:block}.inspiration-card .overlay{position:absolute;inset:auto 0 0 0;padding:18px;color:#fff;background:linear-gradient(transparent,rgba(8,31,23,.94))}
+@media(max-width:850px){.product-detail-shell{grid-template-columns:1fr}.product-detail-image{min-height:300px;border-radius:30px 30px 0 0}.inspiration-grid{grid-template-columns:1fr}.product-media{height:150px}}
+
+.media-admin-card{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:10px;margin:8px 0}
+.media-admin-card img{width:96px;height:72px;object-fit:cover;border-radius:12px;background:#eef4ef}
+
+.availability-line{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.avail-stock,.avail-order,.avail-season,.avail-off{display:inline-flex;align-items:center;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900}
+.avail-stock{background:#e8f5eb;color:#1f6045}.avail-order{background:#fff3d8;color:#8a5b00}.avail-season{background:#eef2ff;color:#4453a3}.avail-off{background:#fee7e3;color:#b42318}
+.sourcing-box{border:1px dashed #d9c89c;background:#fffaf0;border-radius:18px;padding:12px;margin-top:10px}
+
+.proc-request{border:1px solid var(--line);border-radius:16px;padding:12px;margin:8px 0;background:#fff}
+.proc-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.supplier-option{border:1px solid var(--line);border-radius:14px;padding:11px;margin:8px 0;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.proc-top{padding:10px;border-radius:14px;background:#f4f7f4;margin:6px 0}
+
+.progress-wrap{height:8px;background:#edf1ed;border-radius:999px;overflow:hidden;margin-top:7px}
+.progress-bar{height:100%;background:#2e6a4f;border-radius:999px}
+.proc-trace-step{border-left:4px solid #dfe8e1;padding:8px 12px;margin:8px 0}
+
+.pwa-toast{position:fixed;right:18px;bottom:18px;z-index:95;background:#143f2e;color:#fff;padding:14px 16px;border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.25);max-width:340px;display:none}
+.pwa-toast.show{display:block}.pwa-toast button{margin-top:8px}
+
+.env-badge{position:fixed;left:14px;bottom:14px;z-index:90;padding:6px 10px;border-radius:999px;background:#fff3d8;color:#7a5400;font-size:11px;font-weight:900;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none}
+
+.v97-ok,.v97-warn,.v97-bad{padding:10px 12px;border-radius:14px;margin:7px 0;border:1px solid var(--line)}
+.v97-ok{background:#edf6ef}.v97-warn{background:#fff5dd}.v97-bad{background:#fee7e3}
+.role-row{display:grid;grid-template-columns:140px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+@media(max-width:800px){#control97 .grid8{grid-template-columns:1fr 1fr!important}.role-row{grid-template-columns:1fr}}
+</style><link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#143F2E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Le Panier Frais Bio">
+<link rel="apple-touch-icon" href="/assets/icon-192.png">
+</head><body><div id="maintenanceBanner" style="display:none;background:#8a5b00;color:#fff;padding:10px 16px;text-align:center;font-weight:800"></div>
+<header class="top"><div class="brand"><div class="logo">LP</div><div><b>LE PANIER FRAIS BIO</b><div class="muted">Frais • local • préparé intelligemment</div></div></div><nav class="topnav"><button onclick="switchView('shop')">Boutique</button><button onclick="switchView('pro')">Professionnels</button><button onclick="openCustomerSpace()">Mon compte</button><button class="primary" onclick="switchView(token&&currentRole!=='CUSTOMER'?'admin':'login')">Espace gestion</button></nav></header>
+
+<div id="shopView" class="view active"><div class="wrap">
+<section class="hero"><div class="hero-copy"><span class="eyebrow">🌱 BIO • LOCAL • PRÊT À CUISINER</span><h1>Du frais. Le bon format. Zéro casse-tête.</h1><p>Choisissez un produit, une découpe, une recette ou simplement le nombre de personnes. Le Panier Frais Bio vous aide à commander une quantité cohérente, sans suracheter.</p><div class="cta"><button class="light" onclick="document.getElementById('catalogue').scrollIntoView({behavior:'smooth'})">Découvrir la boutique</button><button class="ghost" onclick="document.getElementById('recipePlanner').scrollIntoView({behavior:'smooth'})">Planifier une recette</button></div></div><div class="hero-visual"><div class="food-stack"><div class="food big"><span class="emoji">🥗 + 🧃</span><b>Salade + jus</b><span class="price">7 €</span><small>Une formule simple et accessible</small></div><div class="food"><span class="emoji">🔪</span><b>Découpe au choix</b></div><div class="food"><span class="emoji">📦</span><b>250 g → 1 kg</b></div></div></div></section>
+<div class="benefit-grid" style="margin-top:14px"><div class="benefit"><div class="ico">🥕</div><b>Prêt à cuisiner</b><p class="muted">Lavé, préparé et découpé selon l'usage.</p></div><div class="benefit"><div class="ico">⚖️</div><b>Quantité intelligente</b><p class="muted">Portions adaptées au nombre de personnes.</p></div><div class="benefit"><div class="ico">🌿</div><b>Bio & proximité</b><p class="muted">Priorité aux producteurs et maraîchers proches.</p></div><div class="benefit"><div class="ico">🛍️</div><b>Click & Collect</b><p class="muted">Commande rapide, retrait sans attente.</p></div></div>
+
+<div class="section-title"><div><h2>Envie de frais ? Regardez, choisissez, commandez.</h2><p>Nos univers les plus gourmands, directement dans la boutique.</p></div></div>
+<div class="visual-showcase">
+  <article class="visual-card">
+    <img src="/assets/poke-bowls-lpfb.webp" alt="Poke bowls Le Panier Frais Bio" loading="eager">
+    <div class="visual-overlay"><h3>Poke Bowls Signature</h3><p>Des recettes fraîches et colorées à retrouver dans le catalogue.</p><button class="action" style="margin-top:10px;background:#fff;color:var(--green)" onclick="catalogSearch.value='salade';renderCatalog();document.getElementById('catalogue').scrollIntoView({behavior:'smooth'})">Voir les bowls & salades</button></div>
+  </article>
+  <div class="visual-side">
+    <article class="visual-card"><img src="/assets/jus-shots-lpfb.webp" alt="Jus et shots Le Panier Frais Bio" loading="lazy"><div class="visual-overlay"><h3>Jus & shots</h3><p>Des formats visuels qui donnent envie de composer son panier.</p><button class="chipbtn" style="margin-top:8px;background:#fff" onclick="catalogSearch.value='jus';renderCatalog();document.getElementById('catalogue').scrollIntoView({behavior:'smooth'})">Voir les boissons</button></div></article>
+    <article class="visual-card" style="min-height:173px;background:linear-gradient(135deg,#173f2d,#8daa78);display:flex;align-items:center;padding:24px"><div style="color:#fff"><span class="eyebrow" style="background:#fff;color:var(--green)">🥗 + 🧃 FORMULE ACCESSIBLE</span><h3 style="font-size:34px;margin:12px 0 5px">Salade + jus · 7 €</h3><p style="color:#e5efe8;margin:0">Une formule simple, fraîche et visible immédiatement dans le parcours client.</p></div></article>
+  </div>
 </div>
-<div class="nav">
-<button class="active" onclick="show('dashboard',this)">Dashboard</button><button onclick="show('orders',this)">Commandes</button><button onclick="show('stock',this)">Stock & lots</button><button onclick="show('production',this)">Production</button><button onclick="show('delivery',this)">Livraisons</button><button onclick="show('billing',this)">Facturation</button><button onclick="show('clients',this)">Clients</button><button onclick="show('products',this)">Produits</button><button onclick="show('suppliers',this)">Fournisseurs</button><button onclick="show('equipment',this)">Équipements</button><button onclick="show('settings',this)">Paramètres</button><button onclick="show('audit',this)">Audit</button><button class="secondary" onclick="logout()">Déconnexion</button>
+
+<div class="section-title"><div><h2>Inspirations Le Panier Frais Bio</h2><p>Quelques univers visuels pour découvrir les produits avant de remplir le panier.</p></div></div>
+<div class="inspiration-grid">
+  <article class="inspiration-card"><img src="/assets/bien-etre-lpfb.webp" alt="Gamme bien-être Le Panier Frais Bio" loading="lazy"><div class="overlay"><h3>Gamme bien-être</h3><p>Jus, shots et formats nomades.</p></div></article>
+  <article class="inspiration-card"><img src="/assets/gingembre-citron-lpfb.webp" alt="Jus gingembre citron Le Panier Frais Bio" loading="lazy"><div class="overlay"><h3>Formats fraîcheur</h3><p>Des formats adaptés à plusieurs usages.</p></div></article>
+  <article class="inspiration-card"><img src="/assets/jus-pro-1l-lpfb.webp" alt="Jus PRO 1 litre Le Panier Frais Bio" loading="lazy"><div class="overlay"><h3>Formats PRO</h3><p>Des contenances pensées pour les professionnels.</p></div></article>
+</div>
+<div class="section-title"><div><h2>Le marché, pensé comme une application</h2><p>Recherchez par produit ou usage, puis choisissez votre découpe et votre format.</p></div></div>
+<div class="searchbar"><input id="catalogSearch" placeholder="Rechercher : carotte, wok, soupe, salade…" oninput="renderCatalog()"><button class="action" onclick="catalogSearch.value='';renderCatalog()">Effacer</button></div><div id="categoryChips" class="category-chips"></div><div id="catalogue" class="cards"></div>
+<div id="b2cCartPanel" class="cart-panel" style="display:none">
+  <div class="section-title" style="margin-top:0"><div><h2>Mon panier</h2><p>Vérifiez les quantités, le retrait et le créneau avant de confirmer.</p></div><button class="chipbtn" onclick="clearB2CCart()">Vider</button></div>
+  <div id="b2cCartRows"></div>
+  <div class="checkout-grid" style="margin-top:14px">
+    <div><label>Mode de remise</label><select id="checkoutMode"><option value="CLICK_COLLECT">Click & Collect</option><option value="LIVRAISON">Livraison</option></select></div>
+    <div><label>Créneau souhaité</label><select id="checkoutSlot"><option>11:30 - 12:30</option><option>12:30 - 13:30</option><option>17:00 - 18:00</option><option selected>18:00 - 19:00</option><option>19:00 - 20:00</option></select></div>
+    <div><label>Paiement</label><select id="checkoutPayment"><option value="SUR_PLACE">Au retrait / à la remise</option><option value="EN_LIGNE" disabled>Paiement en ligne — à connecter</option></select></div>
+    <div><label>Note</label><input id="checkoutNote" placeholder="Ex. sans substitution, appeler si rupture"></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:16px;flex-wrap:wrap">
+    <div><span class="muted">Total provisoire HT</span><div class="price" id="b2cCartTotal">0 €</div></div>
+    <div><button class="action" onclick="checkoutB2C()">Confirmer la commande</button><div id="checkoutMsg" class="muted" style="margin-top:6px"></div></div>
+  </div>
+</div>
+<div id="b2cCartBar" class="cartbar" style="display:none">
+  <div><b id="b2cCartCount">0 article</b><br><small id="b2cCartBarTotal">0 €</small></div>
+  <button class="action" style="background:#fff;color:var(--green)" onclick="document.getElementById('b2cCartPanel').scrollIntoView({behavior:'smooth'})">Voir le panier</button>
 </div>
 
-<section id="dashboard" class="section active"><div class="three"><div class="card"><h3>Flux du jour</h3><div id="dashOrders"></div></div><div class="card"><h3>Alertes</h3><div class="row"><span class="pill red">QUALITÉ</span> lots bloqués exclus</div><div class="row"><span class="pill amber">DLC</span> lots proches de l'échéance</div><div class="row"><span class="pill">FEFO</span> allocation par date</div></div><div class="card"><h3>État système</h3><p><span class="ok">● API connectée</span></p><p id="systemState">Base : —</p><button class="secondary" onclick="downloadBackup()">Télécharger sauvegarde JSON</button></div></div></section>
 
-<section id="orders" class="section"><div class="two"><div class="card"><h3>Nouvelle commande</h3><label>Client</label><select id="clientSel"></select><label>Produit</label><select id="productSel" onchange="updateCuts()"></select><label>Découpe</label><select id="cutSel"><option value="">Aucune / standard</option></select><label>Quantité</label><input id="qty" type="number" min=".1" step=".1" value="5"><label>Mode</label><select id="deliveryMode"><option>LIVRAISON</option><option>CLICK_COLLECT</option></select><label>Note</label><textarea id="orderNote" placeholder="Ex. épaisseur, consigne client…"></textarea><button onclick="createOrder()">Valider la commande</button><p id="orderMsg"></p></div><div class="card"><h3>Commandes</h3><div id="ordersList"></div></div></div></section>
-
-<section id="stock" class="section"><div class="two"><div class="card"><h3>Réception d'un lot</h3><label>Produit</label><select id="lotProduct"></select><label>Lot interne</label><input id="lotInternal" placeholder="Ex. CAR-B14"><label>Lot fournisseur</label><input id="lotSupplier" placeholder="Ex. FOUR-2026-C"><label>Quantité reçue</label><input id="lotQty" type="number" step=".1" value="10"><label>DLC</label><input id="lotDlc" type="date"><label>Statut</label><select id="lotStatus"><option>LIBERE</option><option>BLOQUE</option></select><button onclick="createLot()">Enregistrer le lot</button></div><div class="card"><h3>Lots & disponibilité</h3><div id="lotsList"></div></div></div></section>
-
-<section id="production" class="section"><div class="two"><div class="card"><h3>Créer un besoin</h3><select id="prodProduct"></select><input id="prodQty" type="number" min=".1" step=".1" value="5"><button onclick="createProduction()">Créer production</button></div><div class="card"><h3>Planning</h3><div id="productionList"></div></div></div></section>
-<section id="delivery" class="section"><div class="card"><h3>Livraisons & retraits</h3><div id="deliveryList"></div></div></section>
-<section id="billing" class="section"><div class="card"><h3>Facturation</h3><div id="invoiceList"></div></div></section>
-
-<section id="clients" class="section"><div class="two"><div class="card"><h3>Nouveau client</h3><label>Type</label><select id="newClientType"><option>B2C</option><option>PRO</option></select><label>Nom</label><input id="newClientName"><label>Email</label><input id="newClientEmail"><button onclick="createClient()">Ajouter</button></div><div class="card"><h3>Portefeuille</h3><div id="clientsList"></div></div></div></section>
-
-<section id="products" class="section"><div class="two"><div class="card"><h3>Nouveau produit</h3><label>Référence</label><input id="newProductRef"><label>Nom</label><input id="newProductName"><label>Famille</label><input id="newProductFamily" value="Fruits & légumes"><label>Unité</label><input id="newProductUnit" value="kg"><label>Prix HT</label><input id="newProductPrice" type="number" step=".01"><button onclick="createProduct()">Ajouter</button></div><div class="card"><h3>Catalogue</h3><div id="productsList"></div></div></div></section>
-
-<section id="suppliers" class="section"><div class="two"><div class="card"><h3>Nouveau fournisseur</h3><label>Nom</label><input id="supplierName"><label>Ville</label><input id="supplierCity"><label>Spécialité</label><textarea id="supplierSpecialty"></textarea><button onclick="createSupplier()">Ajouter</button></div><div class="card"><h3>Maraîchers & fournisseurs</h3><div id="suppliersList"></div></div></div></section>
-
-<section id="equipment" class="section"><div class="two"><div class="card"><h3>Ajouter un équipement</h3><label>Équipement</label><input id="eqName"><label>Budget bas</label><input id="eqLow" type="number"><label>Budget haut</label><input id="eqHigh" type="number"><label>Priorité</label><select id="eqPriority"><option>INDISPENSABLE</option><option>A_PREVOIR</option></select><button onclick="createEquipment()">Ajouter</button></div><div class="card"><h3>Budget équipements</h3><div class="row"><span>Fourchette basse</span><div id="budgetLow" class="budget">0 €</div></div><div class="row"><span>Fourchette haute</span><div id="budgetHigh" class="budget">0 €</div></div><div id="equipmentList"></div></div></div></section>
-
-<section id="settings" class="section"><div class="card"><h3>Paramètres projet</h3><table><tbody id="settingsTable"></tbody></table><div class="note">Budget d'investissement actuel : 40 000 €. Formule sociale : salade + jus à 7 €.</div></div></section>
-<section id="audit" class="section"><div class="card"><h3>Journal d'audit</h3><button onclick="loadAudit()">Actualiser</button><div id="auditLog" class="log"></div></div></section>
+<div class="card" style="margin-top:20px">
+  <span class="eyebrow">VOUS NE TROUVEZ PAS UN PRODUIT ?</span>
+  <h2 style="margin:10px 0 5px">Demandez-nous de le sourcer</h2>
+  <p class="muted">Si un fruit, légume, aromate ou produit frais n'est pas encore dans le catalogue, envoyez la demande. Le prix et la disponibilité seront confirmés après recherche fournisseur.</p>
+  <div class="formgrid">
+    <div><label>Produit recherché</label><input id="generalSourceName" placeholder="Ex. mangue Kent, mini fenouil, patate douce blanche…"></div>
+    <div><label>Catégorie</label><select id="generalSourceCategory"><option>Fruits</option><option>Légumes</option><option>Aromatiques</option><option>Champignons</option><option>Fruits à coque</option><option>Autre produit frais</option></select></div>
+    <div><label>Quantité souhaitée</label><input id="generalSourceQty" placeholder="Ex. 5 kg, 2 caisses, 20 pièces"></div>
+    <div><label>E-mail</label><input id="generalSourceEmail" type="email" placeholder="votre@email.fr"></div>
+  </div>
+  <label>Note</label><input id="generalSourceNote" placeholder="Variété, calibre, bio, date souhaitée…">
+  <button class="action" style="margin-top:10px" onclick="sendGeneralSourcing()">Demander ce produit</button>
+  <div id="generalSourceMsg" class="muted" style="margin-top:8px"></div>
 </div>
+<div id="recipePlanner" class="section-title"><div><h2>Planificateur recette</h2><p>Le logiciel calcule les quantités par ingrédient et tient compte du rendement de préparation.</p></div></div>
+<div class="two"><div class="calculator"><div class="formgrid"><div><label>Recette</label><select id="recipeSelect"></select></div><div><label>Nombre de personnes</label><input id="recipeServings" type="number" value="4" min="1"></div></div><button class="action" style="margin-top:12px" onclick="calcRecipe()">Calculer la recette</button><div id="recipeResult" class="result"></div></div><div class="calculator"><h3 style="margin-top:0">Portion intelligente par produit</h3><div class="formgrid"><div><label>Produit</label><select id="portionProduct"></select></div><div><label>Découpe</label><select id="portionCut"><option value="">Standard</option></select></div><div><label>Personnes</label><input id="portionServings" type="number" value="2" min="1"></div><div><label>Grammage personnalisé</label><input id="portionGram" type="number" placeholder="optionnel"></div></div><button class="action" style="margin-top:12px" onclick="calcPortion()">Calculer</button><div id="portionResult" class="result"></div></div></div>
+<div class="section-title"><div><h2>Idées de préparation</h2><p>Des recettes standardisées servent aussi de base à la production et aux futurs paniers.</p></div></div><div id="publicRecipes" class="recipe-grid"></div>
+
+<div class="section-title"><div><h2>Mon panier intelligent</h2><p>Choisissez l'usage : le logiciel propose une base de quantités et de formats. Les valeurs restent modifiables avant commande.</p></div><span class="smart-tag">NOUVEAU V54</span></div>
+<div class="smart-order">
+  <div class="panel">
+    <div class="goal-grid" id="smartGoals">
+      <div class="goal active" data-goal="duo" onclick="selectSmartGoal('duo',this)"><b>🍳 Repas pour 2</b><span class="muted">Un dîner frais, peu de reste</span></div>
+      <div class="goal" data-goal="family" onclick="selectSmartGoal('family',this)"><b>👨‍👩‍👧‍👦 Famille 4</b><span class="muted">Accompagnement + crudités</span></div>
+      <div class="goal" data-goal="batch" onclick="selectSmartGoal('batch',this)"><b>🥘 Batch cooking</b><span class="muted">Préparer plusieurs repas</span></div>
+    </div>
+    <div class="formgrid" style="margin-top:15px"><div><label>Nombre de personnes</label><input id="smartPeople" type="number" min="1" value="2" oninput="renderSmartBasket()"></div><div><label>Type de repas</label><select id="smartMeal" onchange="renderSmartBasket()"><option value="equilibre">Équilibré</option><option value="wok">Wok / poêlée</option><option value="crudites">Crudités</option><option value="soupe">Soupe</option></select></div></div>
+    <div id="smartBasketRows" style="margin-top:12px"></div>
+  </div>
+  <div class="checkout-card">
+    <span class="eyebrow">PANIER PARTICULIER</span><h2 style="margin-bottom:5px">Une quantité lisible</h2><p class="muted">Le format est choisi pour limiter les restes tout en restant pratique à cuisiner.</p>
+    <div class="checkout-row"><span>Retrait</span><b>Click & Collect</b></div>
+    <div class="checkout-row"><span>Format cœur</span><b id="smartFormat">500 g</b></div>
+    <div class="checkout-row"><span>Personnes</span><b id="smartPeopleLabel">2</b></div>
+    <div class="checkout-total" id="smartTotalWeight">1,0 kg</div><div class="muted">quantité totale indicative de légumes préparés</div>
+    <button class="action" style="width:100%;margin-top:18px;background:#fff;color:#143f2e" onclick="saveSmartBasket()">Enregistrer ce panier</button><div id="smartMsg" class="mini-note" style="color:#d3e5d9;margin-top:8px"></div>
+  </div>
+</div>
+<div class="premium-banner" style="margin-top:14px"><div><h3>Du produit à la recette, sans calcul mental</h3><p class="muted" style="margin:0">Le même référentiel alimente la boutique, les dosages, les besoins de production et les futurs achats maraîchers.</p></div><button class="action secondary" onclick="document.getElementById('recipePlanner').scrollIntoView({behavior:'smooth'})">Voir les recettes</button></div>
+
+</div></div>
+
+<div id="proView" class="view"><div class="wrap">
+<div class="pro-hero"><div class="pro-panel"><span class="eyebrow">🍽️ LE PANIER FRAIS BIO PRO</span><h2>Votre mise en place commence avant la livraison.</h2><p>Vous commandez en langage cuisine : nombre de couverts, grammage, découpe, conditionnement et fréquence. Nous transformons cela en quantité nette prête à servir.</p><div class="pro-kpis"><div class="pro-kpi"><span class="muted">Format cœur</span><b>2,5 kg</b></div><div class="pro-kpi"><span class="muted">Découpe</span><b>sur mesure</b></div><div class="pro-kpi"><span class="muted">Commande</span><b>répétable</b></div></div><div class="pro-login-box"><b>Espace professionnel</b><div class="mini-note">Connectez votre établissement pour retrouver vos commandes, modèles et conditions.</div><button class="action" style="margin-top:9px;background:#fff;color:#143f2e" onclick="openProLogin()">Connexion restaurant</button></div></div><div class="calculator"><h2 style="margin-top:0">Calculateur service</h2><p class="muted">Exemple : 80 couverts × 100 g de carotte julienne.</p><div class="formgrid"><div><label>Produit</label><select id="proProduct"></select></div><div><label>Découpe</label><select id="proCut"><option value="">Standard</option></select></div><div><label>Couverts</label><input id="proCovers" type="number" value="80" min="1"></div><div><label>Grammes / couvert</label><input id="proGram" type="number" value="100" min="1"></div></div><button class="action" style="margin-top:12px" onclick="calcPro()">Calculer le besoin</button><div id="proResult" class="result"></div></div></div>
+<div class="pro-creative"><img src="/assets/pro-preparation-lpfb.webp" alt="Le Panier Frais Bio Pro - préparation pour restaurants" loading="lazy"></div><div id="proAccountStrip" class="stat-strip"><div class="stat-tile"><span class="muted">Établissement</span><b id="proAccountName">Mode découverte</b></div><div class="stat-tile"><span class="muted">Dernière commande</span><b id="proLastOrder">—</b></div><div class="stat-tile"><span class="muted">Commande type</span><b>2,5 kg</b></div><div class="stat-tile"><span class="muted">Avantage</span><b>Prêt cuisine</b></div></div>
+<div class="chefbar">
+  <div class="chef-card dark">
+    <div class="muted">MODE CHEF · PRÉPARER MON SERVICE</div>
+    <h3 style="font-size:28px;margin:8px 0 6px">Combien de couverts demain ?</h3>
+    <p style="margin-top:0;color:#d7e7dd">Calculez les kilos nets prêts cuisine, le besoin brut estimé et le nombre de conditionnements.</p>
+    <div class="formgrid">
+      <div><label style="color:#cfe0d5">Produit</label><select id="chefProduct"></select></div>
+      <div><label style="color:#cfe0d5">Découpe</label><select id="chefCut"></select></div>
+      <div><label style="color:#cfe0d5">Nombre de couverts</label><input id="chefCovers" type="number" value="60" min="1"></div>
+      <div><label style="color:#cfe0d5">Grammage / couvert</label><input id="chefGrams" type="number" value="120" min="1"></div>
+      <div><label style="color:#cfe0d5">Conditionnement</label><select id="chefPack"><option value="1">1 kg</option><option value="2.5" selected>2,5 kg</option><option value="5">5 kg</option><option value="10">10 kg</option></select></div>
+      <div style="align-self:end"><button class="action" style="background:#fff;color:#143f2e;width:100%" onclick="calcChefService()">Calculer le service</button></div>
+    </div>
+    <div id="chefResult" class="smart-pack" style="color:var(--ink)">Choisissez un produit et calculez votre service.</div>
+  </div>
+  <div class="chef-card">
+    <div class="muted">PROFIL RESTAURANT</div>
+    <h3 style="margin:7px 0 12px">Mes habitudes de cuisine</h3>
+    <div class="formgrid">
+      <div><label>Couverts midi</label><input id="profileLunch" type="number"></div>
+      <div><label>Couverts soir</label><input id="profileDinner" type="number"></div>
+      <div><label>Jours de livraison</label><input id="profileDays"></div>
+      <div><label>Format favori</label><select id="profilePack"><option value="1">1 kg</option><option value="2.5">2,5 kg</option><option value="5">5 kg</option><option value="10">10 kg</option></select></div>
+      <div><label>Coût horaire cuisine (€)</label><input id="profileHourCost" type="number" step="0.1"></div>
+      <div><label>Minutes de préparation / kg</label><input id="profileMinutes" type="number" step="0.1"></div>
+    </div>
+    <label>Instructions / habitudes</label><textarea id="profileNotes" rows="2"></textarea>
+    <button class="action" onclick="saveProProfile()">Enregistrer mon profil</button>
+    <div id="profileMsg" class="muted" style="margin-top:8px"></div>
+  </div>
+</div>
+<div class="pro-workspace"><div class="pro-catalog"><div class="section-title" style="margin-top:0"><div><h2>Commande rapide restaurant</h2><p>Ajoutez directement des références avec découpe et conditionnement. Les quantités sont exprimées en kg nets prêts à utiliser.</p></div></div><div class="searchbar"><input id="proSearch" placeholder="Rechercher un produit…" oninput="renderProCatalog()"><button class="action secondary" onclick="proSearch.value='';renderProCatalog()">Effacer</button></div><div id="proTemplates" style="margin:12px 0"></div><div id="proCatalogue"></div></div><aside class="pro-cart"><span class="eyebrow">PANIER CUISINE</span><h2>Commande PRO</h2><div id="proCartRows"><p class="muted">Aucun produit ajouté.</p></div><div class="save-box"><label style="color:#d3e5d9">Temps de préparation interne estimé</label><div style="display:flex;gap:8px;align-items:center"><input id="minutesPerKg" type="number" value="8" min="0" style="width:90px"><span>min / kg</span></div><div id="proSavings" class="mini-note" style="margin-top:8px;color:#d3e5d9">Simulation ajustable par le restaurant.</div></div><div class="cart-total" id="proCartTotal">0,00 € HT</div><select id="proDeliveryMode" style="margin-top:10px"><option value="LIVRAISON">Livraison</option><option value="CLICK_COLLECT">Click & Collect PRO</option></select><button class="action" style="width:100%;margin-top:10px;background:#fff;color:#143f2e" onclick="submitProCart()">Valider la commande</button><button class="action secondary" style="width:100%;margin-top:8px" onclick="saveProTemplate()">Enregistrer comme commande type</button><div id="proCartMsg" class="mini-note" style="margin-top:9px;color:#d3e5d9"></div></aside></div>
+</div></div>
+
+
+<div id="customerView" class="view">
+  <div class="customer-shell">
+    <section class="customer-hero">
+      <div><div class="muted" style="color:#d6e7dc">MON ESPACE PARTICULIER</div><h1 id="customerName">Bonjour 👋</h1><p style="max-width:680px">Retrouvez vos préférences, votre panier hebdomadaire, vos favoris et vos commandes. Les recommandations restent générales et ne remplacent pas un avis médical.</p></div>
+      <div><button class="action" style="background:#fff;color:var(--green)" onclick="switchView('shop')">Commander</button> <button class="chipbtn" onclick="logout()">Déconnexion</button></div>
+    </section>
+    <div class="customer-kpis" style="margin-top:14px">
+      <div class="customer-kpi"><span class="muted">POINTS FIDÉLITÉ</span><b id="customerPoints">0</b><small>Programme de démonstration</small></div>
+      <div class="customer-kpi"><span class="muted">BUDGET HEBDO</span><b id="customerBudget">0 €</b><small>Paramètre modifiable</small></div>
+      <div class="customer-kpi"><span class="muted">FOYER</span><b id="customerHousehold">0 pers.</b><small>Utilisé pour les portions</small></div>
+    </div>
+    <div class="customer-grid">
+      <div class="account-card">
+        <h2 style="margin-top:0">Mes préférences</h2>
+        <div class="formgrid">
+          <div><label>Personnes dans le foyer</label><input id="b2cHousehold" type="number" min="1" max="12"></div>
+          <div><label>Budget hebdomadaire (€)</label><input id="b2cBudget" type="number" min="0" step="5"></div>
+          <div><label>Mode préféré</label><select id="b2cMode"><option value="CLICK_COLLECT">Click & Collect</option><option value="LIVRAISON">Livraison</option></select></div>
+          <div><label>Créneau favori</label><input id="b2cSlot" placeholder="18:00 - 19:00"></div>
+        </div>
+        <label>Objectifs alimentaires généraux</label><input id="b2cGoals" placeholder="Manger équilibré, gagner du temps...">
+        <label>Aliments non appréciés</label><input id="b2cDislikes" placeholder="Optionnel">
+        <label>Allergies / intolérances déclarées</label><input id="b2cAllergies" placeholder="Déclaration client - ne constitue pas un diagnostic">
+        <button class="action" style="margin-top:12px" onclick="saveB2CProfile()">Enregistrer mes préférences</button>
+        <span id="b2cProfileMsg" class="muted" style="margin-left:8px"></span>
+      </div>
+      <div class="account-card">
+        <h2 style="margin-top:0">Mon abonnement</h2>
+        <div id="b2cSubscriptions" class="account-list"></div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--line)">
+          <label>Nom</label><input id="subName" value="Panier frais semaine">
+          <div class="formgrid"><div><label>Fréquence</label><select id="subFrequency"><option>HEBDOMADAIRE</option><option>BIHEBDOMADAIRE</option><option>MENSUEL</option></select></div><div><label>Budget (€)</label><input id="subBudget" type="number" value="35"></div></div>
+          <label>Jour de retrait</label><select id="subDay"><option>Lundi</option><option>Mardi</option><option>Mercredi</option><option>Jeudi</option><option selected>Vendredi</option><option>Samedi</option></select>
+          <button class="action" style="margin-top:10px" onclick="createB2CSubscription()">Créer un abonnement</button>
+        </div>
+      </div>
+      <div class="account-card">
+        <h2 style="margin-top:0">Mes favoris</h2>
+        <div id="b2cFavorites"></div>
+        <p class="muted">Ajoutez ou retirez des favoris depuis votre compte. Cette vue servira ensuite à commander vos habituels en un clic.</p>
+        <div id="favoriteProductButtons"></div>
+      </div>
+      <div class="account-card"><h2 style="margin-top:0">Sécurité du compte</h2><label>Mot de passe actuel</label><input id="selfCurrentPassword" type="password" autocomplete="current-password"><label>Nouveau mot de passe</label><input id="selfNewPassword" type="password" autocomplete="new-password" placeholder="12 caractères minimum"><button class="chipbtn" style="margin-top:10px" onclick="changeOwnPassword()">Changer mon mot de passe</button><div id="selfPasswordMsg" class="muted" style="margin-top:8px"></div></div><div class="account-card">
+        <h2 style="margin-top:0">Mes dernières commandes</h2>
+        <div id="b2cOrders" class="account-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loginView" class="view"><div class="login"><h1>Connexion</h1><p class="muted">Accès client particulier, professionnel ou administration.</p><label>Email</label><input id="email" autocomplete="username" placeholder="votre@email.fr"><label>Mot de passe</label><input id="password" type="password" autocomplete="current-password" placeholder="••••••••••••"><button class="action" style="margin-top:14px;width:100%" onclick="login()">Se connecter</button><p id="loginMsg"></p></div></div>
+
+<div id="adminView" class="view"><div class="app-shell"><aside><div class="side-title">Pilotage</div><div class="side"><button class="active" onclick="adminShow('dashboard',this)">◫ Dashboard</button><button onclick="adminShow('orders',this)">▣ Commandes</button><button onclick="adminShow('products',this)">◈ Produits</button><button onclick="adminShow('availability',this);loadAvailabilityAdmin()">◉ Disponibilité & appro</button><button onclick="adminShow('media',this);loadMediaAdmin()">▣ Visuels & merchandising</button><button onclick="adminShow('costing',this);loadCosting()">€ Coûts & marges</button><button onclick="adminShow('preparations',this)">⌁ Portions & recettes</button><button onclick="adminShow('stock',this)">▤ Stock & lots</button><button onclick="adminShow('production',this)">⚙ Production</button><button onclick="adminShow('delivery',this)">➜ Livraisons</button><button onclick="adminShow('billing',this);loadBilling()">€ Facturation</button><button onclick="adminShow('clients',this)">◎ Clients</button><button onclick="adminShow('suppliers',this)">⌂ Fournisseurs</button><button onclick="adminShow('purchasing',this);renderPurchasing()">◒ Achats & prévisions</button><button onclick="adminShow('equipment',this)">◇ Équipements</button><button onclick="adminShow('team',this);loadTeamSecurity()">👥 Équipe & accès</button><button onclick="adminShow('preprod',this);loadPreproduction()">✓ Pré-production</button><button onclick="adminShow('control97',this);loadControl97()">★ Centre V97</button><button onclick="adminShow('settings',this)">⚙ Paramètres</button><button onclick="adminShow('audit',this)">≡ Audit</button><button onclick="logout()">↪ Déconnexion</button></div></aside><main class="admin-main"><div class="admin-hero"><div><h2>Bonjour 👋</h2><div class="muted">Voici ce qui demande votre attention aujourd’hui.</div></div><div id="headerUser" class="pill"></div></div><div class="today-grid" style="margin-top:14px">
+  <div class="card"><div class="muted">AUJOURD’HUI</div><h3 style="margin:6px 0 10px">Plan de journée</h3><div id="todayTimeline"></div></div>
+  <div class="card"><div class="muted">PRODUCTION À LANCER</div><h3 style="margin:6px 0 10px">Besoins par produit</h3><div id="todayProduction"></div></div>
+</div>
+<div class="grid8"><div class="kpi"><span>Produits</span><b id="kProducts">0</b></div><div class="kpi"><span>Clients</span><b id="kClients">0</b></div><div class="kpi"><span>Commandes</span><b id="kOrders">0</b></div><div class="kpi"><span>Stock dispo</span><b id="kStock">0</b></div><div class="kpi"><span>Production</span><b id="kProd">0</b></div><div class="kpi"><span>DLC ≤ 3j</span><b id="kExp">0</b></div><div class="kpi"><span>Lots bloqués</span><b id="kBlocked">0</b></div><div class="kpi"><span>Base</span><b id="dbtype">—</b></div></div>
+<section id="dashboard" class="admin-section active"><div class="three"><div class="card"><h3>Flux du jour</h3><div id="dashOrders"></div></div><div class="card"><h3>Alertes prioritaires</h3><div class="row"><span class="pill red">QUALITÉ</span> Lots bloqués exclus de l’allocation</div><div class="row"><span class="pill amber">DLC</span> Produits à traiter rapidement</div><div class="row"><span class="pill">FEFO</span> Sortie par date la plus proche</div></div><div class="card"><h3>État système</h3><p id="systemState">Base : —</p><button class="action secondary" onclick="downloadBackup()">Télécharger sauvegarde</button></div></div></section>
+<section id="orders" class="admin-section"><div class="two"><div class="card"><h3>Nouvelle commande</h3><label>Client</label><select id="clientSel"></select><label>Produit</label><select id="productSel" onchange="updateCuts()"></select><label>Découpe</label><select id="cutSel"><option value="">Standard</option></select><label>Quantité</label><input id="qty" type="number" min=".1" step=".1" value="5"><label>Mode</label><select id="deliveryMode"><option>LIVRAISON</option><option>CLICK_COLLECT</option></select><label>Note</label><textarea id="orderNote"></textarea><button class="action" onclick="createOrder()">Créer la commande</button><p id="orderMsg"></p></div><div class="card"><h3>Commandes</h3><div id="ordersList"></div></div></div></section>
+<section id="products" class="admin-section"><div class="two"><div class="card"><h3>Nouveau produit</h3><label>Référence</label><input id="newProductRef"><label>Nom</label><input id="newProductName"><label>Famille</label><input id="newProductFamily" value="Fruits & légumes"><label>Unité</label><input id="newProductUnit" value="kg"><label>Prix HT</label><input id="newProductPrice" type="number" step=".01"><button class="action" onclick="createProduct()">Ajouter</button></div><div class="card"><h3>Catalogue</h3><div id="productsList"></div></div></div></section>
+
+<section id="availability" class="admin-section">
+<div class="premium-banner"><div><span class="smart-tag">CATALOGUE UNIVERSEL & APPROVISIONNEMENT</span><h3 style="margin:8px 0 4px">Référencer même ce qui n'est pas physiquement en stock</h3><p class="muted" style="margin:0">Un produit peut rester commandable en mode « Sur commande ». Le système crée alors un besoin d'approvisionnement à traiter avec le fournisseur.</p></div><button class="action" onclick="loadAvailabilityAdmin()">Actualiser</button></div>
+<div class="two" style="margin-top:14px">
+  <div class="card">
+    <h3>Configurer une référence</h3>
+    <label>Produit</label><select id="availabilityProduct" onchange="loadAvailabilityForm()"></select>
+    <label>Mode</label><select id="availabilityMode"><option>EN_STOCK</option><option selected>SUR_COMMANDE</option><option>SAISONNIER</option><option>INDISPONIBLE</option></select>
+    <label>Délai fournisseur indicatif (jours)</label><input id="availabilityLead" type="number" min="0" value="2">
+    <label>Notes</label><input id="availabilityNotes" placeholder="Ex. disponible à Rungis ou chez maraîcher sur demande">
+    <label><input id="availabilityAllow" type="checkbox" checked> Autoriser la commande / demande</label>
+    <button class="action" style="margin-top:10px" onclick="saveAvailability()">Enregistrer</button>
+    <div id="availabilityInfo" style="margin-top:12px"></div>
+  </div>
+  <div class="card">
+    <h3>Besoins d'approvisionnement</h3>
+    <div class="grid8" style="grid-template-columns:repeat(4,1fr);margin-bottom:10px">
+      <div class="kpi"><span>Demandes ouvertes</span><b id="procOpenCount">0</b></div>
+      <div class="kpi"><span>Volume à couvrir</span><b id="procOpenQty">0</b></div>
+      <div class="kpi"><span>En commande fournisseur</span><b id="procTransitQty">0</b></div>
+      <div class="kpi"><span>Déjà réceptionné</span><b id="procFulfilledQty">0</b></div>
+    </div>
+    <div id="procurementTopNeeds"></div>
+    <div id="procurementRequests"></div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:14px">
+  <div class="section-title" style="margin-top:0"><div><h3>Couverture fournisseurs</h3><p>Repérez les produits sans fournisseur associé et créez les liens nécessaires sans prétendre à une disponibilité qui n'a pas été confirmée.</p></div><button class="chipbtn" onclick="loadSupplierCoverage()">Actualiser</button></div>
+  <div class="grid8" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi"><span>Catalogue actif</span><b id="coverageTotal">0</b></div>
+    <div class="kpi"><span>Avec fournisseur</span><b id="coverageLinked">0</b></div>
+    <div class="kpi"><span>Sans fournisseur</span><b id="coverageUnlinked">0</b></div>
+    <div class="kpi"><span>Couverture</span><b id="coveragePct">0%</b></div>
+  </div>
+  <div class="two" style="margin-top:12px">
+    <div>
+      <h4>Associer en lot</h4>
+      <label>Fournisseur</label><select id="coverageSupplier"></select>
+      <label>Délai indicatif (jours)</label><input id="coverageLead" type="number" value="2" min="0">
+      <label>Produits sans fournisseur</label><div id="coverageUnlinkedList" style="max-height:340px;overflow:auto"></div>
+      <button class="action" style="margin-top:10px" onclick="bulkLinkSupplier()">Associer les produits cochés</button>
+    </div>
+    <div>
+      <h4>Besoins urgents sans fournisseur lié</h4>
+      <div id="coverageNeeds"></div>
+      <h4 style="margin-top:16px">Par famille</h4>
+      <div id="coverageFamilies"></div>
+    </div>
+  </div>
+</div>
+<div class="card" style="margin-top:14px"><h3>Catalogue référencé</h3><div id="availabilityList"></div></div>
+</section>
+<section id="media" class="admin-section">
+<div class="premium-banner"><div><span class="smart-tag">VISUELS & MERCHANDISING</span><h3 style="margin:8px 0 4px">Associer les créas aux produits sans modifier le code</h3><p class="muted" style="margin:0">Utilisez les chemins `/assets/...` du pack ou une URL HTTPS externe. Les visuels de l'ancienne marque ne doivent pas être utilisés.</p></div><button class="action" onclick="loadMediaAdmin()">Actualiser</button></div>
+<div class="two" style="margin-top:14px">
+  <div class="card">
+    <h3>Photo produit</h3>
+    <label>Produit</label><select id="mediaProduct"></select>
+    <label>URL / chemin image</label><input id="mediaProductUrl" placeholder="/assets/jus-shots-lpfb.webp">
+    <label>Texte alternatif</label><input id="mediaProductAlt" placeholder="Description de l'image">
+    <label>Badge</label><input id="mediaProductBadge" value="Le Panier Frais Bio">
+    <button class="action" style="margin-top:10px" onclick="saveProductMedia()">Enregistrer</button>
+    <div id="productMediaList" style="margin-top:12px"></div>
+  </div>
+  <div class="card">
+    <h3>Nouveau visuel merchandising</h3>
+    <label>Emplacement</label><select id="visualPlacement"><option>HOME_FEATURED</option><option>HOME_INSPIRATION</option><option>PRO_HERO</option></select>
+    <label>Titre</label><input id="visualTitle">
+    <label>Sous-titre</label><input id="visualSubtitle">
+    <label>URL / chemin image</label><input id="visualUrl" placeholder="/assets/poke-bowls-lpfb.webp">
+    <label>Filtre cible</label><input id="visualFilter" placeholder="jus, salade, carotte…">
+    <label>Ordre</label><input id="visualOrder" type="number" value="10">
+    <button class="action" style="margin-top:10px" onclick="createMarketingVisual()">Ajouter le visuel</button>
+    <div id="marketingVisualList" style="margin-top:12px"></div>
+  </div>
+</div>
+</section>
+
+<section id="costing" class="admin-section">
+<div class="premium-banner"><div><span class="smart-tag">PILOTAGE RENTABILITÉ</span><h3 style="margin:8px 0 4px">Coût complet, marge et prix cible</h3><p class="muted" style="margin:0">Le logiciel sépare achat, emballage, main-d’œuvre et autres coûts. Toute modification de prix reste une décision humaine et est historisée.</p></div><button class="action" onclick="loadCosting()">Actualiser</button></div>
+<div class="grid8" style="grid-template-columns:repeat(4,1fr);margin-top:14px">
+  <div class="kpi"><span>CA HT enregistré</span><b id="marginRevenue">0 €</b></div>
+  <div class="kpi"><span>Coûts estimés</span><b id="marginCost">0 €</b></div>
+  <div class="kpi"><span>Marge estimée</span><b id="marginValue">0 €</b></div>
+  <div class="kpi"><span>Taux estimé</span><b id="marginPct">0 %</b></div>
+</div>
+<div class="two" style="margin-top:14px">
+  <div class="card">
+    <h3>Paramétrer un produit</h3>
+    <label>Produit</label><select id="costProduct" onchange="loadCostProductForm()"></select>
+    <div class="formgrid">
+      <div><label>Coût achat HT</label><input id="costPurchase" type="number" step=".01"></div>
+      <div><label>Emballage HT</label><input id="costPackaging" type="number" step=".01"></div>
+      <div><label>Main-d’œuvre HT</label><input id="costLabor" type="number" step=".01"></div>
+      <div><label>Autres coûts HT</label><input id="costOther" type="number" step=".01"></div>
+      <div><label>Marge cible (%)</label><input id="costTarget" type="number" min="0" max="95" step="1"></div>
+      <div><label>Prix actuel HT</label><input id="costCurrentPrice" disabled></div>
+    </div>
+    <div id="costSuggestion" class="result" style="display:block"></div>
+    <button class="action" onclick="saveProductCost()">Enregistrer les coûts</button>
+  </div>
+  <div class="card">
+    <h3>Modifier le prix de vente</h3>
+    <label>Nouveau prix HT</label><input id="newSalePrice" type="number" step=".01">
+    <label>Motif</label><input id="priceReason" placeholder="Ex. hausse fournisseur, nouveau conditionnement…">
+    <button class="action" style="margin-top:10px" onclick="applyProductPrice()">Valider le nouveau prix</button>
+    <div id="priceMsg" class="muted" style="margin-top:8px"></div>
+    <h3>Historique du prix</h3>
+    <div id="priceHistory"></div>
+  </div>
+</div>
+<div class="card" style="margin-top:14px"><h3>Rentabilité par produit</h3><div id="costingTable"></div><p class="muted">Les marges deviennent fiables lorsque chaque composante de coût est renseignée avec les données réelles de l'entreprise.</p></div>
+</section>
+
+<section id="preparations" class="admin-section"><div class="two"><div class="card"><h3>Portionnements & préparations</h3><div id="preparationsList"></div></div><div class="card"><h3>Formats d’emballage</h3><div id="formatsList"></div><h3>Recettes standardisées</h3><div id="recipesList"></div></div></div></section>
+<section id="stock" class="admin-section">
+<div class="grid8" style="grid-template-columns:1fr 1fr;margin-bottom:14px">
+  <div class="kpi"><span>Stock RAW disponible</span><b id="stockRawAvailable">0</b><small id="stockRawLots" class="muted"></small></div>
+  <div class="kpi"><span>Stock PREPARED disponible</span><b id="stockPreparedAvailable">0</b><small id="stockPreparedLots" class="muted"></small></div>
+</div>
+<div class="two"><div class="card"><h3>Réception lot</h3><label>Produit</label><select id="lotProduct"></select><label>Lot interne</label><input id="lotInternal"><label>Lot fournisseur</label><input id="lotSupplier"><label>Quantité</label><input id="lotQty" type="number" step=".1" value="10"><label>DLC</label><input id="lotDlc" type="date"><label>Statut</label><select id="lotStatus"><option>LIBERE</option><option>BLOQUE</option></select><button class="action" onclick="createLot()">Enregistrer</button></div><div class="card"><h3>Lots</h3><div id="lotsList"></div></div></div></section>
+<section id="production" class="admin-section">
+<div class="premium-banner"><div><span class="smart-tag">ATELIER & TRAÇABILITÉ</span><h3 style="margin:8px 0 4px">Piloter la production sans perdre le fil des lots</h3><p class="muted" style="margin:0">La température, la date de conservation et la validation qualité sont saisies par l'opérateur. Le logiciel n'invente aucune durée ni seuil HACCP. Les lots entrants sont RAW et les lots issus de production sont PREPARED.</p></div><button class="action" onclick="loadProductionBatches()">Actualiser</button></div>
+<div class="prod-stepper"><div class="prod-step">1 · Lot source</div><div class="prod-step">2 · Lavage / préparation</div><div class="prod-step">3 · Découpe / emballage</div><div class="prod-step">4 · Contrôle / lot fini</div></div>
+<div class="prod-board">
+  <div>
+    <div class="card"><h3>Créer un besoin</h3><label>Produit</label><select id="prodProduct"></select><label>Quantité nette à préparer</label><input id="prodQty" type="number" min=".1" step=".1" value="5"><button class="action" onclick="createProduction()">Créer production</button></div>
+    <div class="card" style="margin-top:14px"><h3>Planning atelier</h3><div id="productionList"></div></div>
+  </div>
+  <div class="card">
+    <h3>Finaliser un lot de production</h3>
+    <label>Ordre de production</label><select id="batchJob" onchange="updateBatchCuts();previewSourceLots()"></select>
+    <div class="formgrid">
+      <div><label>Quantité réellement consommée</label><input id="batchInputQty" type="number" step=".1" value="5" oninput="previewSourceLots()"></div>
+      <div><label>Quantité nette obtenue</label><input id="batchOutputQty" type="number" step=".1" value="4.5"></div>
+      <div><label>Découpe</label><select id="batchCut"><option value="">Standard</option></select></div>
+      <div><label>Emballage</label><select id="batchPackaging"><option>Barquette operculée</option><option>Sachet</option><option>Sous vide</option><option>Vrac bac GN</option><option>À définir</option></select></div>
+      <div><label>N° lot interne de sortie</label><input id="batchInternalLot" placeholder="Ex. LPFB-20260921-001"></div>
+      <div><label>Date de conservation validée</label><input id="batchExpiry" type="date"></div>
+      <div><label>Température constatée (°C)</label><input id="batchTemp" type="number" step=".1" placeholder="Saisie opérateur"></div>
+      <div><label>Contrôle qualité</label><select id="batchQuality"><option value="VALIDEE">Validé — lot libéré</option><option value="BLOQUEE">Non validé — lot bloqué</option></select></div>
+    </div>
+    <label>Notes opérateur</label><textarea id="batchNotes" placeholder="Observation, anomalie, emballage, etc."></textarea>
+    <div id="sourceLotPreview" class="result" style="display:block">Choisissez une production pour voir les lots FEFO proposés.</div>
+    <button class="action" style="margin-top:12px" onclick="completeProductionBatch()">Créer le lot fini</button>
+    <div id="batchMsg" class="muted" style="margin-top:8px"></div>
+  </div>
+</div>
+<div class="prod-board">
+  <div class="card"><h3>Lots de production terminés</h3><div id="productionBatches"></div></div>
+  <div class="trace-box">
+    <h3 style="margin-top:0">Recherche de traçabilité</h3>
+    <p class="muted">Entrez un numéro de lot interne pour remonter aux lots sources et aux commandes liées.</p>
+    <div style="display:flex;gap:8px"><input id="traceLotSearch" placeholder="N° lot interne"><button class="action" style="background:#fff;color:var(--green)" onclick="searchTraceability()">Rechercher</button></div>
+    <div id="traceResult" style="margin-top:14px"></div>
+  </div>
+</div>
+<div id="labelModal" class="card" style="display:none;margin-top:14px"><div style="display:flex;justify-content:space-between;gap:10px"><h3>Aperçu étiquette</h3><button class="chipbtn" onclick="labelModal.style.display='none'">Fermer</button></div><div id="labelPreview" class="label-preview"></div><button class="action" style="margin-top:10px" onclick="window.print()">Imprimer</button></div>
+</section>
+<section id="delivery" class="admin-section"><div class="card"><h3>Livraisons & retraits</h3><div id="deliveryList"></div></div></section><section id="billing" class="admin-section">
+<div class="premium-banner"><div><span class="smart-tag">FACTURATION & ENCAISSEMENTS</span><h3 style="margin:8px 0 4px">Fiscalité produit configurable, factures figées et paiements</h3><p class="muted" style="margin:0">Aucun taux fiscal n'est imposé par défaut. Les taux doivent être renseignés et validés avant émission réelle. Une facture validée conserve un instantané des taux utilisés.</p></div><button class="action" onclick="loadBilling()">Actualiser</button></div>
+<div class="billing-grid">
+  <div>
+    <div class="card"><h3>Factures</h3><div id="invoiceList"></div></div>
+    <div class="card" style="margin-top:14px"><h3>Encaissements</h3><div id="paymentList"></div></div>
+  </div>
+  <div>
+    <div class="card"><h3>Fiscalité par produit</h3><p class="muted">Configuration manuelle. Le logiciel ne présume pas du taux applicable.</p><div id="taxProductList"></div></div>
+  </div>
+</div>
+<div class="billing-grid">
+  <div class="card"><h3>Détail facture</h3><div id="invoiceDetail" class="invoice-detail"><span class="muted">Sélectionnez une facture.</span></div></div>
+  <div class="card">
+    <h3>Émettre un avoir</h3>
+    <label>Facture sélectionnée</label><input id="creditInvoiceId" disabled>
+    <label>Montant HT</label><input id="creditAmount" type="number" step=".01">
+    <label>Motif</label><input id="creditReason" placeholder="Motif de l'avoir">
+    <button class="action" style="margin-top:10px" onclick="createCreditNote()">Créer l'avoir</button>
+    <div id="creditMsg" class="muted" style="margin-top:8px"></div>
+  </div>
+</div>
+</section>
+<section id="clients" class="admin-section"><div class="two"><div class="card"><h3>Nouveau client</h3><label>Type</label><select id="newClientType"><option>B2C</option><option>PRO</option></select><label>Nom</label><input id="newClientName"><label>Email</label><input id="newClientEmail"><button class="action" onclick="createClient()">Ajouter</button></div><div class="card"><h3>Portefeuille</h3><div id="clientsList"></div></div></div></section>
+<section id="suppliers" class="admin-section"><div class="two"><div class="card"><h3>Nouveau fournisseur</h3><label>Nom</label><input id="supplierName"><label>Ville</label><input id="supplierCity"><label>Spécialité</label><textarea id="supplierSpecialty"></textarea><button class="action" onclick="createSupplier()">Ajouter</button></div><div class="card"><h3>Maraîchers & fournisseurs</h3><div id="suppliersList"></div></div></div></section>
+<section id="purchasing" class="admin-section">
+<div class="premium-banner"><div><span class="smart-tag">ACHATS & RÉCEPTION</span><h3 style="margin-top:8px">Du besoin prévisionnel jusqu'au lot reçu</h3><p class="muted" style="margin:0">Les suggestions restent indicatives. L'opérateur choisit le fournisseur, valide les quantités, puis réceptionne les lots réellement livrés.</p></div><button class="action" onclick="renderPurchasing()">Recalculer</button></div>
+<div class="po-grid">
+  <div>
+    <div class="card"><h3>Plan d'achat suggéré</h3><div id="purchasePlan"></div></div>
+    <div class="card" style="margin-top:14px"><h3>Référentiel fournisseur / produit</h3>
+      <div class="formgrid"><div><label>Fournisseur</label><select id="spSupplier"></select></div><div><label>Produit</label><select id="spProduct"></select></div><div><label>Prix d'achat HT</label><input id="spPrice" type="number" step=".01"></div><div><label>Minimum commande</label><input id="spMinQty" type="number" step=".1"></div><div><label>Délai (jours)</label><input id="spLead" type="number" value="0"></div><div><label>Référence fournisseur</label><input id="spRef"></div></div>
+      <button class="action" style="margin-top:10px" onclick="saveSupplierProduct()">Enregistrer</button>
+      <div id="supplierProductList" style="margin-top:12px"></div>
+    </div>
+  </div>
+  <div>
+    <div class="card"><h3>Nouvelle commande fournisseur</h3>
+      <div class="formgrid"><div><label>Fournisseur</label><select id="poSupplier"></select></div><div><label>Date prévue</label><input id="poExpected" type="date"></div></div>
+      <label>Note</label><input id="poNote" placeholder="Conditions, heure souhaitée, substitution interdite...">
+      <div id="poDraftLines"></div>
+      <button class="chipbtn" style="margin-top:8px" onclick="addPurchaseDraftLine()">+ Ajouter une ligne</button>
+      <button class="action" style="margin-top:8px" onclick="createPurchaseOrder()">Créer le bon d'achat</button>
+      <div id="poMsg" class="muted" style="margin-top:6px"></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h3>Bons d'achat</h3><div id="purchaseOrderList"></div></div>
+  </div>
+</div>
+<div class="card" style="margin-top:14px">
+  <h3>Réception fournisseur</h3>
+  <p class="muted">Chaque ligne réceptionnée crée un lot interne. Par défaut, le lot peut rester bloqué jusqu'à validation qualité.</p>
+  <label>Bon d'achat</label><select id="receiptPO" onchange="renderReceiptLines()"></select>
+  <div id="receiptLines"></div>
+  <label>Note de réception</label><input id="receiptNote" placeholder="Écart, casse, température constatée, etc.">
+  <button class="action" style="margin-top:10px" onclick="receivePurchaseOrder()">Enregistrer la réception</button>
+  <div id="receiptMsg" class="muted" style="margin-top:6px"></div>
+</div>
+</section><section id="equipment" class="admin-section"><div class="two"><div class="card"><h3>Ajouter un équipement</h3><label>Nom</label><input id="eqName"><label>Budget bas</label><input id="eqLow" type="number"><label>Budget haut</label><input id="eqHigh" type="number"><label>Priorité</label><select id="eqPriority"><option>INDISPENSABLE</option><option>A_PREVOIR</option></select><button class="action" onclick="createEquipment()">Ajouter</button></div><div class="card"><h3>Budget équipements</h3><div class="row">Bas <b id="budgetLow">0 €</b></div><div class="row">Haut <b id="budgetHigh">0 €</b></div><div id="equipmentList"></div></div></div></section>
+
+<section id="team" class="admin-section">
+<div class="premium-banner"><div><span class="smart-tag">ÉQUIPE & SÉCURITÉ</span><h3 style="margin:8px 0 4px">Comptes opérateurs, rôles et état de sécurité</h3><p class="muted" style="margin:0">Les comptes particuliers et PRO restent gérés séparément. Cette zone sert uniquement aux accès internes.</p></div><button class="action" onclick="loadTeamSecurity()">Actualiser</button></div>
+<div class="two" style="margin-top:14px">
+  <div class="card">
+    <h3>Ajouter un membre de l'équipe</h3>
+    <label>Nom complet</label><input id="teamName">
+    <label>E-mail</label><input id="teamEmail" type="email">
+    <label>Rôle</label><select id="teamRole"><option>MANAGER</option><option>VENTE</option><option>PRODUCTION</option><option>LIVRAISON</option><option>COMPTA</option><option>ADMIN</option></select>
+    <label>Mot de passe temporaire</label><input id="teamPassword" type="password" placeholder="10 caractères minimum">
+    <button class="action" style="margin-top:10px" onclick="createTeamUser()">Créer le compte</button>
+    <div id="teamMsg" class="muted" style="margin-top:8px"></div>
+  </div>
+  <div class="card">
+    <h3>État de sécurité</h3>
+    <div id="securityStatus"></div>
+  </div>
+</div>
+<div class="card" style="margin-top:14px"><h3>Utilisateurs</h3><div id="teamUsers"></div></div>
+</section>
+
+<section id="preprod" class="admin-section">
+<div class="premium-banner"><div><span class="smart-tag">PRÉ-PRODUCTION</span><h3 style="margin:8px 0 4px">Dernière passe avant le déploiement unique</h3><p class="muted" style="margin:0">Cette page ne remplace pas les validations métier, fiscales ou sanitaires. Elle vérifie surtout que l'application et sa configuration ne contiennent plus les principaux blocages techniques connus.</p></div><button class="action" onclick="loadPreproduction()">Relancer les contrôles</button></div>
+<div class="grid8" style="grid-template-columns:repeat(3,1fr);margin-top:14px">
+  <div class="kpi"><span>ÉTAT</span><b id="preprodState">—</b></div>
+  <div class="kpi"><span>BLOCAGES</span><b id="preprodBlocks">0</b></div>
+  <div class="kpi"><span>AVERTISSEMENTS</span><b id="preprodWarnings">0</b></div>
+</div>
+<div class="two" style="margin-top:14px">
+  <div class="card"><h3>Checklist automatique</h3><div id="preprodChecks"></div></div>
+  <div class="card">
+    <h3>Actions avant mise en ligne</h3>
+    <div class="row"><b>1. PostgreSQL persistant</b><br><span class="muted">La base de production ne doit pas reposer sur un fichier SQLite éphémère.</span></div>
+    <div class="row"><b>2. Secrets & comptes</b><br><span class="muted">Changer la clé secrète, désactiver les comptes démo et créer les vrais comptes équipe.</span></div>
+    <div class="row"><b>3. Données métier</b><br><span class="muted">Valider fiscalité, coûts, fournisseurs, produits, lots et règles opérationnelles.</span></div>
+    <div class="row"><b>4. Sauvegarde</b><br><span class="muted">Exporter un instantané complet avant le basculement.</span></div>
+    <div class="row"><b>5. Test du parcours complet</b><br><span class="muted">Commande → stock → production → livraison/retrait → facture → paiement.</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+      <button class="action" onclick="downloadReadinessReport()">Exporter le rapport</button>
+      <button class="chipbtn" onclick="downloadBackup()">Exporter la sauvegarde</button>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:14px">
+  <h3>Test fonctionnel à blanc</h3>
+  <p class="muted">Le test crée temporairement un client, une commande, une facture, un paiement, une production et une réception fournisseur dans une transaction, puis annule toutes les écritures par rollback.</p>
+  <button class="action" onclick="runSmokeTest()">Lancer le test complet</button>
+  <div id="smokeSummary" style="margin-top:12px"></div>
+  <div id="smokeResults"></div>
+</div>
+<div class="card" style="margin-top:14px"><h3>Fichiers de déploiement</h3><p class="muted">Le pack V62 contient aussi un modèle <code>render.production.yaml</code> séparé du fichier de test actuel. Il est prévu pour le passage final à PostgreSQL + secret généré, sans toucher au déploiement de test avant validation.</p></div>
+</section>
+
+<section id="control97" class="admin-section">
+<div class="premium-banner"><div><span class="smart-tag">CENTRE DE CONTRÔLE V97</span><h3 style="margin:8px 0 4px">Dernière consolidation avant production</h3><p class="muted" style="margin:0">Intégrité des données, maintenance, sécurité, rôles, audit et état de release réunis sur une seule page.</p></div><button class="action" onclick="loadControl97()">Relancer les contrôles</button></div>
+<div class="grid8" style="grid-template-columns:repeat(5,1fr);margin-top:14px">
+  <div class="kpi"><span>Version</span><b id="v97Version">—</b></div>
+  <div class="kpi"><span>Intégrité bloquante</span><b id="v97Blocking">0</b></div>
+  <div class="kpi"><span>Avertissements</span><b id="v97Warnings">0</b></div>
+  <div class="kpi"><span>Canal</span><b id="v97Channel">—</b></div><div class="kpi"><span>Schéma DB</span><b id="v100Schema">—</b></div>
+</div>
+<div class="two" style="margin-top:14px">
+  <div class="card"><h3>État de release</h3><div id="v97Release"></div></div>
+  <div class="card"><h3>Mode maintenance</h3><label><input id="maintenanceEnabled" type="checkbox"> Activer la maintenance</label><label>Message public</label><input id="maintenanceMessage" value="Le service est temporairement en maintenance."><button class="action" style="margin-top:10px" onclick="saveMaintenance()">Enregistrer</button><div id="maintenanceMsg" class="muted" style="margin-top:8px"></div></div>
+</div>
+<div class="two" style="margin-top:14px">
+  <div class="card"><h3>Intégrité des données</h3><div id="v97Integrity"></div></div>
+  <div class="card"><h3>Résumé audit</h3><div id="v97Audit"></div></div>
+</div>
+<div class="card" style="margin-top:14px"><h3>Matrice des rôles</h3><div id="v97Roles"></div></div>
+</section>
+<section id="settings" class="admin-section"><div class="card"><h3>Paramètres</h3><table><tbody id="settingsTable"></tbody></table></div></section><section id="audit" class="admin-section"><div class="card"><h3>Journal d’audit</h3><button class="action secondary" onclick="loadAudit()">Actualiser</button><div id="auditLog" class="log"></div></div></section>
+</main></div></div>
 <script>
-let token=localStorage.getItem('lpfb50')||'';let cache={clients:[],products:[],equipment:[]};
-async function A(url,opt={}){opt.headers=opt.headers||{};if(token)opt.headers.Authorization='Bearer '+token;if(opt.body)opt.headers['Content-Type']='application/json';let r=await fetch(url,opt),d=await r.json().catch(()=>({}));if(!r.ok)throw{status:r.status,data:d};return d}
-function show(id,btn){document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active')}
-async function login(){try{let d=await A('/auth/login',{method:'POST',body:JSON.stringify({email:email.value,password:password.value})});token=d.access_token;localStorage.setItem('lpfb50',token);loginBox.classList.add('hidden');appBox.classList.remove('hidden');headerUser.textContent=d.name+' · '+d.role;await refreshAll()}catch(e){loginMsg.innerHTML='<span class=bad>Connexion refusée</span>'}}
-function logout(){localStorage.removeItem('lpfb50');location.reload()}
-function updateCuts(){let p=cache.products.find(x=>x.id==+productSel.value);cutSel.innerHTML='<option value="">Aucune / standard</option>'+((p?.cuts||[]).map(c=>`<option value="${c.name}">${c.name} (+${c.extra_price_ht.toFixed(2)} € HT)</option>`).join(''))}
-async function refreshAll(){try{let [h,d,c,p,l,o,pr,dl,inv,u,sup,eq,set]=await Promise.all([A('/health'),A('/dashboard'),A('/clients'),A('/products'),A('/lots'),A('/orders'),A('/production'),A('/deliveries'),A('/invoices'),A('/auth/me'),A('/suppliers'),A('/equipment'),A('/settings')]);cache={clients:c,products:p,equipment:eq};dbtype.textContent=h.database.toUpperCase();systemState.textContent='Base : '+h.database.toUpperCase()+' · V'+h.version;headerUser.textContent=u.full_name+' · '+u.role;kProducts.textContent=d.products;kClients.textContent=d.clients;kOrders.textContent=d.orders;kStock.textContent=d.stock_available;kProd.textContent=d.production_open;kExp.textContent=d.expiring_lots;kBlocked.textContent=d.blocked_lots;budgetLow.textContent=d.equipment_budget_low.toLocaleString('fr-FR')+' €';budgetHigh.textContent=d.equipment_budget_high.toLocaleString('fr-FR')+' €';
-clientSel.innerHTML=c.map(x=>`<option value="${x.id}">${x.client_type} · ${x.name}</option>`).join('');productSel.innerHTML=prodProduct.innerHTML=lotProduct.innerHTML=p.map(x=>`<option value="${x.id}">${x.name}</option>`).join('');updateCuts();
-clientsList.innerHTML=c.map(x=>`<div class=row><strong>${x.name}</strong> <span class=pill>${x.client_type}</span><br><small>${x.email||''}</small></div>`).join('');productsList.innerHTML=p.map(x=>`<div class=row><strong>${x.name}</strong> · ${x.price_ht.toFixed(2)} € HT / ${x.unit}<br><small>${x.reference} · ${x.family}</small><div class=cutbox>${(x.cuts||[]).map(c=>`<span class=cut>${c.name}</span>`).join('')}</div></div>`).join('');
-lotsList.innerHTML=l.map(x=>`<div class=row><strong>${x.internal_lot}</strong> · ${x.product_name} <span class="pill ${x.status==='BLOQUE'?'red':''}">${x.status}</span><br>Reçu ${x.qty_received} · réservé ${x.qty_reserved} · <b>dispo ${x.qty_available}</b> · DLC ${x.expiry_date||'—'}</div>`).join('');
-ordersList.innerHTML=o.length?o.map(x=>`<div class=row><strong>#${x.id} ${x.client_name}</strong> <span class=pill>${x.status}</span><br>${x.product_name} · ${x.quantity} · ${x.delivery_mode} · ${x.amount_ht} € HT${x.cut_name?`<br><b>Découpe :</b> ${x.cut_name}`:''}${x.note?`<br><small>${x.note}</small>`:''}<br>${x.status!=='ANNULEE'?`<button class=secondary onclick="cancelOrder(${x.id})">Annuler</button>`:''}</div>`).join(''):'Aucune commande.';dashOrders.innerHTML=o.slice(0,4).map(x=>`<div class=row>#${x.id} · ${x.client_name} · ${x.status}</div>`).join('')||'<p>Aucune commande.</p>';
-productionList.innerHTML=pr.length?pr.map(x=>`<div class=row><strong>#${x.id} ${x.product_name}</strong> · ${x.quantity_needed} · <span class=pill>${x.status}</span><br>${x.status!=='TERMINE'?`<button class=secondary onclick="advanceProduction(${x.id})">Étape suivante</button>`:''}</div>`).join(''):'Aucun besoin.';
-deliveryList.innerHTML=dl.length?dl.map(x=>`<div class=row><strong>#${x.id} commande ${x.order_id}</strong> · ${x.client_name}<br>${x.mode} · <span class=pill>${x.status}</span><br>${!['LIVREE','RETIRÉE'].includes(x.status)?`<button class=secondary onclick="advanceDelivery(${x.id})">Étape suivante</button>`:''}</div>`).join(''):'Aucune livraison.';
-invoiceList.innerHTML=inv.length?inv.map(x=>`<div class=row><strong>Facture #${x.id}</strong> · commande ${x.order_id} · ${x.client_name}<br>${x.amount_ht} € HT · <span class=pill>${x.status}</span><br>${x.status!=='VALIDEE'?`<button class=secondary onclick="validateInvoice(${x.id})">Valider</button>`:''}</div>`).join(''):'Aucune facture.';
-suppliersList.innerHTML=sup.map(x=>`<div class=row><strong>${x.name}</strong><br><small>${x.city||''} · ${x.specialty||''}</small></div>`).join('');equipmentList.innerHTML=eq.map(x=>`<div class=row><strong>${x.name}</strong> <span class=pill>${x.priority}</span><br>${x.budget_low.toLocaleString('fr-FR')}–${x.budget_high.toLocaleString('fr-FR')} € · ${x.status}</div>`).join('');settingsTable.innerHTML=Object.entries(set).map(([k,v])=>`<tr><th>${k}</th><td>${v}</td></tr>`).join('');}catch(e){console.error(e)}}
-async function createOrder(){try{let d=await A('/orders',{method:'POST',body:JSON.stringify({client_id:+clientSel.value,product_id:+productSel.value,quantity:+qty.value,delivery_mode:deliveryMode.value,cut_name:cutSel.value||null,note:orderNote.value||null})});orderMsg.innerHTML='<span class=ok>Commande #'+d.order_id+' créée · '+d.status+'</span>';await refreshAll()}catch(e){orderMsg.innerHTML='<span class=bad>'+(e.data?.detail||'Erreur')+'</span>'}}
+let token=localStorage.getItem('lpfb63')||'';let currentRole=localStorage.getItem('lpfb63role')||'';let cache={clients:[],products:[],preps:[],formats:[],recipes:[]};
+async function A(url,opt={}){opt.headers=opt.headers||{};if(token)opt.headers.Authorization='Bearer '+token;if(opt.body)opt.headers['Content-Type']='application/json';let r=await fetch(url,opt),d=await r.json().catch(()=>({}));if(!r.ok)throw{status:r.status,data:d,message:d.detail||'Erreur'};return d}
+function switchView(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(v+'View').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});if(v==='admin'&&token)refreshAll()}
+function adminShow(id,btn){document.querySelectorAll('.admin-section').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.side button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active')}
+function money(x){return Number(x||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'}
+let publicCatalog=[],publicRecipesData=[],publicProductMedia={},publicMarketingVisuals=[],catalogFamily='Tous',proCart=[];
+function cutName(c){return typeof c==='string'?c:c.name}
+function cutYield(c){return typeof c==='string'?1:(c.yield_rate||1)}
+function productEmoji(p){let n=(p.name||'').toLowerCase();if(n.includes('carotte'))return'🥕';if(n.includes('tomate'))return'🍅';if(n.includes('courgette')||n.includes('concombre'))return'🥒';if(n.includes('pomme')&&!n.includes('terre'))return'🍏';if(n.includes('orange')||n.includes('clémentine'))return'🍊';if(n.includes('fraise'))return'🍓';if(n.includes('banane'))return'🍌';if(n.includes('jus'))return'🧃';if(n.includes('salade'))return'🥗';return p.family?.includes('Fruit')?'🍐':'🥬'}
+async function loadPublic(){publicCatalog=await A('/public/catalog');publicRecipesData=await A('/public/recipes');cache.products=publicCatalog;portionProduct.innerHTML=proProduct.innerHTML=publicCatalog.map(x=>`<option value="${x.id}">${x.name}</option>`).join('');recipeSelect.innerHTML=publicRecipesData.map(r=>`<option value="${r.id}">${r.name}</option>`).join('');renderCatalog();renderPublicRecipes();renderCategoryChips();renderProCatalog();updatePublicCuts();portionProduct.onchange=updatePublicCuts;proProduct.onchange=updatePublicCuts}
+function renderCategoryChips(){let fam=['Tous',...new Set(publicCatalog.map(x=>x.family))];categoryChips.innerHTML=fam.map(x=>`<button class="${catalogFamily===x?'active':''}" onclick="catalogFamily='${x.replace(/'/g,"\\'")}';renderCategoryChips();renderCatalog()">${x}</button>`).join('')}
+
+function productMedia(p){
+  if(publicProductMedia[p.id]?.image_url)return publicProductMedia[p.id].image_url;
+  let n=(p.name||'').toLowerCase(), f=(p.family||'').toLowerCase();
+  if(n.includes('poke')||n.includes('bowl')) return '/assets/poke-bowls-lpfb.webp';
+  if(n.includes('jus')||n.includes('green')||n.includes('orange')||n.includes('red')||f.includes('jus')) return '/assets/jus-shots-lpfb.webp';
+  if(n.includes('formule salade')||n.includes('salade + jus')) return '/assets/poke-bowls-lpfb.webp';
+  return null;
+}
+function productMediaHTML(p){
+  let src=productMedia(p);
+  return src?`<div class="product-media"><img src="${src}" alt="${p.name}" loading="lazy"><span class="media-badge">Le Panier Frais Bio</span></div>`:`<div class="product-media"><span class="fallback-emoji">${productEmoji(p)}</span></div>`;
+}
+let detailProductId=null;
+function openProductDetail(id){
+  let p=publicCatalog.find(x=>x.id===id);if(!p)return;detailProductId=id;
+  let src=productMedia(p);productDetailImage.innerHTML=src?`<img src="${src}" alt="${p.name}">`:`<span class="fallback-emoji">${productEmoji(p)}</span>`;
+  detailFamily.textContent=p.family;detailName.textContent=p.name;detailPrice.textContent=p.price_configured?`${money(p.price_ht)} HT / ${p.unit}`:'Prix à confirmer';
+  detailUses.textContent=(p.uses||'Préparation selon disponibilité et choix du client.')+' · '+(p.stock_available>0?'En stock':'Approvisionnement fournisseur possible');
+  detailFormats.textContent=p.b2c_formats||'250 g, 500 g, 750 g, 1 kg';detailPortion.textContent=p.portion_g?`${p.portion_g} g / pers.`:'À adapter';
+  let kg=p.unit==='kg',formats=kg?[0.25,0.5,0.75,1]:[1,2,4];
+  detailFormat.innerHTML=formats.map(v=>`<option value="${v}">${kg?(v<1?Math.round(v*1000)+' g':v+' kg'):v+' '+p.unit+(v>1?'s':'')}</option>`).join('');
+  detailCut.innerHTML='<option value="">Standard</option>'+((p.cuts||[]).map(c=>`<option value="${cutName(c)}">${cutName(c)}</option>`).join(''));
+  detailAddBtn.style.display=(p.price_configured&&p.allow_order)?'inline-block':'none';detailSourceBtn.style.display=p.allow_order?'inline-block':'none';productDetailModal.classList.add('open');document.body.style.overflow='hidden';
+}
+function closeProductDetail(){productDetailModal.classList.remove('open');document.body.style.overflow=''}
+function addDetailToCart(){
+  let p=publicCatalog.find(x=>x.id===detailProductId);if(!p)return;
+  let q=+detailFormat.value,cut=detailCut.value||'';
+  let existing=b2cCart.find(x=>x.product_id===p.id&&x.cut_name===cut);
+  if(existing)existing.quantity=+(existing.quantity+q).toFixed(3);
+  else b2cCart.push({product_id:p.id,product_name:p.name,quantity:q,cut_name:cut,unit:p.unit,unit_price_ht:p.price_ht});
+  saveB2CCart();closeProductDetail();document.getElementById('b2cCartPanel')?.scrollIntoView({behavior:'smooth'});
+}
+async function toggleDetailFavorite(){
+  if(!token||currentRole!=='CUSTOMER'){switchView('login');email.value='';password.value='';return}
+  try{await A('/b2c/favorites/'+detailProductId,{method:'POST'});alert('Favori mis à jour.')}catch(e){alert(e.data?.detail||e.message)}
+}
+
+
+function availabilityBadge(p){
+  if(!p.allow_order||p.order_mode==='INDISPONIBLE')return '<span class="avail-off">Indisponible</span>';
+  if((p.stock_available||0)>0)return `<span class="avail-stock">En stock · ${p.stock_available} ${p.unit}</span>`;
+  if(p.order_mode==='SAISONNIER')return '<span class="avail-season">Saisonnier · sur demande</span>';
+  return `<span class="avail-order">Sur commande${p.supplier_lead_days!=null?' · env. '+p.supplier_lead_days+' j':''}</span>`;
+}
+async function requestSourcing(id){
+  let p=publicCatalog.find(x=>x.id===id);if(!p)return;
+  let emailValue=token&&currentRole==='CUSTOMER'?'':prompt('Votre e-mail pour confirmer la demande (optionnel)','');
+  let qty=prompt(`Quantité souhaitée pour ${p.name} (${p.unit})`,'1');if(qty===null)return;
+  let q=Number(qty);if(!q||q<=0){alert('Quantité invalide');return}
+  let note=prompt('Note (optionnel)','');
+  try{
+    let d=await A('/public/sourcing-request',{method:'POST',body:JSON.stringify({product_id:p.id,customer_email:emailValue||null,quantity:q,note:note||''})});
+    alert(d.message||'Demande enregistrée.');
+  }catch(e){alert(e.data?.detail||e.message)}
+}
+function renderCatalog(){
+  let q=(catalogSearch?.value||'').toLowerCase();
+  let p=publicCatalog.filter(x=>(catalogFamily==='Tous'||x.family===catalogFamily)&&(!q||(x.name+' '+x.family+' '+(x.uses||'')).toLowerCase().includes(q)));
+  catalogue.innerHTML=p.slice(0,24).map(x=>{
+    let kg=x.unit==='kg';
+    let formats=kg?[0.25,0.5,0.75,1]:[1,2,4];
+    let fopts=formats.map(v=>`<option value="${v}">${kg?(v<1?Math.round(v*1000)+' g':v+' kg'):v+' '+x.unit+(v>1?'s':'')}</option>`).join('');
+    let copts='<option value="">Standard</option>'+((x.cuts||[]).map(c=>`<option value="${cutName(c)}">${cutName(c)}</option>`).join(''));
+    return `<div class="card product-card ${productMedia(x)?'has-photo':''}">${productMediaHTML(x)}<div><span class=pill>${x.family}</span></div><h3>${x.name}</h3><div class=price>${x.price_configured?money(x.price_ht)+' HT / '+x.unit:'Prix à confirmer'}</div><div class=mini-note>${x.portion_g?`Repère : ${x.portion_g} g/pers. · `:''}${x.uses||'Découpe selon disponibilité'}</div><div class=format-row>${(x.cuts||[]).slice(0,4).map(c=>`<span class=format>${cutName(c)}</span>`).join('')}</div><div class="product-actions"><div class="mini-grid"><select id="fmt_${x.id}">${fopts}</select><select id="cut_${x.id}">${copts}</select></div>${x.price_configured&&x.allow_order?`<button class="action" onclick="addB2CProduct(${x.id})">Ajouter au panier</button>`:`<button class="action" onclick="requestSourcing(${x.id})">Demander ce produit</button>`}<button class="chipbtn" onclick="openProductDetail(${x.id})">Voir le produit</button></div></div>`
+  }).join('')||'<div class=card>Aucun produit trouvé.</div>';
+}
+
+let b2cCart=JSON.parse(localStorage.getItem('lpfb-b2c-cart')||'[]');
+function saveB2CCart(){localStorage.setItem('lpfb-b2c-cart',JSON.stringify(b2cCart));renderB2CCart()}
+function addB2CProduct(id){
+  let p=publicCatalog.find(x=>x.id===id);if(!p)return;
+  let q=+(document.getElementById('fmt_'+id)?.value||1);
+  let cut=document.getElementById('cut_'+id)?.value||'';
+  let existing=b2cCart.find(x=>x.product_id===id&&x.cut_name===cut);
+  if(existing)existing.quantity=+(existing.quantity+q).toFixed(3);
+  else b2cCart.push({product_id:id,product_name:p.name,quantity:q,cut_name:cut,unit:p.unit,unit_price_ht:p.price_ht});
+  saveB2CCart()
+}
+function removeB2CLine(i){b2cCart.splice(i,1);saveB2CCart()}
+function changeB2CQty(i,v){let n=+v;if(n<=0)return removeB2CLine(i);b2cCart[i].quantity=n;saveB2CCart()}
+function clearB2CCart(){if(confirm('Vider le panier ?')){b2cCart=[];saveB2CCart()}}
+function renderB2CCart(){
+  let count=b2cCart.length,total=b2cCart.reduce((s,x)=>s+x.quantity*x.unit_price_ht,0);
+  if(typeof b2cCartPanel==='undefined')return;
+  b2cCartPanel.style.display=count?'block':'none';b2cCartBar.style.display=count?'flex':'none';
+  b2cCartCount.textContent=count+' article'+(count>1?'s':'');b2cCartBarTotal.textContent=money(total)+' HT';b2cCartTotal.textContent=money(total);
+  b2cCartRows.innerHTML=b2cCart.map((x,i)=>`<div class="cart-line"><div><b>${x.product_name}</b><br><small class="muted">${x.cut_name||'Standard'} · ${money(x.unit_price_ht)} / ${x.unit}</small></div><input class="cart-qty" type="number" min="0.01" step="${x.unit==='kg'?'0.25':'1'}" value="${x.quantity}" onchange="changeB2CQty(${i},this.value)"><b>${money(x.quantity*x.unit_price_ht)}</b><button class="remove" onclick="removeB2CLine(${i})">Retirer</button></div>`).join('');
+}
+async function checkoutB2C(){
+  if(!b2cCart.length)return;
+  if(!token||currentRole!=='CUSTOMER'){switchView('login');email.value='';password.value='';loginMsg.innerHTML='<span class="muted">Connectez-vous pour confirmer votre panier. Votre panier est conservé.</span>';return}
+  try{
+    let payload={delivery_mode:checkoutMode.value,slot:checkoutSlot.value,note:checkoutNote.value,payment_method:checkoutPayment.value,lines:b2cCart.map(x=>({product_id:x.product_id,quantity:x.quantity,cut_name:x.cut_name||null}))};
+    let d=await A('/b2c/checkout',{method:'POST',body:JSON.stringify(payload)});
+    checkoutMsg.innerHTML=`<span style="color:var(--green);font-weight:800">Commande #${d.order_id} confirmée · ${money(d.amount)} · ${d.slot}</span>`;
+    b2cCart=[];saveB2CCart();await loadB2CAccount();
+  }catch(e){checkoutMsg.innerHTML='<span style="color:var(--red)">'+(e.message||'Erreur')+'</span>'}
+}
+
+function renderPublicRecipes(){publicRecipes.innerHTML=publicRecipesData.map(r=>`<div class=recipe-card><span class=pill>${r.category}</span><h3>${r.name}</h3><p class=muted>${r.description||'Préparation standardisée et ajustable.'}</p><div class=mini-note>${r.ingredients.map(i=>`${i.product_name} · ${i.grams_per_serving} g/pers.${i.cut_name?' · '+i.cut_name:''}`).join('<br>')}</div><button class="action secondary" style="margin-top:12px" onclick="recipeSelect.value=${r.id};document.getElementById('recipePlanner').scrollIntoView({behavior:'smooth'})">Adapter les portions</button></div>`).join('')}
+function updatePublicCuts(){let pp=publicCatalog.find(x=>x.id==+portionProduct.value),pr=publicCatalog.find(x=>x.id==+proProduct.value);portionCut.innerHTML='<option value="">Standard</option>'+((pp?.cuts||[]).map(c=>`<option>${cutName(c)}</option>`).join(''));proCut.innerHTML='<option value="">Standard</option>'+((pr?.cuts||[]).map(c=>`<option>${cutName(c)}</option>`).join(''))}
+async function calcRecipe(){let d=await A('/calculators/recipe',{method:'POST',body:JSON.stringify({recipe_id:+recipeSelect.value,servings:+recipeServings.value})});recipeResult.style.display='block';recipeResult.innerHTML=`<strong>${d.recipe_name} · ${d.servings} pers.</strong><br>${d.ingredients.map(i=>`${i.product_name} : <b>${i.net_g} g nets</b> (${i.gross_g} g bruts estimés)${i.cut_name?' · '+i.cut_name:''}`).join('<br>')}<hr style="border:0;border-top:1px solid #e2d8c4">Total : ${d.total_net_g} g nets`}
+function renderProCatalog(){let q=(proSearch?.value||'').toLowerCase();let p=publicCatalog.filter(x=>!q||(x.name+' '+x.family).toLowerCase().includes(q));proCatalogue.innerHTML=p.slice(0,30).map(x=>`<div class=pro-product><div><strong>${productEmoji(x)} ${x.name}</strong><span class=mini-note>${money(x.price_ht)} HT/kg · ${x.uses||x.family}</span></div><div><label>Découpe</label><select id="pcut${x.id}"><option value="">Standard</option>${(x.cuts||[]).map(c=>`<option>${cutName(c)}</option>`).join('')}</select></div><div><label>Conditionnement</label><select id="ppack${x.id}"><option value="1">1 kg</option><option value="2.5" selected>2,5 kg</option><option value="5">5 kg</option><option value="10">10 kg</option></select></div><div><label>Kg nets</label><input id="pqty${x.id}" type=number min=.5 step=.5 value=2.5></div><button class=action onclick="addProItem(${x.id})">Ajouter</button></div>`).join('')}
+function addProItem(id){let p=publicCatalog.find(x=>x.id===id),cut=document.getElementById('pcut'+id).value,pack=+document.getElementById('ppack'+id).value,qty=+document.getElementById('pqty'+id).value;if(!qty)return;let existing=proCart.find(x=>x.product_id===id&&x.cut_name===cut&&x.pack_size_kg===pack);if(existing)existing.quantity_kg+=qty;else proCart.push({product_id:id,name:p.name,quantity_kg:qty,cut_name:cut||null,pack_size_kg:pack,price_ht:p.price_ht,yield_rate:(p.cuts||[]).find(c=>cutName(c)===cut)?.yield_rate||1});renderProCart()}
+function renderProCart(){if(!proCart.length){proCartRows.innerHTML='<p class=muted>Aucun produit ajouté.</p>';proCartTotal.textContent='0,00 € HT';proSavings.textContent='Simulation ajustable par le restaurant.';return}let total=0,kg=0,gross=0;proCartRows.innerHTML=proCart.map((x,i)=>{let line=x.quantity_kg*x.price_ht;total+=line;kg+=x.quantity_kg;gross+=x.quantity_kg/Math.max(x.yield_rate,.01);return `<div class=pro-cart-row><b>${x.name}</b><div class=mini-note style="color:#d3e5d9">${x.quantity_kg} kg · ${x.cut_name||'standard'} · packs ${x.pack_size_kg} kg</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:5px"><span>${money(line)} HT</span><button onclick="proCart.splice(${i},1);renderProCart()" style="border:0;background:transparent;color:#ffd6cf">Retirer</button></div></div>`}).join('');proCartTotal.textContent=money(total)+' HT';let mins=kg*(+minutesPerKg.value||0),prepWaste=Math.max(0,gross-kg);proSavings.innerHTML=`${kg.toFixed(1)} kg prêts cuisine · simulation : <b>${Math.round(mins)} min</b> de préparation interne évitée selon votre paramètre · environ <b>${prepWaste.toFixed(1)} kg</b> d'écart brut/net lié aux rendements.`}
+minutesPerKg?.addEventListener('input',renderProCart)
+async function openProLogin(){switchView('login');email.value='';password.value=''}
+async function loadProAccount(){if(!token)return;try{let me=await A('/auth/me');if(me.role!=='PRO')return;let a=await A('/pro/me');proAccountName.textContent=a.name;proLastOrder.textContent=a.last_order_id?'#'+a.last_order_id:'Aucune';let t=await A('/pro/templates');proTemplates.innerHTML=t.map(x=>`<button class="chipbtn" onclick="loadTemplate(${x.id})">↻ ${x.name}</button>`).join('')||''}catch(e){}}
+async function loadTemplate(id){let t=(await A('/pro/templates')).find(x=>x.id===id);if(!t)return;proCart=t.lines.map(l=>{let p=publicCatalog.find(x=>x.id===l.product_id);return {product_id:l.product_id,name:l.product_name,quantity_kg:l.quantity_kg,cut_name:l.cut_name,pack_size_kg:l.pack_size_kg,price_ht:p?.price_ht||0,yield_rate:(p?.cuts||[]).find(c=>cutName(c)===l.cut_name)?.yield_rate||1}});renderProCart()}
+async function submitProCart(){if(!token){proCartMsg.textContent='Connectez-vous avec votre compte restaurant pour valider.';return}if(!proCart.length){proCartMsg.textContent='Ajoutez au moins un produit.';return}try{let a=await A('/pro/me'),d=await A('/pro/orders/batch',{method:'POST',body:JSON.stringify({client_id:a.client_id,delivery_mode:proDeliveryMode.value,lines:proCart.map(({product_id,quantity_kg,cut_name,pack_size_kg})=>({product_id,quantity_kg,cut_name,pack_size_kg}))})});proCartMsg.textContent=`Commande #${d.order_id} créée · ${money(d.amount_ht)} HT`;proCart=[];renderProCart();loadProAccount()}catch(e){proCartMsg.textContent=e.data?.detail||e.message}}
+async function saveProTemplate(){if(!token||!proCart.length){proCartMsg.textContent='Connectez-vous et préparez un panier avant d’enregistrer.';return}let name=prompt('Nom de cette commande type :','Mise en place cuisine');if(!name)return;try{let a=await A('/pro/me');await A('/pro/templates',{method:'POST',body:JSON.stringify({client_id:a.client_id,name,delivery_mode:proDeliveryMode.value,lines:proCart.map(({product_id,quantity_kg,cut_name,pack_size_kg})=>({product_id,quantity_kg,cut_name,pack_size_kg}))})});proCartMsg.textContent='Commande type enregistrée.';loadProAccount()}catch(e){proCartMsg.textContent=e.data?.detail||e.message}}
+async function calcPortion(){let d=await A('/calculators/portion',{method:'POST',body:JSON.stringify({product_id:+portionProduct.value,servings:+portionServings.value,cut_name:portionCut.value||null,grams_per_serving:portionGram.value?+portionGram.value:null})});portionResult.style.display='block';portionResult.innerHTML=`<strong>${d.net_g} g nets</strong><br>Besoin brut estimé : ${d.gross_g} g · rendement ${(d.yield_rate*100).toFixed(0)} %<br>Conditionnement conseillé : <b>${d.recommended_pack_g} g</b>`}
+async function calcPro(){let d=await A('/calculators/pro',{method:'POST',body:JSON.stringify({product_id:+proProduct.value,covers:+proCovers.value,grams_per_cover:+proGram.value,cut_name:proCut.value||null})});proResult.style.display='block';proResult.innerHTML=`<strong>${d.net_kg} kg prêts à servir</strong><br>Besoin brut estimé : ${d.gross_kg} kg · rendement ${(d.yield_rate*100).toFixed(0)} %<br>Conditionnement suggéré : ${d.suggested_packs.map(x=>`${x.count} × ${x.kg} kg`).join(' + ')||'sur mesure'}`}
+async function loadProProfile(){try{let p=await A('/pro/profile');profileLunch.value=p.covers_lunch;profileDinner.value=p.covers_dinner;profileDays.value=p.delivery_days;profilePack.value=String(p.default_pack_kg);profileHourCost.value=p.prep_hour_cost;profileMinutes.value=p.prep_minutes_per_kg;profileNotes.value=p.notes||'';chefPack.value=String(p.default_pack_kg)}catch(e){}}
+async function saveProProfile(){try{await A('/pro/profile',{method:'PUT',body:JSON.stringify({covers_lunch:+profileLunch.value,covers_dinner:+profileDinner.value,delivery_days:profileDays.value,default_pack_kg:+profilePack.value,prep_hour_cost:+profileHourCost.value,prep_minutes_per_kg:+profileMinutes.value,notes:profileNotes.value})});profileMsg.textContent='Profil enregistré.';chefPack.value=profilePack.value}catch(e){profileMsg.textContent=e.data?.detail||e.message}}
+function updateChefCuts(){let p=cache.products?.find(x=>x.id==+chefProduct.value);chefCut.innerHTML='<option value="">Standard</option>'+((p?.cuts||[]).map(c=>`<option value="${c.name}">${c.name}</option>`).join(''))}
+async function calcChefService(){try{let d=await A('/pro/service-calculator',{method:'POST',body:JSON.stringify({product_id:+chefProduct.value,covers:+chefCovers.value,grams_per_cover:+chefGrams.value,cut_name:chefCut.value||null,pack_size_kg:+chefPack.value})});chefResult.innerHTML=`<b>${d.net_kg} kg nets prêts cuisine</b><div class="gainbox"><div class="gain"><span class=muted>Besoin brut estimé</span><b>${d.gross_kg_estimated} kg</b></div><div class="gain"><span class=muted>Conditionnement</span><b>${d.packs} × ${d.pack_size_kg} kg</b></div><div class="gain"><span class=muted>Temps simulé évité</span><b>${d.prep_minutes_saved_simulation} min</b></div><div class="gain"><span class=muted>Valeur main-d’œuvre simulée</span><b>${money(d.labor_value_simulation)}</b></div></div><div class="mini-note" style="margin-top:8px">${d.simulation_note}</div>`}catch(e){chefResult.textContent=e.data?.detail||e.message}}
+async function loadToday(){try{let t=await A('/today');todayTimeline.innerHTML=t.next_actions.map(x=>`<div class=today-line><b>${x.time}</b><span>${x.label}</span></div>`).join('');todayProduction.innerHTML=t.production_by_product.length?t.production_by_product.map(x=>`<div class=row><strong>${x.product}</strong><span style="float:right" class=pill>${x.quantity} kg</span></div>`).join(''):'<span class=muted>Aucun besoin en attente.</span>'}catch(e){}}
+
+async function loadB2CAccount(){
+  let d=await A('/b2c/me');
+  customerName.textContent='Bonjour '+d.client.name+' 👋';
+  customerPoints.textContent=d.profile.loyalty_points||0;
+  customerBudget.textContent=money(d.profile.weekly_budget);
+  customerHousehold.textContent=(d.profile.household_size||1)+' pers.';
+  b2cHousehold.value=d.profile.household_size||2;b2cBudget.value=d.profile.weekly_budget||45;b2cMode.value=d.profile.preferred_mode||'CLICK_COLLECT';
+  b2cSlot.value=d.profile.favorite_pickup_slot||'';b2cGoals.value=d.profile.goals||'';b2cDislikes.value=d.profile.disliked_foods||'';b2cAllergies.value=d.profile.declared_allergies||'';
+  b2cSubscriptions.innerHTML=(d.subscriptions.length?d.subscriptions.map(s=>`<div class="account-row"><b>${s.name}</b><br><small>${s.frequency} · ${money(s.budget)} · ${s.pickup_day}</small><br><button class="chipbtn" style="margin-top:7px" onclick="toggleB2CSubscription(${s.id})">${s.active?'Mettre en pause':'Réactiver'}</button></div>`).join(''):'<span class="muted">Aucun abonnement.</span>');
+  b2cFavorites.innerHTML=(d.favorites.length?d.favorites.map(f=>`<span class="favorite-chip">♥ ${f.product_name}</span>`).join(''):'<span class="muted">Aucun favori pour le moment.</span>');
+  b2cOrders.innerHTML=(d.orders.length?d.orders.map(o=>`<div class="account-row"><b>Commande #${o.id}</b><br><small>${o.status} · ${o.delivery_mode} · ${new Date(o.created_at).toLocaleDateString('fr-FR')}</small>${!['LIVREE','ANNULEE'].includes(o.status)?`<br><button class="chipbtn" style="margin-top:7px" onclick="cancelB2COrder(${o.id})">Annuler</button>`:''}</div>`).join(''):'<span class="muted">Aucune commande enregistrée.</span>');
+  favoriteProductButtons.innerHTML=publicCatalog.slice(0,8).map(p=>`<button class="chipbtn" style="margin:4px" onclick="toggleFavorite(${p.id})">♡ ${p.name}</button>`).join('');
+}
+async function cancelB2COrder(id){if(!confirm('Annuler cette commande ?'))return;try{await A('/b2c/orders/'+id+'/cancel',{method:'POST'});await loadB2CAccount()}catch(e){alert(e.message||e)}}
+async function saveB2CProfile(){
+  await A('/b2c/profile',{method:'PUT',body:JSON.stringify({household_size:+b2cHousehold.value,weekly_budget:+b2cBudget.value,goals:b2cGoals.value,disliked_foods:b2cDislikes.value,declared_allergies:b2cAllergies.value,favorite_pickup_slot:b2cSlot.value,preferred_mode:b2cMode.value})});
+  b2cProfileMsg.textContent='Enregistré ✓';await loadB2CAccount()
+}
+async function toggleFavorite(id){await A('/b2c/favorites/'+id,{method:'POST'});await loadB2CAccount()}
+async function createB2CSubscription(){await A('/b2c/subscriptions',{method:'POST',body:JSON.stringify({name:subName.value,frequency:subFrequency.value,budget:+subBudget.value,pickup_day:subDay.value})});await loadB2CAccount()}
+async function toggleB2CSubscription(id){await A('/b2c/subscriptions/'+id+'/toggle',{method:'POST'});await loadB2CAccount()}
+
+async function login(){try{let d=await A('/auth/login',{method:'POST',body:JSON.stringify({email:email.value,password:password.value})});token=d.access_token;localStorage.setItem('lpfb63',token);localStorage.setItem('lpfb63role',d.role);currentRole=d.role;headerUser.textContent=d.name+' · '+d.role;if(d.role==='PRO'){switchView('pro');await loadProAccount();await loadProProfile()}else if(d.role==='CUSTOMER'){switchView('customer');await loadB2CAccount()}else{switchView('admin');await refreshAll()}}catch(e){loginMsg.innerHTML='<span style="color:#b42318">Connexion refusée</span>'}}
+function logout(){localStorage.removeItem('lpfb63');localStorage.removeItem('lpfb63role');token='';currentRole='';proAccountName.textContent='Mode découverte';proLastOrder.textContent='—';switchView('shop')}
+function updateCuts(){let p=cache.products.find(x=>x.id==+productSel.value);cutSel.innerHTML='<option value="">Standard</option>'+((p?.cuts||[]).map(c=>`<option value="${c.name}">${c.name} (+${money(c.extra_price_ht)})</option>`).join(''))}
+async function refreshAll(){let [h,d,c,p,l,o,pr,dl,inv,u,sup,eq,set,preps,formats,recipes,alerts,batches,supplierProducts,purchaseOrders,stockStages]=await Promise.all([A('/health'),A('/dashboard'),A('/clients'),A('/products'),A('/lots'),A('/orders'),A('/production'),A('/deliveries'),A('/invoices'),A('/auth/me'),A('/suppliers'),A('/equipment'),A('/settings'),A('/preparations'),A('/packaging-formats'),A('/recipes'),A('/alerts'),A('/production/batches'),A('/supplier-products'),A('/purchase-orders'),A('/stock/stages')]);cache={clients:c,products:p,lots:l,preps,formats,recipes,alerts,production:pr,batches,suppliers:sup,supplierProducts,purchaseOrders};if(typeof chefProduct!=='undefined'){chefProduct.innerHTML=p.filter(x=>x.unit==='kg').map(x=>`<option value="${x.id}">${x.name}</option>`).join('');chefProduct.onchange=updateChefCuts;updateChefCuts()}loadToday();dbtype.textContent=h.database.toUpperCase();systemState.textContent='Base : '+h.database.toUpperCase()+' · V'+h.version;headerUser.textContent=u.full_name+' · '+u.role;kProducts.textContent=d.products;kClients.textContent=d.clients;kOrders.textContent=d.orders;kStock.textContent=d.stock_available;kProd.textContent=d.production_open;kExp.textContent=d.expiring_lots;kBlocked.textContent=d.blocked_lots;budgetLow.textContent=Math.round(d.equipment_budget_low).toLocaleString('fr-FR')+' €';budgetHigh.textContent=Math.round(d.equipment_budget_high).toLocaleString('fr-FR')+' €';clientSel.innerHTML=c.map(x=>`<option value="${x.id}">${x.client_type} · ${x.name}</option>`).join('');productSel.innerHTML=prodProduct.innerHTML=lotProduct.innerHTML=p.map(x=>`<option value="${x.id}">${x.name}</option>`).join('');updateCuts();stockRawAvailable.textContent=stockStages.RAW.available;stockRawLots.textContent=stockStages.RAW.lots+' lot(s)';stockPreparedAvailable.textContent=stockStages.PREPARED.available;stockPreparedLots.textContent=stockStages.PREPARED.lots+' lot(s)';
+clientsList.innerHTML=c.map(x=>`<div class=row><strong>${x.name}</strong> <span class=pill>${x.client_type}</span><br><span class=muted>${x.email||''}</span></div>`).join('');productsList.innerHTML=p.map(x=>`<div class=row><div style="display:flex;justify-content:space-between;gap:12px;align-items:center"><div><strong>${x.name}</strong> · ${x.price_configured?money(x.price_ht)+' HT / '+x.unit:'Prix à confirmer'}<br><span class=muted>${x.reference} · ${x.family}</span><div class=format-row>${(x.cuts||[]).map(c=>`<span class=format>${c.name}</span>`).join('')}</div></div><button class="action danger" onclick="deleteProduct(${x.id},'${String(x.name).replace(/'/g,"\\'")}')">Supprimer</button></div></div>`).join('');
+lotsList.innerHTML=l.map(x=>`<div class=row><strong>${x.internal_lot}</strong> · ${x.product_name} <span class="pill ${x.status==='BLOQUE'?'red':''}">${x.status}</span> <span class="pill">${x.lot_stage}</span><br>Reçu ${x.qty_received} · réservé ${x.qty_reserved} · consommé ${x.qty_consumed} · <b>dispo ${x.qty_available}</b> · DLC ${x.expiry_date||'—'}</div>`).join('');ordersList.innerHTML=o.length?o.map(x=>`<div class=row><strong>#${x.id} ${x.client_name}</strong> <span class=pill>${x.status}</span><br>${x.product_name} · ${x.quantity} · ${x.delivery_mode} · ${money(x.amount_ht)} HT${x.cut_name?`<br><b>Découpe :</b> ${x.cut_name}`:''}<br><button class="chipbtn" onclick="showOrderAllocations(${x.id})">Affectations stock</button> ${!['ANNULEE','TERMINEE'].includes(x.status)?`<button class="action secondary" onclick="cancelOrder(${x.id})">Annuler</button>`:''}</div>`).join(''):'Aucune commande.';dashOrders.innerHTML=o.slice(0,5).map(x=>`<div class=row>#${x.id} · ${x.client_name} · <span class=pill>${x.status}</span></div>`).join('')||'Aucune commande.';dashAlerts.innerHTML=(alerts||[]).slice(0,8).map(a=>`<div class=row><span class="dot ${a.level==='CRITIQUE'?'critique':a.level==='INFO'?'info':''}"></span><div>${a.message}<div class=mini-note>${a.type}</div></div></div>`).join('')||'<span class=muted>Aucune alerte.</span>';dashActivity.innerHTML=`<div class=stat-strip style="grid-template-columns:1fr 1fr"><div class=stat-tile><span class=muted>Valeur commandes</span><b>${money(d.order_value_ht)}</b></div><div class=stat-tile><span class=muted>Panier moyen</span><b>${money(d.average_order_ht)}</b></div><div class=stat-tile><span class=muted>Commandes ouvertes</span><b>${d.orders_open}</b></div><div class=stat-tile><span class=muted>Clients PRO</span><b>${d.clients_pro}</b></div></div>`;productionList.innerHTML=pr.map(x=>`<div class="batch-card"><strong>#${x.id} ${x.product_name}</strong> · ${x.quantity_needed} · <span class=pill>${x.status}</span>${x.output_lot?`<br><span class="muted">Lot fini : ${x.output_lot}${x.output_stage?' · '+x.output_stage:''}</span>`:''}<br>${x.status!=='TERMINE'?`<button class="action secondary" onclick="advanceProduction(${x.id})">Étape suivante</button>`:''}</div>`).join('')||'Aucun besoin.';batchJob.innerHTML='<option value="">Choisir…</option>'+pr.filter(x=>x.status!=='TERMINE'&&!x.batch_id).map(x=>`<option value="${x.id}" data-product="${x.product_id}">#${x.id} · ${x.product_name} · ${x.quantity_needed}</option>`).join('');renderProductionBatches(batches);deliveryList.innerHTML=dl.map(x=>`<div class=row><strong>#${x.id} commande ${x.order_id}</strong> · ${x.client_name}<br>${x.mode} · <span class=pill>${x.status}</span><br>${!['LIVREE','RETIRÉE'].includes(x.status)?`<button class="action secondary" onclick="advanceDelivery(${x.id})">Étape suivante</button>`:''}</div>`).join('')||'Aucune livraison.';invoiceList.innerHTML=inv.map(x=>`<div class="fiscal-card"><strong>${x.invoice_number||'Facture #'+x.id}</strong> · ${x.client_name}<br>${money(x.amount_ht)} HT ${x.amount_ttc!=null?'· '+money(x.amount_ttc)+' TTC':''} · <span class=pill>${x.status}</span>${x.payment_status?` · <span class=pill>${x.payment_status}</span>`:''}<div class="billing-actions"><button class="chipbtn" onclick="showInvoiceDetail(${x.id})">Détail</button>${x.status!=='VALIDEE'?`<button class="action secondary" onclick="finalizeInvoice(${x.id})">Valider</button>`:''}${x.payment_status!=='PAYE'?`<button class="chipbtn" onclick="markInvoicePaid(${x.order_id})">Marquer payé</button>`:''}</div></div>`).join('')||'Aucune facture.';suppliersList.innerHTML=sup.map(x=>`<div class=row><strong>${x.name}</strong><br><span class=muted>${x.city||''} · ${x.specialty||''}</span></div>`).join('');if(typeof spSupplier!=='undefined'){spSupplier.innerHTML=poSupplier.innerHTML=sup.map(x=>`<option value="${x.id}">${x.name}</option>`).join('');spProduct.innerHTML=p.map(x=>`<option value="${x.id}">${x.name}</option>`).join('');renderSupplierProducts(supplierProducts);renderPurchaseOrders(purchaseOrders);renderPurchaseDraftLines();receiptPO.innerHTML='<option value="">Choisir…</option>'+purchaseOrders.filter(x=>!['ANNULEE','RECUE'].includes(x.status)).map(x=>`<option value="${x.id}">#${x.id} · ${x.supplier_name} · ${x.status}</option>`).join('');}equipmentList.innerHTML=eq.map(x=>`<div class=row><strong>${x.name}</strong> <span class=pill>${x.priority}</span><br>${Math.round(x.budget_low).toLocaleString('fr-FR')}–${Math.round(x.budget_high).toLocaleString('fr-FR')} € · ${x.status}</div>`).join('');settingsTable.innerHTML=Object.entries(set).map(([k,v])=>`<tr><th>${k}</th><td>${v}</td></tr>`).join('');preparationsList.innerHTML=preps.map(x=>`<div class=row><div class=prep-card><div><strong>${x.product_name} · ${x.cut_name}</strong><br><span class=muted>${x.uses}</span></div><div><span class=pill>${x.portion_g} g/pers.</span></div></div><div class=muted>Rendement ${(x.yield_rate*100).toFixed(0)} % · B2C ${x.b2c_formats} · PRO ${x.pro_formats}</div></div>`).join('')||'Aucune préparation.';formatsList.innerHTML=formats.map(x=>`<div class=row><strong>${x.segment} · ${x.quantity_g>=1000?(x.quantity_g/1000)+' kg':x.quantity_g+' g'}</strong> · ${x.label}<br><span class=muted>${x.recommended_use}</span></div>`).join('');recipesList.innerHTML=recipes.map(r=>`<div class=row><strong>${r.name}</strong> <span class=pill>${r.default_servings} pers.</span><br><span class=muted>${r.ingredients.map(i=>`${i.product_name} ${i.grams_per_serving} g/pers. ${i.cut_name||''}`).join(' · ')}</span></div>`).join('')||'Aucune recette.'}
+
+
+
+
+
+async function sendGeneralSourcing(){
+  if(!generalSourceName.value.trim()){generalSourceMsg.textContent='Indiquez le produit recherché.';return}
+  try{
+    let d=await A('/public/general-sourcing-request',{method:'POST',body:JSON.stringify({requested_name:generalSourceName.value,category:generalSourceCategory.value,quantity_text:generalSourceQty.value,customer_email:generalSourceEmail.value||null,note:generalSourceNote.value})});
+    generalSourceMsg.innerHTML=`<span style="color:var(--green);font-weight:800">${d.message}</span>`;
+    generalSourceName.value='';generalSourceQty.value='';generalSourceNote.value='';
+  }catch(e){generalSourceMsg.textContent=e.data?.detail||e.message}
+}
+async function changeOwnPassword(){
+  try{
+    await A('/auth/change-password',{method:'POST',body:JSON.stringify({current_password:selfCurrentPassword.value,new_password:selfNewPassword.value})});
+    selfPasswordMsg.innerHTML='<span style="color:var(--green);font-weight:800">Mot de passe modifié.</span>';selfCurrentPassword.value='';selfNewPassword.value='';
+  }catch(e){selfPasswordMsg.innerHTML=`<span style="color:var(--red)">${e.data?.detail||e.message}</span>`}
+}
+async function loadControl97(){
+  try{
+    let [r,i,a,rm]=await Promise.all([A('/ops/release-status'),A('/ops/integrity'),A('/ops/audit-summary'),A('/ops/role-matrix')]);
+    v97Version.textContent=r.version;v97Blocking.textContent=i.blocking_count;v97Warnings.textContent=i.warning_count;v97Channel.textContent=r.channel;v100Schema.textContent=r.schema?.schema_ready?'MIGRÉ':'À MIGRER';
+    maintenanceEnabled.checked=!!r.maintenance.enabled;maintenanceMessage.value=r.maintenance.message||'';
+    v97Release.innerHTML=`<div class="${r.readiness?.ready_for_production?'v97-ok':'v97-warn'}"><b>${r.readiness?.ready_for_production?'Pré-production techniquement prête':'Pré-production à compléter'}</b><br><span class="muted">${r.database} · ${r.environment}${r.site_url?' · '+r.site_url:''}</span></div><div class="${r.support_configured?'v97-ok':'v97-warn'}"><b>Support ${r.support_configured?'configuré':'à configurer'}</b></div>`;
+    v97Integrity.innerHTML=(i.issues||[]).map(x=>`<div class="v97-bad"><b>${x.type}</b><br><span class="muted">${x.message}</span></div>`).join('')+(i.warnings||[]).slice(0,20).map(x=>`<div class="v97-warn"><b>${x.type}</b><br><span class="muted">${x.message}</span></div>`).join('')||'<div class="v97-ok"><b>Aucune anomalie détectée.</b></div>';
+    v97Audit.innerHTML=a.slice(0,30).map(x=>`<div class="row"><b>${x.event_type}</b><span style="float:right">${x.count}</span></div>`).join('')||'<span class="muted">Aucun événement.</span>';
+    v97Roles.innerHTML=Object.entries(rm.matrix).map(([role,rights])=>`<div class="role-row"><b>${role}</b><span class="muted">${rights.join(' · ')}</span></div>`).join('');
+  }catch(e){console.error(e)}
+}
+async function saveMaintenance(){
+  try{
+    let d=await A('/ops/maintenance',{method:'PUT',body:JSON.stringify({enabled:maintenanceEnabled.checked,message:maintenanceMessage.value})});
+    maintenanceMsg.textContent=d.enabled?'Maintenance activée.':'Maintenance désactivée.';
+  }catch(e){maintenanceMsg.textContent=e.data?.detail||e.message}
+}
+
+async function loadPreproduction(){
+  try{
+    let d=await A('/preproduction/readiness');
+    preprodState.textContent=d.ready_for_production?'PRÊT TECHNIQUEMENT':'À CORRIGER';
+    preprodBlocks.textContent=d.blocking_count;preprodWarnings.textContent=d.warning_count;
+    preprodChecks.innerHTML=d.checks.map(c=>`<div class="preprod-${c.status.toLowerCase()}"><div class="preprod-title"><span>${c.status==='PASS'?'✓':c.status==='WARN'?'⚠':'✕'} ${c.label}</span><span>${c.status}</span></div><div class="preprod-detail">${c.detail}</div>${c.items?.length?`<div class="preprod-detail">${c.items.join(' · ')}</div>`:''}</div>`).join('');
+  }catch(e){preprodChecks.innerHTML=`<div class="preprod-block">${e.data?.detail||e.message}</div>`}
+}
+
+async function runSmokeTest(){
+  smokeSummary.innerHTML='<span class="muted">Test en cours…</span>';smokeResults.innerHTML='';
+  try{
+    let d=await A('/preproduction/smoke-test',{method:'POST',body:JSON.stringify({include_write_cycle:true})});
+    smokeSummary.innerHTML=`<div class="preprod-${d.status==='PASS'?'pass':'block'}"><b>${d.status}</b> · ${d.passed} réussite(s) · ${d.failed} échec(s)<br><span class="preprod-detail">${d.notice}</span></div>`;
+    smokeResults.innerHTML=d.results.map(r=>`<div class="preprod-${r.status==='PASS'?'pass':'block'}"><div class="preprod-title"><span>${r.status==='PASS'?'✓':'✕'} ${r.name}</span><span>${r.status}</span></div><div class="preprod-detail">${r.detail}</div></div>`).join('');
+  }catch(e){smokeSummary.innerHTML=`<div class="preprod-block">${e.data?.detail||e.message}</div>`}
+}
+
+async function downloadReadinessReport(){
+  let r=await fetch('/preproduction/report',{headers:{Authorization:'Bearer '+token}});
+  if(!r.ok){alert('Impossible d’exporter le rapport.');return}
+  let blob=await r.blob(),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='LPFB-preproduction-readiness.json';a.click();URL.revokeObjectURL(u)
+}
+
+async function loadTeamSecurity(){
+  try{
+    let [users,status]=await Promise.all([A('/users'),A('/security/status')]);
+    securityStatus.innerHTML=status.warnings.length
+      ? status.warnings.map(x=>`<div class="security-warn">⚠ ${x}</div>`).join('')
+      : '<div class="security-ok">✓ Aucun avertissement de configuration détecté.</div>';
+    securityStatus.innerHTML+=`<div class="row"><b>Base</b> : ${status.database}</div><div class="row"><b>Équipe active</b> : ${status.active_staff}</div><div class="row"><b>Échecs de connexion journalisés</b> : ${status.login_failures_logged}</div>`;
+    teamUsers.innerHTML=users.map(u=>`<div class="user-card"><div class="user-head"><div><b>${u.full_name}</b><br><span class="muted">${u.email} · créé ${new Date(u.created_at).toLocaleDateString('fr-FR')}</span></div><span class="pill ${u.active?'':'red'}">${u.role} · ${u.active?'ACTIF':'INACTIF'}</span></div><div class="user-actions">${['ADMIN','MANAGER','VENTE','PRODUCTION','LIVRAISON','COMPTA'].includes(u.role)?`<button class="chipbtn" onclick="editTeamUser(${u.id},'${String(u.full_name).replace(/'/g,"\\'")}','${u.role}',${u.active})">Modifier</button><button class="chipbtn" onclick="resetTeamPassword(${u.id})">Réinitialiser mot de passe</button>`:''}</div></div>`).join('');
+  }catch(e){securityStatus.innerHTML=`<div class="security-warn">${e.data?.detail||e.message}</div>`}
+}
+async function createTeamUser(){
+  try{
+    await A('/users',{method:'POST',body:JSON.stringify({email:teamEmail.value,full_name:teamName.value,role:teamRole.value,password:teamPassword.value})});
+    teamMsg.innerHTML='<span style="color:var(--green);font-weight:800">Compte créé.</span>';teamName.value='';teamEmail.value='';teamPassword.value='';await loadTeamSecurity()
+  }catch(e){teamMsg.innerHTML=`<span style="color:var(--red)">${e.data?.detail||e.message}</span>`}
+}
+async function editTeamUser(id,name,role,active){
+  let newName=prompt('Nom complet',name);if(newName===null)return;
+  let newRole=prompt('Rôle : ADMIN, MANAGER, VENTE, PRODUCTION, LIVRAISON, COMPTA',role);if(newRole===null)return;
+  let keepActive=confirm(active?'OK = garder le compte actif · Annuler = désactiver':'OK = réactiver le compte · Annuler = laisser inactif');
+  let finalActive=active?keepActive:keepActive;
+  try{await A('/users/'+id,{method:'PUT',body:JSON.stringify({full_name:newName,role:newRole.toUpperCase(),active:finalActive})});await loadTeamSecurity()}catch(e){alert(e.data?.detail||e.message)}
+}
+async function resetTeamPassword(id){
+  let pw=prompt('Nouveau mot de passe temporaire (10 caractères minimum)');if(!pw)return;
+  try{await A('/users/'+id+'/reset-password',{method:'POST',body:JSON.stringify({password:pw})});alert('Mot de passe réinitialisé.')}catch(e){alert(e.data?.detail||e.message)}
+}
+
+let billingTaxRows=[],billingInvoices=[],billingPayments=[],selectedInvoiceId=null;
+async function loadBilling(){
+  try{
+    let [taxes,invoices,payments]=await Promise.all([A('/tax/products'),A('/invoices'),A('/payments')]);
+    billingTaxRows=taxes;billingInvoices=invoices;billingPayments=payments;
+    renderBillingTax();renderBillingInvoices();renderBillingPayments();
+  }catch(e){console.error(e)}
+}
+function renderBillingTax(){
+  if(typeof taxProductList==='undefined')return;
+  taxProductList.innerHTML=billingTaxRows.map(x=>`<div class="tax-row"><div><b>${x.name}</b><br><small class="muted">${x.reference} · ${x.family}</small></div><div><label>Taux %</label><input id="taxRate_${x.product_id}" type="number" min="0" max="100" step=".1" value="${x.tax_rate_pct}"></div><div><label>Libellé</label><input id="taxLabel_${x.product_id}" value="${String(x.tax_label||'').replace(/"/g,'&quot;')}"></div><button class="chipbtn" onclick="saveProductTax(${x.product_id})">Enregistrer</button></div>`).join('')
+}
+async function saveProductTax(id){
+  let rate=+document.getElementById('taxRate_'+id).value,label=document.getElementById('taxLabel_'+id).value;
+  await A('/tax/products/'+id,{method:'PUT',body:JSON.stringify({tax_rate_pct:rate,tax_label:label})});await loadBilling()
+}
+function renderBillingInvoices(){
+  if(typeof invoiceList==='undefined')return;
+  invoiceList.innerHTML=billingInvoices.map(x=>`<div class="fiscal-card"><strong>${x.invoice_number||'Facture #'+x.id}</strong> · ${x.client_name}<br><span class="muted">Commande #${x.order_id}</span><br>${money(x.amount_ht)} HT ${x.amount_tax!=null?'· taxe '+money(x.amount_tax):''} ${x.amount_ttc!=null?'· <b>'+money(x.amount_ttc)+' TTC</b>':''}<br><span class="pill">${x.status}</span>${x.payment_status?` <span class="pill">${x.payment_status}</span>`:''}<div class="billing-actions"><button class="chipbtn" onclick="showInvoiceDetail(${x.id})">Détail</button>${x.status!=='VALIDEE'?`<button class="action secondary" onclick="previewInvoiceTax(${x.id})">Calculer</button><button class="action" onclick="finalizeInvoice(${x.id})">Valider & numéroter</button>`:''}${x.payment_status!=='PAYE'?`<button class="chipbtn" onclick="markInvoicePaid(${x.order_id})">Marquer payé</button>`:''}</div></div>`).join('')||'<span class="muted">Aucune facture.</span>'
+}
+function renderBillingPayments(){
+  if(typeof paymentList==='undefined')return;
+  paymentList.innerHTML=billingPayments.map(x=>`<div class="fiscal-card"><b>Commande #${x.order_id}</b> · ${x.client_name}<br>${money(x.amount)} · <span class="pill">${x.status}</span><br><span class="muted">${x.method||'—'}${x.reference?' · '+x.reference:''}</span></div>`).join('')||'<span class="muted">Aucun paiement.</span>'
+}
+async function previewInvoiceTax(id){try{await A('/invoices/'+id+'/preview-tax',{method:'POST'});await loadBilling();await showInvoiceDetail(id)}catch(e){alert(e.data?.detail||e.message)}}
+async function finalizeInvoice(id){
+  if(!confirm('Valider et figer cette facture avec les taux actuellement configurés ?'))return;
+  try{await A('/invoices/'+id+'/finalize',{method:'POST',body:JSON.stringify({due_date:null})});await loadBilling();await showInvoiceDetail(id)}catch(e){alert(e.data?.detail||e.message)}
+}
+async function showInvoiceDetail(id){
+  selectedInvoiceId=id;creditInvoiceId.value=id;
+  try{
+    let d=await A('/invoices/'+id+'/detail');
+    let lines=d.lines.length
+      ? `<table class="invoice-lines"><thead><tr><th>Produit</th><th>Qté</th><th>PU HT</th><th>Taux</th><th>HT</th><th>Taxe</th><th>TTC</th></tr></thead><tbody>${d.lines.map(l=>`<tr><td>${l.product_name}</td><td>${l.quantity}</td><td>${money(l.unit_price_ht)}</td><td>${l.tax_rate_pct}%</td><td>${money(l.amount_ht)}</td><td>${money(l.amount_tax)}</td><td>${money(l.amount_ttc)}</td></tr>`).join('')}</tbody></table>`
+      : '<p class="muted">Cliquez sur « Calculer » pour générer l’aperçu fiscal avant validation.</p>';
+    let totals=`<div style="margin-top:12px"><b>HT : ${money(d.amount_ht||0)}</b>${d.amount_tax!=null?` · Taxe : ${money(d.amount_tax)} · <b>TTC : ${money(d.amount_ttc)}</b>`:''}</div>`;
+    let payment=d.payment?`<div class="row">Paiement : <b>${d.payment.status}</b> · ${d.payment.method}</div>`:'';
+    let credits=d.credits.length?`<h4>Avoirs</h4>${d.credits.map(c=>`<div class="row"><b>${c.credit_number}</b> · ${money(c.amount_ttc)} · ${c.reason} · <span class="pill">${c.status}</span></div>`).join('')}`:'';
+    invoiceDetail.innerHTML=`<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><b style="font-size:18px">${d.invoice_number||'Facture #'+d.id}</b><br><span class="muted">${d.client_name} · commande #${d.order_id}</span></div><span class="pill">${d.status}</span></div>${lines}${totals}${payment}${credits}`;
+  }catch(e){invoiceDetail.innerHTML='<span style="color:var(--red)">'+(e.data?.detail||e.message)+'</span>'}
+}
+async function markInvoicePaid(orderId){
+  let method=prompt('Mode de paiement (ex. CARTE, ESPECES, VIREMENT, SUR_PLACE)','SUR_PLACE');if(method===null)return;
+  let reference=prompt('Référence de paiement (optionnel)','');
+  try{await A('/payments/'+orderId+'/mark-paid',{method:'POST',body:JSON.stringify({method,reference:reference||null})});await loadBilling()}catch(e){alert(e.data?.detail||e.message)}
+}
+async function createCreditNote(){
+  if(!selectedInvoiceId){creditMsg.textContent='Sélectionnez une facture.';return}
+  try{
+    let d=await A('/invoices/'+selectedInvoiceId+'/credit-note',{method:'POST',body:JSON.stringify({reason:creditReason.value,amount_ht:+creditAmount.value})});
+    creditMsg.innerHTML=`<span style="color:var(--green);font-weight:800">Avoir ${d.credit_number} créé · ${money(d.amount_ttc)} TTC</span>`;creditAmount.value='';creditReason.value='';await showInvoiceDetail(selectedInvoiceId)
+  }catch(e){creditMsg.innerHTML=`<span style="color:var(--red)">${e.data?.detail||e.message}</span>`}
+}
+
+
+
+let availabilityRows=[];
+async function loadAvailabilityAdmin(){
+  try{
+    let [rows,requests,dash]=await Promise.all([A('/availability/products'),A('/procurement/requests'),A('/procurement/dashboard')]);availabilityRows=rows;
+    availabilityProduct.innerHTML=rows.map(x=>`<option value="${x.product_id}">${x.name} · ${x.reference}</option>`).join('');
+    availabilityList.innerHTML=rows.map(x=>`<div class="row"><b>${x.name}</b> <span class="pill">${x.order_mode}</span><br><span class="muted">${x.reference} · stock ${x.stock_available} ${x.price_ht>0?'· '+money(x.price_ht):'· prix à confirmer'} · délai ${x.supplier_lead_days} j</span></div>`).join('');
+    procOpenCount.textContent=dash.open_requests;procOpenQty.textContent=dash.open_quantity;procTransitQty.textContent=dash.in_transit_qty;procFulfilledQty.textContent=dash.fulfilled_qty;
+    procurementTopNeeds.innerHTML=dash.top_needs.map(x=>`<div class="proc-top"><b>${x.product_name}</b> · ${x.qty}<br><span class="muted">${x.requests} demande(s)</span></div>`).join('');
+    procurementRequests.innerHTML=requests.map(x=>`<div class="proc-request"><div class="proc-head"><div><b>${x.product_name}</b> · ${x.requested_qty}<br><span class="muted">${x.source_type}${x.source_order_id?' · commande #'+x.source_order_id:''} · ${new Date(x.created_at).toLocaleString('fr-FR')}</span></div><span class="pill">${x.status}</span></div>${x.allocated_qty>0?`<div class="progress-wrap"><div class="progress-bar" style="width:${Math.min(100,x.fulfillment_pct)}%"></div></div><div class="muted" style="font-size:11px;margin-top:4px">${x.fulfilled_qty} / ${x.allocated_qty} réceptionné(s) · ${x.fulfillment_pct}%</div>`:''}<div style="margin-top:8px;display:flex;gap:7px;flex-wrap:wrap">${!['COUVERT','ANNULE','COMMANDE_FOURNISSEUR'].includes(x.status)?`<button class="chipbtn" onclick="openProcurementSupplier(${x.id})">Choisir fournisseur</button><button class="chipbtn" onclick="setProcStatus(${x.id},'EN_COURS')">En cours</button><button class="chipbtn" onclick="setProcStatus(${x.id},'ANNULE')">Annuler</button>`:''}${x.allocated_qty>0?`<button class="chipbtn" onclick="openProcTrace(${x.id})">Voir le suivi</button>`:''}</div></div>`).join('')||'<span class="muted">Aucun besoin d’approvisionnement.</span>';
+    loadAvailabilityForm();loadSupplierCoverage();
+  }catch(e){console.error(e)}
+}
+function loadAvailabilityForm(){
+  let x=availabilityRows.find(r=>r.product_id===+availabilityProduct.value);if(!x)return;
+  availabilityMode.value=x.order_mode;availabilityLead.value=x.supplier_lead_days;availabilityNotes.value=x.notes||'';availabilityAllow.checked=!!x.allow_order;
+  availabilityInfo.innerHTML=`<div class="row"><b>Stock disponible</b> : ${x.stock_available} ${x.family}<br><span class="muted">${x.price_ht>0?'Prix '+money(x.price_ht):'Prix à définir avant vente directe'}</span></div>`;
+}
+
+let activeProcurementRequest=null;
+
+async function openProcTrace(id){
+  try{
+    let d=await A('/procurement/requests/'+id+'/trace');
+    procTraceTitle.textContent=`${d.product_name} · besoin #${d.request_id}`;
+    let steps=[`<div class="proc-trace-step"><b>Besoin client</b><br><span class="muted">Quantité ${d.requested_qty} · statut ${d.status}${d.source_order_id?' · commande #'+d.source_order_id:''}</span></div>`];
+    d.purchase.forEach(x=>steps.push(`<div class="proc-trace-step"><b>Bon fournisseur #${x.purchase_order_id}</b><br><span class="muted">${x.supplier_name||'Fournisseur'} · ${x.fulfilled_qty}/${x.allocated_qty} réceptionné(s) · ${x.purchase_order_status||''}</span></div>`));
+    procTraceContent.innerHTML=steps.join('');
+    procTraceModal.classList.add('open');document.body.style.overflow='hidden';
+  }catch(e){alert(e.data?.detail||e.message)}
+}
+function closeProcTrace(){procTraceModal.classList.remove('open');document.body.style.overflow=''}
+
+async function setProcStatus(id,status){
+  try{await A('/procurement/requests/'+id+'/status',{method:'PUT',body:JSON.stringify({status})});await loadAvailabilityAdmin()}catch(e){alert(e.data?.detail||e.message)}
+}
+async function openProcurementSupplier(id){
+  activeProcurementRequest=id;
+  try{
+    let d=await A('/procurement/requests/'+id+'/supplier-options');
+    procModalTitle.textContent=`${d.product_name} · ${d.requested_qty}`;
+    procSupplierOptions.innerHTML=d.options.length?d.options.map(o=>`<div class="supplier-option"><div><b>${o.supplier_name}</b>${o.linked?'':' <span class="avail-order">À confirmer</span>'}<br><span class="muted">${o.last_price_ht?money(o.last_price_ht)+' HT':''}${o.min_order_qty?' · mini '+o.min_order_qty:''}${o.lead_time_days!=null?' · délai '+o.lead_time_days+' j':''}${o.supplier_reference?' · réf. '+o.supplier_reference:''}</span></div><button class="action" onclick="convertProcurement(${id},${o.supplier_id},${o.last_price_ht||0})">Créer bon d'achat</button></div>`).join(''):'<div class="sourcing-box"><b>Aucun fournisseur associé à ce produit.</b><br><span class="muted">Ajoutez d’abord une association fournisseur/produit dans le module Achats.</span></div>';
+    procurementModal.classList.add('open');document.body.style.overflow='hidden';
+  }catch(e){alert(e.data?.detail||e.message)}
+}
+function closeProcurementModal(){procurementModal.classList.remove('open');document.body.style.overflow=''}
+async function convertProcurement(requestId,supplierId,price){
+  try{
+    let d=await A('/procurement/convert-to-purchase-orders',{method:'POST',body:JSON.stringify({expected_date:procExpectedDate.value||null,note:procNote.value||'',lines:[{request_id:requestId,supplier_id:supplierId,unit_price_ht:price||0}]})});
+    procModalMsg.innerHTML=`<span style="color:var(--green);font-weight:800">Bon d'achat créé : #${d.created[0].purchase_order_id}</span>`;setTimeout(async()=>{closeProcurementModal();await loadAvailabilityAdmin()},500)
+  }catch(e){procModalMsg.innerHTML=`<span style="color:var(--red)">${e.data?.detail||e.message}</span>`}
+}
+
+
+async function loadSupplierCoverage(){
+  try{
+    let [d,suppliers]=await Promise.all([A('/supplier-coverage'),A('/suppliers')]);
+    coverageTotal.textContent=d.total_products;coverageLinked.textContent=d.linked_products;coverageUnlinked.textContent=d.unlinked_products;coveragePct.textContent=d.coverage_pct+'%';
+    coverageSupplier.innerHTML=suppliers.filter(s=>s.active!==0).map(s=>`<option value="${s.id}">${s.name}${s.city?' · '+s.city:''}</option>`).join('');
+    coverageUnlinkedList.innerHTML=d.unlinked.length?d.unlinked.map(p=>`<label class="row" style="display:block"><input type="checkbox" class="coveragePick" value="${p.product_id}"> <b>${p.name}</b><br><span class="muted">${p.reference} · ${p.family}</span></label>`).join(''):'<span class="muted">Tous les produits ont au moins un fournisseur associé.</span>';
+    coverageNeeds.innerHTML=d.needs_without_supplier.length?d.needs_without_supplier.map(n=>`<div class="proc-request"><b>${n.product_name}</b> · ${n.requested_qty}<br><span class="muted">Besoin #${n.request_id} · ${n.status}</span></div>`).join(''):'<span class="muted">Aucun besoin ouvert sans fournisseur associé.</span>';
+    coverageFamilies.innerHTML=Object.entries(d.families).map(([name,x])=>`<div class="row"><b>${name}</b><br><span class="muted">${x.linked}/${x.total} référencés fournisseur · ${x.unlinked} à couvrir</span></div>`).join('');
+  }catch(e){console.error(e)}
+}
+async function bulkLinkSupplier(){
+  let ids=[...document.querySelectorAll('.coveragePick:checked')].map(x=>+x.value);
+  if(!ids.length){alert('Sélectionnez au moins un produit.');return}
+  try{
+    let d=await A('/supplier-coverage/bulk-link',{method:'POST',body:JSON.stringify({supplier_id:+coverageSupplier.value,product_ids:ids,lead_time_days:+coverageLead.value||0,note_reference:null})});
+    alert(`${d.created} association(s) créée(s), ${d.updated} mise(s) à jour.`);await loadSupplierCoverage();await loadAvailabilityAdmin()
+  }catch(e){alert(e.data?.detail||e.message)}
+}
+
+async function saveAvailability(){
+  try{
+    await A('/availability/products/'+availabilityProduct.value,{method:'PUT',body:JSON.stringify({order_mode:availabilityMode.value,supplier_lead_days:+availabilityLead.value||0,allow_order:availabilityAllow.checked,notes:availabilityNotes.value})});
+    await loadAvailabilityAdmin();await loadPublic()
+  }catch(e){alert(e.data?.detail||e.message)}
+}
+
+async function loadMediaAdmin(){
+  try{
+    let [rows,visuals,products]=await Promise.all([A('/media/products'),A('/marketing-visuals'),A('/products')]);
+    mediaProduct.innerHTML=products.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+    productMediaList.innerHTML=rows.map(x=>`<div class="media-admin-card"><img src="${x.image_url}" alt=""><div><b>${x.product_name}</b><br><span class="muted">${x.image_url}</span><br><span class="pill">${x.active?'ACTIF':'INACTIF'}</span></div></div>`).join('')||'<span class="muted">Aucune photo produit configurée.</span>';
+    marketingVisualList.innerHTML=visuals.map(x=>`<div class="media-admin-card"><img src="${x.image_url}" alt=""><div><b>${x.title}</b> · ${x.placement}<br><span class="muted">${x.subtitle}</span><br><span class="muted">${x.image_url}</span></div></div>`).join('')||'<span class="muted">Aucun visuel.</span>';
+  }catch(e){console.error(e)}
+}
+async function saveProductMedia(){
+  try{
+    await A('/media/products',{method:'POST',body:JSON.stringify({product_id:+mediaProduct.value,image_url:mediaProductUrl.value,alt_text:mediaProductAlt.value,badge:mediaProductBadge.value,active:true})});
+    mediaProductUrl.value='';mediaProductAlt.value='';await loadMediaAdmin();await loadPublic()
+  }catch(e){alert(e.data?.detail||e.message)}
+}
+async function createMarketingVisual(){
+  try{
+    await A('/marketing-visuals',{method:'POST',body:JSON.stringify({placement:visualPlacement.value,title:visualTitle.value,subtitle:visualSubtitle.value,image_url:visualUrl.value,target_filter:visualFilter.value,active:true,sort_order:+visualOrder.value||0})});
+    visualTitle.value='';visualSubtitle.value='';visualUrl.value='';visualFilter.value='';await loadMediaAdmin()
+  }catch(e){alert(e.data?.detail||e.message)}
+}
+
+let costingRows=[];
+async function loadCosting(){
+  try{
+    let [rows,stats]=await Promise.all([A('/costing/products'),A('/analytics/margins')]);costingRows=rows;
+    costProduct.innerHTML=rows.map(x=>`<option value="${x.product_id}">${x.name}</option>`).join('');
+    marginRevenue.textContent=money(stats.revenue_ht);marginCost.textContent=money(stats.estimated_cost_ht);marginValue.textContent=money(stats.estimated_margin_ht);marginPct.textContent=stats.estimated_margin_pct.toFixed(1)+' %';
+    costingTable.innerHTML=`<table class="cost-table"><thead><tr><th>Produit</th><th>Prix</th><th>Coût complet</th><th>Marge</th><th>Marge %</th><th>Prix cible</th></tr></thead><tbody>${rows.map(x=>{let cls=x.margin_pct<15?'margin-risk':x.margin_pct<30?'margin-watch':'margin-good';return `<tr><td><b>${x.name}</b><br><small>${x.reference}</small></td><td>${money(x.price_ht)}</td><td>${money(x.total_cost_ht)}</td><td>${money(x.margin_value_ht)}</td><td class="${cls}">${x.margin_pct.toFixed(1)} %</td><td>${money(x.suggested_price_ht)}</td></tr>`}).join('')}</tbody></table>`;
+    loadCostProductForm();
+  }catch(e){console.error(e)}
+}
+function loadCostProductForm(){
+  let x=costingRows.find(r=>r.product_id===+costProduct.value);if(!x)return;
+  costPurchase.value=x.purchase_cost_ht;costPackaging.value=x.packaging_cost_ht;costLabor.value=x.labor_cost_ht;costOther.value=x.other_cost_ht;costTarget.value=x.target_margin_pct;costCurrentPrice.value=x.price_ht;newSalePrice.value=x.price_ht;
+  costSuggestion.innerHTML=`Coût complet : <b>${money(x.total_cost_ht)}</b><br>Marge actuelle : <b>${money(x.margin_value_ht)} · ${x.margin_pct.toFixed(1)} %</b><br>Prix indicatif pour la marge cible : <b>${money(x.suggested_price_ht)}</b>`;
+  loadPriceHistory();
+}
+async function saveProductCost(){
+  let id=+costProduct.value;
+  await A('/costing/products/'+id,{method:'PUT',body:JSON.stringify({purchase_cost_ht:+costPurchase.value||0,packaging_cost_ht:+costPackaging.value||0,labor_cost_ht:+costLabor.value||0,other_cost_ht:+costOther.value||0,target_margin_pct:+costTarget.value||0})});await loadCosting()
+}
+async function applyProductPrice(){
+  let id=+costProduct.value;
+  try{let d=await A('/products/'+id+'/price',{method:'POST',body:JSON.stringify({price_ht:+newSalePrice.value,reason:priceReason.value})});priceMsg.innerHTML=`<span style="color:var(--green);font-weight:800">Prix mis à jour : ${money(d.old_price_ht)} → ${money(d.new_price_ht)}</span>`;priceReason.value='';await refreshAll();await loadCosting()}catch(e){priceMsg.innerHTML=`<span style="color:var(--red)">${e.data?.detail||e.message}</span>`}
+}
+async function loadPriceHistory(){
+  if(!costProduct.value)return;
+  let rows=await A('/products/'+costProduct.value+'/price-history');
+  priceHistory.innerHTML=rows.length?rows.map(x=>`<div class="row"><b>${money(x.price_ht)}</b> · ${new Date(x.changed_at).toLocaleString('fr-FR')}<br><span class="muted">${x.reason||'Sans motif'} · ${x.changed_by||''}</span></div>`).join(''):'<span class="muted">Aucune modification historisée.</span>'
+}
+async function createOrder(){try{let d=await A('/orders',{method:'POST',body:JSON.stringify({client_id:+clientSel.value,product_id:+productSel.value,quantity:+qty.value,delivery_mode:deliveryMode.value,cut_name:cutSel.value||null,note:orderNote.value||null})});orderMsg.innerHTML='<span style="color:#157347">Commande #'+d.order_id+' créée · '+d.status+'</span>';await refreshAll()}catch(e){orderMsg.innerHTML='<span style="color:#b42318">'+(e.data?.detail||'Erreur')+'</span>'}}
+async function showOrderAllocations(id){
+  try{
+    let d=await A('/orders/'+id+'/allocations');allocationTitle.textContent='Commande #'+id+' · '+d.order_status;
+    let r=d.reservations.map(x=>`<div class="row"><b>${x.internal_lot||'Lot supprimé'}</b> <span class="pill">${x.lot_stage||'—'}</span> <span class="pill">${x.status}</span><br><span class="muted">Quantité ${x.quantity}</span></div>`).join('')||'<span class="muted">Aucune réservation.</span>';
+    let p=d.production_jobs.map(x=>`<div class="row"><b>Production #${x.id}</b> · ${x.product_name}<br><span class="muted">${x.quantity_needed} · ${x.status}</span></div>`).join('');
+    let a=d.procurement.map(x=>`<div class="row"><b>Appro #${x.id}</b> · ${x.product_name}<br><span class="muted">${x.requested_qty} · ${x.status}</span></div>`).join('');
+    allocationContent.innerHTML='<h3>Réservations</h3>'+r+(p?'<h3>Production</h3>'+p:'')+(a?'<h3>Approvisionnement</h3>'+a:'');
+    allocationModal.classList.add('open');document.body.style.overflow='hidden';
+  }catch(e){alert(e.data?.detail||e.message)}
+}
+function closeAllocationModal(){allocationModal.classList.remove('open');document.body.style.overflow=''}
+
 async function cancelOrder(id){await A('/orders/'+id+'/cancel',{method:'POST'});await refreshAll()}
-async function createProduction(){await A('/production',{method:'POST',body:JSON.stringify({product_id:+prodProduct.value,quantity_needed:+prodQty.value})});await refreshAll()}
-async function advanceProduction(id){await A('/production/'+id+'/advance',{method:'POST'});await refreshAll()}
-async function advanceDelivery(id){await A('/deliveries/'+id+'/advance',{method:'POST'});await refreshAll()}
-async function validateInvoice(id){await A('/invoices/'+id+'/validate',{method:'POST'});await refreshAll()}
-async function createClient(){await A('/clients',{method:'POST',body:JSON.stringify({client_type:newClientType.value,name:newClientName.value,email:newClientEmail.value||null})});newClientName.value='';newClientEmail.value='';await refreshAll()}
-async function createProduct(){await A('/products',{method:'POST',body:JSON.stringify({reference:newProductRef.value,name:newProductName.value,family:newProductFamily.value,unit:newProductUnit.value,price_ht:+newProductPrice.value})});await refreshAll()}
-async function createLot(){await A('/lots',{method:'POST',body:JSON.stringify({product_id:+lotProduct.value,internal_lot:lotInternal.value,supplier_lot:lotSupplier.value||null,qty_received:+lotQty.value,expiry_date:lotDlc.value||null,status:lotStatus.value})});await refreshAll()}
-async function createSupplier(){await A('/suppliers',{method:'POST',body:JSON.stringify({name:supplierName.value,city:supplierCity.value||null,specialty:supplierSpecialty.value||null})});await refreshAll()}
-async function createEquipment(){await A('/equipment',{method:'POST',body:JSON.stringify({name:eqName.value,budget_low:+eqLow.value,budget_high:+eqHigh.value,priority:eqPriority.value,status:'A_ACHETER'})});await refreshAll()}
-async function loadAudit(){let a=await A('/audit');auditLog.innerHTML=a.map(x=>`[${x.created_at}] ${x.event_type} — ${x.details}`).join('<br>')}
-async function downloadBackup(){let r=await fetch('/backup',{headers:{Authorization:'Bearer '+token}});let blob=await r.blob();let u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='lpfb-backup.json';a.click();URL.revokeObjectURL(u)}
-if(token){loginBox.classList.add('hidden');appBox.classList.remove('hidden');refreshAll()}
-</script></main></body></html>
+function updateBatchCuts(){
+  let opt=batchJob.options[batchJob.selectedIndex],pid=+(opt?.dataset?.product||0),p=cache.products.find(x=>x.id===pid);
+  batchCut.innerHTML='<option value="">Standard</option>'+((p?.cuts||[]).map(c=>`<option value="${c.name}">${c.name}</option>`).join(''));
+}
+async function previewSourceLots(){
+  if(!batchJob.value||!batchInputQty.value)return;
+  try{
+    let d=await A(`/production/${batchJob.value}/suggest-inputs?input_qty=${encodeURIComponent(batchInputQty.value)}`);
+    sourceLotPreview.innerHTML=`<b>Lots FEFO proposés</b><br>${d.lots.map(x=>`${x.internal_lot} · ${x.suggested_qty} · DLC ${x.expiry_date||'—'}`).join('<br>')||'Aucun lot libéré disponible.'}${d.uncovered_qty>0?`<br><span style="color:var(--red)">Manque ${d.uncovered_qty}</span>`:''}`;
+  }catch(e){sourceLotPreview.textContent=e.message||'Impossible de calculer les lots sources'}
+}
+async function completeProductionBatch(){
+  if(!batchJob.value){batchMsg.textContent='Choisissez un ordre de production.';return}
+  try{
+    let d=await A('/production/'+batchJob.value+'/complete',{method:'POST',body:JSON.stringify({
+      internal_lot:batchInternalLot.value,actual_input_qty:+batchInputQty.value,actual_output_qty:+batchOutputQty.value,
+      cut_name:batchCut.value||null,packaging:batchPackaging.value,expiry_date:batchExpiry.value||null,
+      temperature_c:batchTemp.value===''?null:+batchTemp.value,quality_status:batchQuality.value,operator_notes:batchNotes.value
+    })});
+    batchMsg.innerHTML=`<span style="color:var(--green);font-weight:800">Lot ${d.output_lot} créé · ${d.lot_status}</span>`;
+    batchInternalLot.value='';batchNotes.value='';await refreshAll();
+  }catch(e){batchMsg.innerHTML=`<span style="color:var(--red)">${e.data?.detail||e.message}</span>`}
+}
+function renderProductionBatches(rows){
+  if(typeof productionBatches==='undefined')return;
+  productionBatches.innerHTML=(rows||[]).map(b=>`<div class="batch-card"><b>${b.output_lot||'Lot —'} · ${b.product_name}</b> <span class="pill ${b.quality_status==='BLOQUEE'?'red':''}">${b.quality_status}</span><br><span class="muted">${b.cut_name||'Standard'} · ${b.packaging} · entrée ${b.actual_input_qty} → sortie ${b.actual_output_qty}${b.expiry_date?' · date '+b.expiry_date:''}</span><br><small>Sources : ${(b.sources||[]).map(s=>s.lot+' ('+s.quantity+')').join(', ')||'—'}</small><br><button class="chipbtn" style="margin-top:7px" onclick="showProductionLabel(${b.id})">Étiquette</button></div>`).join('')||'<span class="muted">Aucun lot terminé.</span>';
+}
+async function loadProductionBatches(){let b=await A('/production/batches');cache.batches=b;renderProductionBatches(b)}
+async function showProductionLabel(id){
+  let d=await A('/production/batches/'+id+'/label');
+  labelPreview.innerHTML=`<h3>${d.brand}</h3><div style="font-size:20px;font-weight:900;margin:8px 0">${d.product}</div><b>Lot : ${d.internal_lot}</b><br>${d.cut_name?`Découpe : ${d.cut_name}<br>`:''}Conditionnement : ${d.packaging}<br>Quantité nette : ${d.net_quantity}<br>Date saisie/validée : ${d.expiry_date||'—'}<br><span class="pill">${d.quality_status}</span><hr><small>${d.notice}</small>`;
+  labelModal.style.display='block';labelModal.scrollIntoView({behavior:'smooth'})
+}
+async function searchTraceability(){
+  if(!traceLotSearch.value)return;
+  try{
+    let d=await A('/traceability/'+encodeURIComponent(traceLotSearch.value));
+    traceResult.innerHTML=`<b>${d.lot.product} · ${d.lot.internal_lot}</b><br>Statut : ${d.lot.status} · date ${d.lot.expiry_date||'—'}<hr style="border-color:#355144"><b>Amont</b><br>${d.upstream.length?d.upstream.map(x=>`${x.internal_lot}${x.supplier_lot?' / fournisseur '+x.supplier_lot:''} · ${x.quantity}`).join('<br>'):'Lot de réception ou aucune transformation enregistrée.'}<hr style="border-color:#355144"><b>Aval</b><br>${d.downstream.length?d.downstream.map(x=>`Commande #${x.order_id} · ${x.client} · ${x.quantity}`).join('<br>'):'Aucune commande liée.'}`;
+  }catch(e){traceResult.innerHTML=`<span style="color:#ffd0c9">${e.data?.detail||e.message}</span>`}
+}
+async function createProduction(){await A('/production',{method:'POST',body:JSON.stringify({product_id:+prodProduct.value,quantity_needed:+prodQty.value})});await refreshAll()}async function advanceProduction(id){await A('/production/'+id+'/advance',{method:'POST'});await refreshAll()}async function advanceDelivery(id){await A('/deliveries/'+id+'/advance',{method:'POST'});await refreshAll()}async function validateInvoice(id){await A('/invoices/'+id+'/validate',{method:'POST'});await refreshAll()}async function createClient(){await A('/clients',{method:'POST',body:JSON.stringify({client_type:newClientType.value,name:newClientName.value,email:newClientEmail.value||null})});newClientName.value='';newClientEmail.value='';await refreshAll()}async function createProduct(){await A('/products',{method:'POST',body:JSON.stringify({reference:newProductRef.value,name:newProductName.value,family:newProductFamily.value,unit:newProductUnit.value,price_ht:+newProductPrice.value})});await refreshAll()}async function deleteProduct(id,name){if(!confirm(`Supprimer « ${name} » ?`))return;try{await A('/products/'+id,{method:'DELETE'});await refreshAll()}catch(e){alert(e.data?.detail||e.message)}}async function createLot(){await A('/lots',{method:'POST',body:JSON.stringify({product_id:+lotProduct.value,internal_lot:lotInternal.value,supplier_lot:lotSupplier.value||null,qty_received:+lotQty.value,expiry_date:lotDlc.value||null,status:lotStatus.value})});await refreshAll()}async function createSupplier(){await A('/suppliers',{method:'POST',body:JSON.stringify({name:supplierName.value,city:supplierCity.value||null,specialty:supplierSpecialty.value||null})});await refreshAll()}async function createEquipment(){await A('/equipment',{method:'POST',body:JSON.stringify({name:eqName.value,budget_low:+eqLow.value,budget_high:+eqHigh.value,priority:eqPriority.value,status:'A_ACHETER'})});await refreshAll()}async function loadAudit(){let a=await A('/audit');auditLog.innerHTML=a.map(x=>`[${x.created_at}] ${x.event_type} — ${x.details}`).join('<br>')}async function downloadBackup(){let r=await fetch('/backup',{headers:{Authorization:'Bearer '+token}});let blob=await r.blob();let u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='lpfb-backup.json';a.click();URL.revokeObjectURL(u)}
+
+// V54 — panier intelligent B2C + achats prévisionnels
+let smartGoal='duo';
+function selectSmartGoal(goal,el){smartGoal=goal;document.querySelectorAll('#smartGoals .goal').forEach(x=>x.classList.remove('active'));el.classList.add('active');smartPeople.value=goal==='duo'?2:goal==='family'?4:6;renderSmartBasket()}
+function renderSmartBasket(){
+  if(typeof smartBasketRows==='undefined')return;
+  const n=Math.max(1,+smartPeople.value||2), meal=smartMeal.value;
+  const presets={equilibre:[['Carotte',90,'Julienne'],['Courgette',120,'Rondelles'],['Poivron',70,'Lanières'],['Tomate',120,'Dés']],wok:[['Carotte',90,'Julienne'],['Courgette',110,'Demi-rondelles'],['Poivron',90,'Lanières'],['Oignon',45,'Émincé']],crudites:[['Carotte',80,'Râpée'],['Concombre',100,'Rondelles'],['Tomate',110,'Dés'],['Betterave',70,'Dés']],soupe:[['Carotte',100,'Rondelles'],['Pomme de terre',160,'Cubes'],['Poireau',90,'Émincé'],['Oignon',40,'Émincé']]};
+  let rows=presets[meal]||presets.equilibre,total=0;
+  smartBasketRows.innerHTML=rows.map(([name,g,cut])=>{let net=g*n,totalg=Math.ceil(net/50)*50;total+=totalg;let fmt=totalg<=250?'250 g':totalg<=500?'500 g':totalg<=750?'750 g':totalg<=1000?'1 kg':(Math.ceil(totalg/500)*500/1000).toFixed(1).replace('.',',')+' kg';return `<div class="basketline"><div><strong>${name}</strong><div class="muted">${cut} · ${g} g/personne</div></div><span class="basketqty">${fmt}</span><span class="pill">${net} g utiles</span></div>`}).join('');
+  smartPeopleLabel.textContent=n;smartTotalWeight.textContent=(total/1000).toFixed(2).replace('.',',')+' kg';smartFormat.textContent=n<=2?'250–500 g':n<=4?'500–750 g':'750 g–1 kg';
+}
+function saveSmartBasket(){localStorage.setItem('lpfb-smart-basket',JSON.stringify({goal:smartGoal,people:+smartPeople.value,meal:smartMeal.value,saved_at:new Date().toISOString()}));smartMsg.textContent='Panier enregistré sur cet appareil. Il sera relié au compte client dans la version commerciale.'}
+
+let purchaseDraft=[{product_id:null,quantity:5,unit_price_ht:0}];
+function renderSupplierProducts(rows){
+  if(typeof supplierProductList==='undefined')return;
+  supplierProductList.innerHTML=(rows||[]).map(x=>`<div class="po-card"><b>${x.supplier_name}</b> · ${x.product_name}<br><span class="muted">${money(x.last_price_ht)} HT · mini ${x.min_order_qty||0} · délai ${x.lead_time_days||0} j ${x.supplier_reference?'· réf. '+x.supplier_reference:''}</span></div>`).join('')||'<span class="muted">Aucune association.</span>'
+}
+async function saveSupplierProduct(){
+  await A('/supplier-products',{method:'POST',body:JSON.stringify({supplier_id:+spSupplier.value,product_id:+spProduct.value,supplier_reference:spRef.value||null,last_price_ht:+spPrice.value||0,min_order_qty:+spMinQty.value||0,lead_time_days:+spLead.value||0})});await refreshAll()
+}
+function addPurchaseDraftLine(){purchaseDraft.push({product_id:null,quantity:5,unit_price_ht:0});renderPurchaseDraftLines()}
+function removePurchaseDraftLine(i){purchaseDraft.splice(i,1);if(!purchaseDraft.length)purchaseDraft.push({product_id:null,quantity:5,unit_price_ht:0});renderPurchaseDraftLines()}
+function renderPurchaseDraftLines(){
+  if(typeof poDraftLines==='undefined')return;
+  poDraftLines.innerHTML=purchaseDraft.map((x,i)=>`<div class="po-line"><div><label>Produit</label><select onchange="purchaseDraft[${i}].product_id=+this.value">${(cache.products||[]).map(p=>`<option value="${p.id}" ${x.product_id===p.id?'selected':''}>${p.name}</option>`).join('')}</select></div><div><label>Qté</label><input type="number" step=".1" value="${x.quantity}" onchange="purchaseDraft[${i}].quantity=+this.value"></div><div><label>Prix HT</label><input type="number" step=".01" value="${x.unit_price_ht}" onchange="purchaseDraft[${i}].unit_price_ht=+this.value"></div><button class="remove" onclick="removePurchaseDraftLine(${i})">×</button></div>`).join('');
+  purchaseDraft.forEach((x,i)=>{if(!x.product_id&&cache.products?.[0])x.product_id=cache.products[0].id})
+}
+async function createPurchaseOrder(){
+  try{
+    let d=await A('/purchase-orders',{method:'POST',body:JSON.stringify({supplier_id:+poSupplier.value,expected_date:poExpected.value||null,note:poNote.value,lines:purchaseDraft})});
+    poMsg.innerHTML=`<span style="color:var(--green);font-weight:800">Bon d'achat #${d.id} créé.</span>`;purchaseDraft=[{product_id:null,quantity:5,unit_price_ht:0}];await refreshAll()
+  }catch(e){poMsg.innerHTML=`<span style="color:var(--red)">${e.data?.detail||e.message}</span>`}
+}
+function renderPurchaseOrders(rows){
+  if(typeof purchaseOrderList==='undefined')return;
+  purchaseOrderList.innerHTML=(rows||[]).map(po=>`<div class="po-card"><b>#${po.id} · ${po.supplier_name}</b> <span class="po-status">${po.status}</span><br><span class="muted">${po.expected_date?'Prévu '+po.expected_date+' · ':''}${money(po.amount_ht)} HT</span><br>${po.lines.map(l=>`${l.product_name} · ${l.received_qty}/${l.quantity} · ${money(l.unit_price_ht)}`).join('<br>')}<br>${po.status==='BROUILLON'?`<button class="chipbtn" style="margin-top:7px" onclick="sendPurchaseOrder(${po.id})">Marquer envoyée</button> <button class="chipbtn" onclick="cancelPurchaseOrder(${po.id})">Annuler</button>`:''}</div>`).join('')||'<span class="muted">Aucun bon d’achat.</span>'
+}
+async function sendPurchaseOrder(id){await A('/purchase-orders/'+id+'/send',{method:'POST'});await refreshAll()}
+async function cancelPurchaseOrder(id){if(!confirm('Annuler ce bon d’achat ?'))return;await A('/purchase-orders/'+id+'/cancel',{method:'POST'});await refreshAll()}
+function renderReceiptLines(){
+  if(!receiptPO.value){receiptLines.innerHTML='';return}
+  let po=(cache.purchaseOrders||[]).find(x=>x.id===+receiptPO.value);if(!po)return;
+  receiptLines.innerHTML=po.lines.map(l=>`<div class="receive-line" data-line="${l.id}"><div><label>${l.product_name}</label><input value="Commandé ${l.quantity} · reçu ${l.received_qty}" disabled></div><div><label>Qté reçue</label><input class="rcvQty" type="number" step=".1" value="${Math.max(0,l.quantity-l.received_qty)}"></div><div><label>Lot interne</label><input class="rcvInternal" placeholder="LPFB-REC-${po.id}-${l.id}"></div><div><label>Lot fournisseur</label><input class="rcvSupplierLot"></div><div><label>Statut</label><select class="rcvStatus"><option value="BLOQUE">Bloqué</option><option value="LIBERE">Libéré</option></select></div><div><label>Date validée</label><input class="rcvExpiry" type="date"></div></div>`).join('')
+}
+async function receivePurchaseOrder(){
+  let poId=+receiptPO.value;if(!poId)return;
+  let lines=[...receiptLines.querySelectorAll('.receive-line')].map(row=>({purchase_order_line_id:+row.dataset.line,received_qty:+row.querySelector('.rcvQty').value,internal_lot:row.querySelector('.rcvInternal').value,supplier_lot:row.querySelector('.rcvSupplierLot').value||null,expiry_date:row.querySelector('.rcvExpiry').value||null,lot_status:row.querySelector('.rcvStatus').value})).filter(x=>x.received_qty>0);
+  try{let d=await A('/purchase-orders/'+poId+'/receive',{method:'POST',body:JSON.stringify({note:receiptNote.value,lines})});receiptMsg.innerHTML=`<span style="color:var(--green);font-weight:800">Réception enregistrée · ${d.status}</span>`;await refreshAll()}catch(e){receiptMsg.innerHTML=`<span style="color:var(--red)">${e.data?.detail||e.message}</span>`}
+}
+function renderPurchasing(){
+  if(typeof purchasePlan==='undefined')return;
+  const products=cache.products||[],lots=cache.lots||[],preps=cache.preps||[];
+  let data=products.filter(p=>p.unit==='kg').slice(0,18).map(p=>{let stock=lots.filter(l=>l.product_id===p.id&&l.status!=='BLOQUE').reduce((s,l)=>s+(+l.qty_available||0),0);let prep=preps.find(x=>x.product_id===p.id)||preps.find(x=>x.product_name===p.name);let yieldRate=prep?.yield_rate||.85;let target=12;let netNeed=Math.max(0,target-stock);let gross=netNeed?netNeed/yieldRate*1.10:0;return {p,stock,yieldRate,gross}}).sort((a,b)=>b.gross-a.gross);
+  purchasePlan.innerHTML=`<table class="forecast-table"><thead><tr><th>Produit</th><th>Stock</th><th>Rendement</th><th>Achat suggéré</th><th>État</th></tr></thead><tbody>${data.map(x=>{let st=x.stock<4?'<span class="status-risk">À sécuriser</span>':x.stock<8?'<span class="status-watch">À surveiller</span>':'<span class="status-good">OK</span>';return `<tr><td><b>${x.p.name}</b></td><td>${x.stock.toFixed(1)} kg<div class="progress"><i style="width:${Math.min(100,x.stock/12*100)}%"></i></div></td><td>${Math.round(x.yieldRate*100)} %</td><td><b>${x.gross?x.gross.toFixed(1)+' kg':'—'}</b></td><td>${st}</td></tr>`}).join('')}</tbody></table>`;
+}
+renderSmartBasket();renderB2CCart();
+
+loadPublic();if(token){A('/auth/me').then(u=>{currentRole=u.role;localStorage.setItem('lpfb63role',u.role);if(u.role==='PRO'){switchView('pro');loadProAccount();loadProProfile()}else if(u.role==='CUSTOMER'){switchView('customer');loadB2CAccount()}else{switchView('admin');refreshAll()}}).catch(()=>{localStorage.removeItem('lpfb63');localStorage.removeItem('lpfb63role');token='';currentRole=''})}
+
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;let b=document.getElementById('installAppBtn');if(b)b.style.display='inline-flex'});
+window.addEventListener('appinstalled',()=>{let b=document.getElementById('installAppBtn');if(b)b.style.display='none';deferredInstallPrompt=null});
+async function installLPFB(){
+  if(!deferredInstallPrompt){alert("L'installation directe dépend du navigateur. Sur iPhone, utilisez Partager → Sur l’écran d’accueil.");return}
+  deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;
+  let b=document.getElementById('installAppBtn');if(b)b.style.display='none';
+}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(console.error))}
+fetch('/app-config').then(r=>r.json()).then(c=>{
+  if(c.site_url){let l=document.querySelector('link[rel="canonical"]');if(!l){l=document.createElement('link');l.rel='canonical';document.head.appendChild(l)}l.href=c.site_url}
+  if(c.environment!=='production'){envBadge.textContent='ENV '+String(c.environment).toUpperCase()+(c.demo_enabled?' · DÉMO ACTIVE':'');envBadge.style.display='block'}
+  if(c.maintenance?.enabled){maintenanceBanner.textContent=c.maintenance.message||'Maintenance en cours';maintenanceBanner.style.display='block'}
+}).catch(()=>{});
+
+</script>
+<div id="productDetailModal" class="product-detail-modal" onclick="if(event.target===this)closeProductDetail()">
+  <div class="product-detail-shell">
+    <div id="productDetailImage" class="product-detail-image"></div>
+    <div class="product-detail-copy">
+      <button class="detail-close" onclick="closeProductDetail()">×</button>
+      <span id="detailFamily" class="pill"></span>
+      <h2 id="detailName" style="font-size:34px;margin:12px 0 6px"></h2>
+      <div id="detailPrice" class="price"></div>
+      <p id="detailUses" class="muted"></p>
+      <div class="detail-grid">
+        <div class="detail-chip"><span class="muted">Format conseillé</span><br><b id="detailFormats"></b></div>
+        <div class="detail-chip"><span class="muted">Repère portion</span><br><b id="detailPortion"></b></div>
+      </div>
+      <label>Format</label><select id="detailFormat"></select>
+      <label>Découpe</label><select id="detailCut"></select>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+        <button class="action" id="detailAddBtn" onclick="addDetailToCart()">Ajouter au panier</button><button class="chipbtn" id="detailSourceBtn" onclick="requestSourcing(detailProductId)">Demander approvisionnement</button>
+        <button class="chipbtn" onclick="toggleDetailFavorite()">♡ Ajouter aux favoris</button>
+      </div>
+      <div class="mini-note" style="margin-top:14px">La disponibilité, l'origine et les caractéristiques affichées dans l'application doivent rester alignées avec les données réelles du produit.</div>
+    </div>
+  </div>
+</div>
+
+<div id="procurementModal" class="product-detail-modal" onclick="if(event.target===this)closeProcurementModal()">
+  <div class="product-detail-shell" style="grid-template-columns:1fr;max-width:720px">
+    <div class="product-detail-copy">
+      <button class="detail-close" onclick="closeProcurementModal()">×</button>
+      <span class="pill">APPROVISIONNEMENT</span>
+      <h2 id="procModalTitle">Choisir un fournisseur</h2>
+      <div id="procSupplierOptions"></div>
+      <label>Date prévue</label><input id="procExpectedDate" type="date">
+      <label>Note</label><input id="procNote" placeholder="Ex. à livrer avant 8h">
+      <div id="procModalMsg" class="muted" style="margin-top:8px"></div>
+    </div>
+  </div>
+</div>
+
+<div id="procTraceModal" class="product-detail-modal" onclick="if(event.target===this)closeProcTrace()">
+  <div class="product-detail-shell" style="grid-template-columns:1fr;max-width:760px">
+    <div class="product-detail-copy">
+      <button class="detail-close" onclick="closeProcTrace()">×</button>
+      <span class="pill">TRAÇABILITÉ APPROVISIONNEMENT</span>
+      <h2 id="procTraceTitle">Suivi</h2>
+      <div id="procTraceContent"></div>
+    </div>
+  </div>
+</div>
+<div id="envBadge" class="env-badge"></div><div id="allocationModal" class="product-detail-modal" onclick="if(event.target===this)closeAllocationModal()"><div class="product-detail-shell" style="grid-template-columns:1fr;max-width:760px"><div class="product-detail-copy"><button class="detail-close" onclick="closeAllocationModal()">×</button><span class="pill">AFFECTATIONS COMMANDE</span><h2 id="allocationTitle">Commande</h2><div id="allocationContent"></div></div></div></div></body></html>

@@ -1,0 +1,24 @@
+{
+  "name": "Le Panier Frais Bio",
+  "short_name": "LPFB",
+  "description": "Le Panier Frais Bio — fruits, légumes, préparations, jus, Click & Collect, livraison et commandes PRO.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F6F1E2",
+  "theme_color": "#143F2E",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
