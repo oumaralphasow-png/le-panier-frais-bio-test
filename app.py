@@ -1,4 +1,5 @@
-import os, json
+import os, json, hashlib
+import stripe
 from datetime import datetime, timedelta, timezone, date
 from pathlib import Path
 from typing import Optional
@@ -11,7 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 from pydantic import BaseModel, Field
-from sqlalchemy import create_engine, String, Integer, Float, ForeignKey, select, func
+from sqlalchemy import create_engine, String, Integer, Float, ForeignKey, select, func, inspect
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, Session, sessionmaker
 
 BASE = Path(__file__).resolve().parent
@@ -28,6 +29,13 @@ SUPPORT_EMAIL = os.getenv("SUPPORT_EMAIL", "")
 SUPPORT_PHONE = os.getenv("SUPPORT_PHONE", "")
 TOKEN_TTL_MINUTES = int(os.getenv("TOKEN_TTL_MINUTES", "480"))
 RELEASE_CHANNEL = os.getenv("RELEASE_CHANNEL", "candidate")
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "").strip()
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "").strip()
+STRIPE_CURRENCY = os.getenv("STRIPE_CURRENCY", "eur").strip().lower() or "eur"
+STRIPE_SUCCESS_URL = os.getenv("STRIPE_SUCCESS_URL", "").strip()
+STRIPE_CANCEL_URL = os.getenv("STRIPE_CANCEL_URL", "").strip()
+if STRIPE_SECRET_KEY:
+    stripe.api_key = STRIPE_SECRET_KEY
 DEMO_ADMIN_EMAIL = os.getenv("DEMO_ADMIN_EMAIL", "")
 DEMO_ADMIN_PASSWORD = os.getenv("DEMO_ADMIN_PASSWORD", "")
 DEMO_PRO_EMAIL = os.getenv("DEMO_PRO_EMAIL", "")
@@ -587,12 +595,30 @@ app=FastAPI(title="Le Panier Frais Bio API",version="1.0.0")
 app.mount("/assets", StaticFiles(directory=BASE/"assets"), name="assets")
 @app.middleware("http")
 async def security_headers(request:Request,call_next):
+    content_length=request.headers.get("content-length")
+    if content_length:
+        try:
+            if int(content_length)>2_000_000:
+                return JSONResponse({"detail":"Requête trop volumineuse"},status_code=413)
+        except ValueError:
+            return JSONResponse({"detail":"Content-Length invalide"},status_code=400)
     response=await call_next(request)
     response.headers["X-Content-Type-Options"]="nosniff"
     response.headers["X-Frame-Options"]="DENY"
     response.headers["Referrer-Policy"]="strict-origin-when-cross-origin"
     response.headers["Permissions-Policy"]="camera=(), microphone=(), geolocation=()"
     response.headers["Cross-Origin-Opener-Policy"]="same-origin"
+    response.headers["Cross-Origin-Resource-Policy"]="same-site"
+    response.headers["Content-Security-Policy"]=(
+        "default-src 'self'; "
+        "base-uri 'self'; object-src 'none'; frame-ancestors 'none'; "
+        "img-src 'self' data: https:; font-src 'self' data:; "
+        "style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; "
+        "connect-src 'self'; form-action 'self' https://checkout.stripe.com; "
+        "frame-src https://checkout.stripe.com https://js.stripe.com https://hooks.stripe.com"
+    )
+    if request.url.path.startswith(("/auth/","/b2c/","/pro/","/admin","/payments")):
+        response.headers["Cache-Control"]="no-store"
     if ENVIRONMENT=="production":
         response.headers["Strict-Transport-Security"]="max-age=31536000; includeSubDomains"
     return response
@@ -601,6 +627,7 @@ ALLOWED_ORIGINS_RAW=os.getenv("ALLOWED_ORIGINS","*")
 ALLOWED_ORIGINS=[x.strip() for x in ALLOWED_ORIGINS_RAW.split(",") if x.strip()]
 app.add_middleware(CORSMiddleware,allow_origins=ALLOWED_ORIGINS or ["*"],allow_credentials=False,allow_methods=["*"],allow_headers=["*"])
 pwd=CryptContext(schemes=["bcrypt"],deprecated="auto")
+DUMMY_PASSWORD_HASH=pwd.hash("LPFB-dummy-password-not-valid")
 oauth=OAuth2PasswordBearer(tokenUrl="/auth/login")
 STAFF_ROLES=("ADMIN","MANAGER","VENTE","PRODUCTION","LIVRAISON","COMPTA")
 MANAGED_STAFF_ROLES=("ADMIN","MANAGER","VENTE","PRODUCTION","LIVRAISON","COMPTA")
@@ -1281,7 +1308,7 @@ def pro_client_for_user(db:Session,user:User):
 def app_config():
     with SessionLocal() as db:
         m=maintenance_state(db)
-    return {"brand":"Le Panier Frais Bio","site_url":SITE_URL,"schema":schema_status(),"version":"1.0.0","environment":ENVIRONMENT,"demo_enabled":bool(SEED_DEMO_DATA and ENVIRONMENT!="production"),"maintenance":m,"support_email":SUPPORT_EMAIL,"support_phone":SUPPORT_PHONE,"release_channel":RELEASE_CHANNEL}
+    return {"brand":"Le Panier Frais Bio","site_url":SITE_URL,"schema":schema_status(),"version":"1.0.0","environment":ENVIRONMENT,"demo_enabled":bool(SEED_DEMO_DATA and ENVIRONMENT!="production"),"maintenance":m,"support_email":SUPPORT_EMAIL,"support_phone":SUPPORT_PHONE,"release_channel":RELEASE_CHANNEL,"online_payment_enabled":bool(STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET),"payment_provider":"stripe" if STRIPE_SECRET_KEY else None}
 
 @app.get("/health")
 def health(db:Session=Depends(get_db)):
@@ -1298,9 +1325,17 @@ def health_ready(db:Session=Depends(get_db)):
 
 @app.post("/auth/login")
 def login(data:LoginIn,db:Session=Depends(get_db)):
-    user=db.scalar(select(User).where(func.lower(User.email)==data.email.lower()))
-    if not user or not pwd.verify(data.password,user.password_hash):
-        audit(db,"LOGIN_FAILED",f"email={data.email.lower()}"); db.commit()
+    normalized=data.email.strip().lower()
+    fingerprint=hashlib.sha256(normalized.encode("utf-8")).hexdigest()[:16]
+    cutoff=(datetime.now(timezone.utc)-timedelta(minutes=15)).isoformat()
+    failed=db.scalar(select(func.count(AuditLog.id)).where(AuditLog.event_type=="LOGIN_FAILED",AuditLog.created_at>=cutoff,AuditLog.details.like(f"%id={fingerprint}%"))) or 0
+    if failed>=8:
+        audit(db,"LOGIN_BLOCKED",f"id={fingerprint};window=15m");db.commit()
+        raise HTTPException(429,"Trop de tentatives. Réessayez dans quelques minutes.")
+    user=db.scalar(select(User).where(func.lower(User.email)==normalized))
+    valid=pwd.verify(data.password,user.password_hash if user else DUMMY_PASSWORD_HASH)
+    if not user or not valid:
+        audit(db,"LOGIN_FAILED",f"id={fingerprint}"); db.commit()
         raise HTTPException(401,"Identifiants incorrects")
     audit(db,"LOGIN_SUCCESS",f"user_id={user.id};role={user.role}"); db.commit()
     return {"access_token":make_token(user),"token_type":"bearer","name":user.full_name,"role":user.role}
@@ -1769,10 +1804,48 @@ def b2c_subscription_toggle(subscription_id:int,db:Session=Depends(get_db),user=
     return {"ok":True,"active":s.active}
 
 
+def _stripe_urls():
+    base=(SITE_URL or "").rstrip("/")
+    success=STRIPE_SUCCESS_URL or (f"{base}/?payment=success&session_id={{CHECKOUT_SESSION_ID}}" if base else "")
+    cancel=STRIPE_CANCEL_URL or (f"{base}/?payment=cancel" if base else "")
+    if not success or not cancel:
+        raise HTTPException(503,"SITE_URL ou URLs Stripe non configurées")
+    return success,cancel
+
+def _order_total_ttc(db:Session,order_id:int)->float:
+    total=0.0
+    lines=db.scalars(select(OrderLine).where(OrderLine.order_id==order_id)).all()
+    if not lines:
+        raise HTTPException(409,"Commande sans ligne")
+    for line in lines:
+        tax=db.scalar(select(ProductTaxProfile).where(ProductTaxProfile.product_id==line.product_id))
+        if not tax or tax.tax_label=="À configurer":
+            raise HTTPException(409,f"TVA à configurer avant paiement en ligne pour {line.product.name}")
+        total += line.quantity*line.unit_price_ht*(1+(tax.tax_rate_pct/100.0))
+    return round(total,2)
+
+def _release_unpaid_order(db:Session,order:Order):
+    for r in db.scalars(select(Reservation).where(Reservation.order_id==order.id,Reservation.status=="ACTIVE")).all():
+        lot=db.get(Lot,r.lot_id)
+        if lot:
+            lot.qty_reserved=max(0,lot.qty_reserved-r.quantity)
+        r.status="ANNULEE"
+    delivery=db.scalar(select(Delivery).where(Delivery.order_id==order.id))
+    if delivery:
+        delivery.status="ANNULEE"
+    for req in db.scalars(select(ProcurementRequest).where(ProcurementRequest.source_order_id==order.id,ProcurementRequest.status.in_(["A_APPROVISIONNER","EN_COURS"]))).all():
+        req.status="ANNULE"
+    order.status="ANNULEE"
+
 @app.post("/b2c/checkout")
 def b2c_checkout(data:B2CCheckoutIn,db:Session=Depends(get_db),user=Depends(current_user)):
     client=b2c_client_for_user(db,user)
     if not data.lines: raise HTTPException(400,"Panier vide")
+    payment_method=(data.payment_method or "SUR_PLACE").upper()
+    if payment_method not in ("SUR_PLACE","CLICK_COLLECT","STRIPE"):
+        raise HTTPException(400,"Mode de paiement non autorisé")
+    if payment_method=="STRIPE" and not (STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET):
+        raise HTTPException(503,"Paiement en ligne temporairement indisponible")
     order=Order(client_id=client.id,status="CONFIRMEE",delivery_mode=data.delivery_mode,created_at=datetime.now(timezone.utc).isoformat())
     db.add(order); db.flush()
     total=0.0; uncovered_total=0.0
@@ -1794,13 +1867,47 @@ def b2c_checkout(data:B2CCheckoutIn,db:Session=Depends(get_db),user=Depends(curr
         if uncovered>0:
             create_procurement_need(db,product,uncovered,"B2C_ORDER",order.id,client.id,"Stock insuffisant : approvisionnement fournisseur requis.")
         if first_cut is None: first_cut=line.cut_name
-    if uncovered_total>0: order.status="A_PRODUIRE"
+    post_payment_status="A_PRODUIRE" if uncovered_total>0 else "CONFIRMEE"
+    order.status=post_payment_status
     db.add(OrderOption(order_id=order.id,cut_name=first_cut,note=data.note))
-    db.add(Delivery(order_id=order.id,status="A_PREPARER",slot=data.slot))
+    db.add(Delivery(order_id=order.id,status="A_PREPARER" if payment_method!="STRIPE" else "PAIEMENT_EN_ATTENTE",slot=data.slot))
     db.add(Invoice(order_id=order.id,status="BROUILLON",amount_ht=round(total,2)))
-    pay_status="A_PAYER" if data.payment_method in ("SUR_PLACE","CLICK_COLLECT") else "PAIEMENT_A_CONNECTER"
-    db.add(Payment(order_id=order.id,status=pay_status,method=data.payment_method,amount=round(total,2),reference=None))
-    audit(db,"B2C_CHECKOUT",f"order_id={order.id};client_id={client.id};lines={len(data.lines)};amount={round(total,2)};mode={data.delivery_mode}")
+    pay_status="A_PAYER" if payment_method in ("SUR_PLACE","CLICK_COLLECT") else "EN_ATTENTE"
+    payment=Payment(order_id=order.id,status=pay_status,method=payment_method,amount=round(total,2),reference=None)
+    db.add(payment)
+    audit(db,"B2C_CHECKOUT",f"order_id={order.id};client_id={client.id};lines={len(data.lines)};amount={round(total,2)};mode={data.delivery_mode};payment={payment_method}")
+    if payment_method=="STRIPE":
+        amount_ttc=_order_total_ttc(db,order.id)
+        order.status="PAIEMENT_EN_ATTENTE"
+        success_url,cancel_url=_stripe_urls()
+        try:
+            session=stripe.checkout.Session.create(
+                mode="payment",
+                success_url=success_url,
+                cancel_url=cancel_url,
+                client_reference_id=str(order.id),
+                customer_email=client.email or None,
+                line_items=[{
+                    "price_data":{
+                        "currency":STRIPE_CURRENCY,
+                        "product_data":{"name":f"Commande Le Panier Frais Bio #{order.id}"},
+                        "unit_amount":int(round(amount_ttc*100)),
+                    },
+                    "quantity":1,
+                }],
+                metadata={"order_id":str(order.id),"client_id":str(client.id),"post_payment_status":post_payment_status},
+                payment_intent_data={"metadata":{"order_id":str(order.id)}},
+            )
+        except Exception as exc:
+            _release_unpaid_order(db,order)
+            payment.status="ECHEC_CREATION"
+            audit(db,"STRIPE_SESSION_ERROR",f"order_id={order.id};type={type(exc).__name__}")
+            db.commit()
+            raise HTTPException(502,"Impossible d'initialiser le paiement sécurisé")
+        payment.amount=amount_ttc
+        payment.reference=session.id
+        db.commit()
+        return {"order_id":order.id,"status":order.status,"amount":amount_ttc,"payment_status":pay_status,"slot":data.slot,"checkout_url":session.url}
     db.commit()
     return {"order_id":order.id,"status":order.status,"amount":round(total,2),"payment_status":pay_status,"slot":data.slot}
 
@@ -2257,6 +2364,49 @@ def invoice_detail(invoice_id:int,db:Session=Depends(get_db),user=Depends(roles(
         "payment":{"status":payment.status,"method":payment.method,"amount":payment.amount,"reference":payment.reference} if payment else None,
         "credits":[{"id":c.id,"credit_number":c.credit_number,"reason":c.reason,"amount_ht":c.amount_ht,"amount_tax":c.amount_tax,"amount_ttc":c.amount_ttc,"created_at":c.created_at,"status":c.status} for c in credits]
     }
+
+@app.post("/payments/stripe/webhook")
+async def stripe_webhook(request:Request,db:Session=Depends(get_db)):
+    if not STRIPE_WEBHOOK_SECRET:
+        raise HTTPException(503,"Webhook Stripe non configuré")
+    payload=await request.body()
+    signature=request.headers.get("stripe-signature","")
+    try:
+        event=stripe.Webhook.construct_event(payload,signature,STRIPE_WEBHOOK_SECRET)
+    except ValueError:
+        raise HTTPException(400,"Payload Stripe invalide")
+    except stripe.error.SignatureVerificationError:
+        raise HTTPException(400,"Signature Stripe invalide")
+    event_type=event.get("type","")
+    obj=event.get("data",{}).get("object",{})
+    metadata=obj.get("metadata") or {}
+    order_id_raw=metadata.get("order_id") or obj.get("client_reference_id")
+    try:
+        order_id=int(order_id_raw)
+    except (TypeError,ValueError):
+        return {"ok":True}
+    order=db.get(Order,order_id)
+    payment=db.scalar(select(Payment).where(Payment.order_id==order_id))
+    if not order or not payment:
+        return {"ok":True}
+    if event_type in ("checkout.session.completed","checkout.session.async_payment_succeeded"):
+        if payment.status!="PAYE":
+            payment.status="PAYE"
+            payment.method="STRIPE"
+            payment.reference=obj.get("payment_intent") or obj.get("id") or payment.reference
+            order.status=metadata.get("post_payment_status") or ("CONFIRMEE" if order.status=="PAIEMENT_EN_ATTENTE" else order.status)
+            delivery=db.scalar(select(Delivery).where(Delivery.order_id==order_id))
+            if delivery and delivery.status=="PAIEMENT_EN_ATTENTE":
+                delivery.status="A_PREPARER"
+            audit(db,"STRIPE_PAYMENT_PAID",f"order_id={order_id};event={event.get('id','-')}")
+            db.commit()
+    elif event_type in ("checkout.session.expired","checkout.session.async_payment_failed"):
+        if payment.status!="PAYE" and order.status!="ANNULEE":
+            payment.status="EXPIRE" if event_type.endswith("expired") else "ECHEC"
+            _release_unpaid_order(db,order)
+            audit(db,"STRIPE_PAYMENT_FAILED",f"order_id={order_id};event={event.get('id','-')};type={event_type}")
+            db.commit()
+    return {"ok":True}
 
 @app.get("/payments")
 def payments(db:Session=Depends(get_db),user=Depends(roles(*STAFF_ROLES))):
@@ -2918,5 +3068,3 @@ def service_worker(): return FileResponse(BASE/"service-worker.js",media_type="a
 
 @app.get("/")
 def root(): return FileResponse(BASE/"index.html")
-from sqlalchemy import create_engine, String, Integer, Float, ForeignKey, select, func
-from sqlalchemy import create_engine, String, Integer, Float, ForeignKey, select, func, inspect
